@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body oncontextmenu="return false;">
     <div class="container">
@@ -21,7 +23,10 @@
         <p class="sub-text">Sign up to receive official launch updates and commercial acquisition details.</p>
         
         <form id="waitlist-form">
-            <input type="email" id="email" name="email" placeholder="Enter your mail" required>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            
+            <div class="cf-turnstile" data-sitekey="INSERISCI_QUI_LA_TUA_SITE_KEY" data-theme="dark" style="margin-top: 10px; margin-bottom: 10px;"></div>
+            
             <button type="submit" id="submit-btn">Notify Me</button>
         </form>
         
@@ -39,12 +44,37 @@
         const form = document.getElementById('waitlist-form');
         const submitBtn = document.getElementById('submit-btn');
         const responseMsg = document.getElementById('response-msg');
+        const emailInput = document.getElementById('email');
         
-        // URL dell'API configurato e validato
         const scriptURL = 'https://script.google.com/macros/s/AKfycbzalSIoexswF8CTLnSKAhTHofEy4mYtbqlnsQlrc1buFoyqMnDlZdPBsg6tq-25BDfAAA/exec';
+
+        // Validazione Regex per bloccare email palesemente false
+        const validateEmail = (email) => {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        };
 
         form.addEventListener('submit', e => {
             e.preventDefault();
+            
+            // 1. Controllo Sintassi Email
+            if (!validateEmail(emailInput.value)) {
+                responseMsg.style.display = 'block';
+                responseMsg.style.color = '#ffaa00';
+                responseMsg.innerText = 'Please enter a valid email address.';
+                return;
+            }
+
+            // 2. Controllo Anti-Bot Turnstile
+            const turnstileResponse = document.querySelector('[name="cf-turnstile-response"]').value;
+            if (!turnstileResponse) {
+                responseMsg.style.display = 'block';
+                responseMsg.style.color = '#ffaa00';
+                responseMsg.innerText = 'Security check failed. Please verify you are human.';
+                return;
+            }
+
+            // 3. Invio Dati se i controlli sono superati
             submitBtn.innerText = 'Sending...';
             submitBtn.disabled = true;
             responseMsg.style.display = 'none';
@@ -57,6 +87,7 @@
                     responseMsg.style.color = '#00ff88';
                     responseMsg.innerText = 'Email successfully registered. Thank you.';
                     form.reset();
+                    turnstile.reset(); // Resetta il CAPTCHA dopo il successo
                     submitBtn.innerText = 'Notify Me';
                     submitBtn.disabled = false;
                 })
