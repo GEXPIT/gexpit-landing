@@ -31,9 +31,8 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    /* Inserimento Sfondo - Assicurati che il nome file coincida esattamente (maiuscole/spazi) */
-    background: url('SFONDO PIATTAFORMA.jpg') center center / cover no-repeat;
-    /* Overlay scuro per garantire la leggibilità del testo */
+    /* Encoding dello spazio (%20) fondamentale per i browser Desktop */
+    background: url('SFONDO%20PIATTAFORMA.jpg') center center / cover no-repeat;
     filter: brightness(0.25) blur(3px); 
     z-index: -1; /* Mantiene lo sfondo dietro tutti i contenuti */
 }
@@ -64,6 +63,10 @@ body::before {
     width: 380px;
     margin-bottom: 25px;
     pointer-events: none; /* Sicurezza extra anti-click/trascinamento */
+    
+    /* Sfumatura perimetrale: maschera i bordi fondendoli con lo sfondo */
+    -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 95%);
+    mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 95%);
 }
 
 h2 {
@@ -83,6 +86,14 @@ p {
 .sub-text {
     font-size: 0.9rem;
     margin-top: 15px;
+}
+
+.no-spam {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 8px;
+    font-style: italic;
+    font-weight: 300;
 }
 
 .status-badge {
@@ -160,23 +171,4 @@ button:disabled {
     color: #777;
     background: rgba(0, 0, 0, 0.85); /* Sfondo scuro per mascherare l'immagine dietro al footer */
     border-top: 1px solid #222;
-    margin-top: auto; /* Questa istruzione Flexbox forza il footer al termine della pagina */
-    z-index: 1;
-    line-height: 1.5;
-}
-
-/* =========================================
-   MEDIA QUERIES (Desktop & Tablet)
-   ========================================= */
-@media (min-width: 768px) {
-    h2 { font-size: 2.2rem; }
-    p { font-size: 1.1rem; }
-    
-    /* Disposizione orizzontale del form su schermi grandi */
-    form { 
-        flex-direction: row; 
-        max-width: 600px;
-    }
-    input[type="email"] { flex: 1; }
-    button { width: 160px; }
-}
+    margin-top: auto; /* Questa istruzione Flexbox forza

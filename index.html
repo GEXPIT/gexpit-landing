@@ -20,12 +20,13 @@
         
         <p class="sub-text">Sign up to receive official launch updates and commercial acquisition details.</p>
         
-        <!-- Modulo aggiornato con ID per l'elaborazione dati -->
         <form id="waitlist-form">
-            <input type="email" id="email" name="email" placeholder="Enter your professional email" required>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
             <button type="submit" id="submit-btn">Notify Me</button>
         </form>
-        <!-- Messaggio di feedback nascosto -->
+        
+        <p class="no-spam">(No spam. I tuoi dati sono al sicuro e non verranno ceduti a terzi).</p>
+
         <p id="response-msg" style="display:none; margin-top:15px; font-weight:600; font-size:0.9em;"></p>
     </div>
 
@@ -34,7 +35,6 @@
         Tutti i contenuti, le interfacce, gli algoritmi e le grafiche mostrati in questo sito sono di proprietà esclusiva di GEXPIT e protetti dalle leggi internazionali sul diritto d'autore e sulla proprietà intellettuale (L. 633/1941). È severamente vietata la riproduzione, la ridistribuzione o l'utilizzo commerciale non autorizzato.
     </div>
 
-    <!-- Motore logico di invio dati al server -->
     <script>
         const form = document.getElementById('waitlist-form');
         const submitBtn = document.getElementById('submit-btn');
