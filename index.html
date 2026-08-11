@@ -19,7 +19,7 @@
         <div class="card">
             <img src="GEXPIT UFFICIALE RETTANGOLO.jpg" alt="GEXPIT Logo" class="logo" draggable="false">
             
-            <h1>Institutional-grade 0-DTE S&P 500 quantitative platform.</h1>
+            <h1>GEXPIT 0DTE SPX platform.</h1>
             <p class="description">Real-time GEX, VEX, DEX & Market Maker flow decoding.<br>Unfair advantage through pure data.</p>
             
             <div class="badge">COMING SOON</div>
@@ -27,7 +27,7 @@
             <p class="description" style="font-size: 0.85rem;">Sign up to receive official launch updates and commercial acquisition details.</p>
             
             <form id="waitlist-form">
-                <input type="email" id="email" placeholder="Enter your professional email" required>
+                <input type="email" id="email" placeholder="Enter your email" required>
                 <button type="submit" id="submit-btn">Notify Me</button>
             </form>
             <p id="response-msg" style="display:none; margin-top: 16px; font-size: 0.9rem; font-weight: 600;"></p>
@@ -45,7 +45,9 @@
         const submitBtn = document.getElementById('submit-btn');
         const responseMsg = document.getElementById('response-msg');
         
-        const workerURL = 'https://api.gexpit.com';
+        // Uso l'URL nativo di Cloudflare per bypassare eventuali problemi di DNS o di zona!
+        const workerURL = 'https://gexpit-api.pitball85.workers.dev';
+        
         const SECRET_TOKEN = 'ARCfrpf_piSICUREZZA';
 
         form.addEventListener('submit', async (e) => {
@@ -72,13 +74,24 @@
                     responseMsg.style.color = '#00ff88';
                     responseMsg.innerText = '✓ Email successfully registered. Thank you.';
                     form.reset();
+                } else if (response.status === 401) {
+                    throw new Error('Configurazione Cloudflare errata: SECRET_TOKEN mancante o sbagliato.');
+                } else if (response.status === 400) {
+                    throw new Error('Errore Google Apps Script o formato email rifiutato.');
                 } else {
-                    throw new Error('Validation failed');
+                    throw new Error('Errore sconosciuto dal server: ' + response.status);
                 }
             } catch (error) {
                 responseMsg.style.display = 'block';
                 responseMsg.style.color = '#ff4d4d';
-                responseMsg.innerText = '⚠ Network error. Please try again later.';
+                
+                // Se è un vero e proprio errore di rete (es. CORS fallito, dominio inesistente)
+                if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                    responseMsg.innerText = '⚠ Connessione bloccata da Cloudflare (Network Error).';
+                } else {
+                    // Mostra l'errore specifico (es. 401, 400)
+                    responseMsg.innerText = '⚠ ' + error.message;
+                }
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = 'Notify Me';
