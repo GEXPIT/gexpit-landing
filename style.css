@@ -112,3 +112,30 @@ button:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(31, 111, 235, 0.4);
 }
+/* Protezione CSS aggiuntiva per il logo */
+.logo {
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none; /* Impedisce qualsiasi interazione con l'immagine */
+}
+
+/* Stile per il Footer Legale */
+.footer {
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    text-align: center;
+    font-size: 0.7em;
+    color: #4a5568;
+    line-height: 1.4;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+/* Evita che il testo legale si sovrapponga su schermi piccoli */
+@media (max-height: 750px) {
+    .footer {
+        position: relative;
+        margin-top: 30px;
+    }
+}

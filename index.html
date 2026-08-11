@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEXPIT | 0-DTE Quant Replay & Cockpit</title>
-    <!-- Importazione del nuovo Font "Poppins" da Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body oncontextmenu="return false;"> <!-- Blocca il tasto destro su tutta la pagina -->
     <div class="container">
-        <!-- Inserimento del Logo Ufficiale -->
-        <img src="GEXPIT UFFICIALE RETTANGOLO.jpg" alt="GEXPIT Logo Ufficiale" class="logo">
+        <!-- Logo con blocchi anti-trascinamento e anti-click destro -->
+        <img src="GEXPIT UFFICIALE RETTANGOLO.jpg" alt="GEXPIT Logo Ufficiale" class="logo" draggable="false" oncontextmenu="return false;">
         
         <h2>Institutional-grade 0-DTE S&P 500 quantitative platform.</h2>
         <p>Real-time GEX, VEX, DEX & Market Maker flow decoding. Unfair advantage through pure data.</p>
@@ -26,6 +25,12 @@
             <input type="email" id="email" placeholder="Enter your professional email" required>
             <button type="submit">Notify Me</button>
         </form>
+    </div>
+
+    <!-- Sezione Copyright -->
+    <div class="footer">
+        © 2026 GEXPIT™. Tutti i diritti riservati.<br>
+        Tutti i contenuti, le interfacce, gli algoritmi e le grafiche mostrati in questo sito sono di proprietà esclusiva di GEXPIT e protetti dalle leggi internazionali sul diritto d'autore e sulla proprietà intellettuale (L. 633/1941). È severamente vietata la riproduzione, la ridistribuzione o l'utilizzo commerciale non autorizzato.
     </div>
 </body>
 </html>
