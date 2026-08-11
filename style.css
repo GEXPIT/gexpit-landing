@@ -1,174 +1,75 @@
-/* =========================================
-   GEXPIT | RESET & IMPOSTAZIONI BASE
-   ========================================= */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-/* =========================================
-   LAYOUT GLOBALE (Soluzione Mobile & Footer)
-   ========================================= */
-body {
-    font-family: 'Poppins', sans-serif;
-    color: #ffffff;
-    background-color: #050505; /* Fallback se l'immagine non carica */
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column; /* Incolonna gli elementi */
-    position: relative;
-    overflow-x: hidden; /* Previene lo scrolling orizzontale su mobile */
-}
-
-/* =========================================
-   BACKGROUND IMAGE & OVERLAY (Filtro Scuro)
-   ========================================= */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* Encoding dello spazio (%20) fondamentale per i browser Desktop */
-    background: url('SFONDO%20PIATTAFORMA.jpg') center center / cover no-repeat;
-    filter: brightness(0.25) blur(3px); 
-    z-index: -1; /* Mantiene lo sfondo dietro tutti i contenuti */
-}
-
-/* =========================================
-   CONTAINER PRINCIPALE
-   ========================================= */
-.container {
-    flex: 1; /* Permette al container di occupare lo spazio rimanente */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 90%;
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    text-align: center;
-    z-index: 1;
-}
-
-/* =========================================
-   TIPOGRAFIA & BRANDING
-   ========================================= */
-.logo {
-    max-width: 100%;
-    height: auto;
-    width: 380px;
-    margin-bottom: 25px;
-    pointer-events: none; /* Sicurezza extra anti-click/trascinamento */
+export default {
+  async fetch(request, env, ctx) {
+    // 1. INSERISCI QUI IL TUO DOMINIO UFFICIALE (es. "https://www.gexpit.com")
+    // Non inserire lo slash finale "/"
+    const ALLOWED_ORIGIN = "https://INSERISCI_QUI_IL_TUO_DOMINIO.com";
     
-    /* Sfumatura perimetrale: maschera i bordi fondendoli con lo sfondo */
-    -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 95%);
-    mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 95%);
-}
+    // 2. INSERISCI QUI IL LINK DEL TUO WEBHOOK GOOGLE APPS SCRIPT
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/INSERISCI_QUI_IL_TUO_ID/exec";
 
-h2 {
-    font-weight: 600;
-    margin-bottom: 15px;
-    font-size: 1.6rem;
-    line-height: 1.3;
-}
+    // Configurazione CORS restrittiva
+    const corsHeaders = {
+      "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, X-Secret-Token",
+    };
 
-p {
-    font-weight: 300;
-    margin-bottom: 20px;
-    font-size: 1rem;
-    color: #d1d1d1;
-}
+    // Gestione del preflight CORS (richiesta OPTIONS automatica del browser)
+    if (request.method === "OPTIONS") {
+      return new Response(null, { headers: corsHeaders });
+    }
 
-.sub-text {
-    font-size: 0.9rem;
-    margin-top: 15px;
-}
+    // Blocca qualsiasi metodo che non sia POST
+    if (request.method !== "POST") {
+      return new Response("Method not allowed", { status: 405, headers: corsHeaders });
+    }
 
-.no-spam {
-    font-size: 0.75rem;
-    color: #888;
-    margin-top: 8px;
-    font-style: italic;
-    font-weight: 300;
-}
+    // Sicurezza Aggiuntiva: Controllo rigoroso dell'header Origin
+    const origin = request.headers.get("Origin");
+    if (origin !== ALLOWED_ORIGIN) {
+        return new Response("Forbidden: Invalid Origin", { status: 403, headers: corsHeaders });
+    }
 
-.status-badge {
-    display: inline-block;
-    background: #ffaa00;
-    color: #000;
-    padding: 6px 18px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    border-radius: 4px;
-    margin: 15px 0;
-    letter-spacing: 1px;
-}
+    // Validazione dello Shared Secret Token configurato nei Secret di Cloudflare
+    const clientToken = request.headers.get("X-Secret-Token");
+    if (!clientToken || clientToken !== env.SECRET_TOKEN) {
+      return new Response("Unauthorized", { status: 401, headers: corsHeaders });
+    }
 
-/* =========================================
-   MODULO DI ACQUISIZIONE DATI (FORM)
-   ========================================= */
-form {
-    display: flex;
-    flex-direction: column; /* Incolonnato su mobile */
-    width: 100%;
-    max-width: 450px;
-    gap: 12px;
-    margin-top: 10px;
-}
+    try {
+      // Estrazione e validazione del payload
+      const body = await request.json();
+      const email = body.email;
+      
+      // Regex severa per validare l'email (blocca HTML/Script injection)
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRegex.test(email)) {
+        return new Response("Invalid email format", { status: 400, headers: corsHeaders });
+      }
 
-input[type="email"] {
-    padding: 14px;
-    border: 1px solid #444;
-    border-radius: 6px;
-    background: rgba(15, 15, 15, 0.7);
-    color: #fff;
-    font-family: inherit;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.3s;
-}
+      // Inoltro sicuro e invisibile dei dati a Google Apps Script (Server-to-Server)
+      const googleResponse = await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          // Assicurati che il tuo Google Script si aspetti un JSON con la proprietà 'email'
+          body: JSON.stringify({ email: email }) 
+      });
 
-input[type="email"]:focus {
-    border-color: #00ff88;
-}
+      if (!googleResponse.ok) {
+          throw new Error("Failed to forward data to Google Script");
+      }
 
-button {
-    padding: 14px;
-    border: none;
-    border-radius: 6px;
-    background: #00ff88;
-    color: #000;
-    font-weight: 600;
-    font-size: 1rem;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+      // Risposta di successo al frontend
+      return new Response(JSON.stringify({ success: true, message: "Registered" }), { 
+        status: 200, 
+        headers: { ...corsHeaders, "Content-Type": "application/json" } 
+      });
 
-button:hover {
-    background: #00cc6a;
-    transform: translateY(-2px);
-}
-
-button:disabled {
-    background: #555;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* =========================================
-   FOOTER (Ancorato dinamicamente in basso)
-   ========================================= */
-.footer {
-    width: 100%;
-    text-align: center;
-    padding: 25px 20px;
-    font-size: 0.75rem;
-    color: #777;
-    background: rgba(0, 0, 0, 0.85); /* Sfondo scuro per mascherare l'immagine dietro al footer */
-    border-top: 1px solid #222;
-    margin-top: auto; /* Questa istruzione Flexbox forza
+    } catch (error) {
+      // Cattura errori di inoltro o payload malformati
+      return new Response("Bad Request or Internal Server Error", { status: 400, headers: corsHeaders });
+    }
+  }
+};
