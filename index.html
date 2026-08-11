@@ -8,8 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body oncontextmenu="return false;">
     <div class="container">
@@ -23,15 +21,9 @@
         <p class="sub-text">Sign up to receive official launch updates and commercial acquisition details.</p>
         
         <form id="waitlist-form">
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
-            
-            <div class="cf-turnstile" data-sitekey=0x4AAAAAAENRCesW99Pvc_t5 data-theme="dark" style="margin-top: 10px; margin-bottom: 10px;"></div>
-            
+            <input type="email" id="email" name="email" placeholder="Enter your professional email" required>
             <button type="submit" id="submit-btn">Notify Me</button>
         </form>
-        
-        <p class="no-spam">(No spam. I tuoi dati sono al sicuro e non verranno ceduti a terzi).</p>
-
         <p id="response-msg" style="display:none; margin-top:15px; font-weight:600; font-size:0.9em;"></p>
     </div>
 
@@ -44,60 +36,48 @@
         const form = document.getElementById('waitlist-form');
         const submitBtn = document.getElementById('submit-btn');
         const responseMsg = document.getElementById('response-msg');
-        const emailInput = document.getElementById('email');
         
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzalSIoexswF8CTLnSKAhTHofEy4mYtbqlnsQlrc1buFoyqMnDlZdPBsg6tq-25BDfAAA/exec';
+        // 1. INSERISCI QUI L'INDIRIZZO DEL TUO WORKER CLOUDFLARE
+        const workerURL = 'https://INSERISCI-QUI-IL-TUO-LINK.workers.dev';
+        
+        // 2. INSERISCI QUI LA STESSA PASSWORD CHE HAI MESSO SU CLOUDFLARE
+        const SECRET_TOKEN = 'INSERISCI_QUI_LA_TUA_PASSWORD'; 
 
-        // Validazione Regex per bloccare email palesemente false
-        const validateEmail = (email) => {
-            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return regex.test(email);
-        };
-
-        form.addEventListener('submit', e => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // 1. Controllo Sintassi Email
-            if (!validateEmail(emailInput.value)) {
-                responseMsg.style.display = 'block';
-                responseMsg.style.color = '#ffaa00';
-                responseMsg.innerText = 'Please enter a valid email address.';
-                return;
-            }
-
-            // 2. Controllo Anti-Bot Turnstile
-            const turnstileResponse = document.querySelector('[name="cf-turnstile-response"]').value;
-            if (!turnstileResponse) {
-                responseMsg.style.display = 'block';
-                responseMsg.style.color = '#ffaa00';
-                responseMsg.innerText = 'Security check failed. Please verify you are human.';
-                return;
-            }
-
-            // 3. Invio Dati se i controlli sono superati
             submitBtn.innerText = 'Sending...';
             submitBtn.disabled = true;
             responseMsg.style.display = 'none';
 
-            let formData = new FormData(form);
+            const emailInput = document.getElementById('email').value;
 
-            fetch(scriptURL, { method: 'POST', body: formData })
-                .then(response => {
+            try {
+                const response = await fetch(workerURL, { 
+                    method: 'POST', 
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Secret-Token': SECRET_TOKEN
+                    },
+                    body: JSON.stringify({ email: emailInput })
+                });
+
+                if (response.ok) {
                     responseMsg.style.display = 'block';
                     responseMsg.style.color = '#00ff88';
                     responseMsg.innerText = 'Email successfully registered. Thank you.';
                     form.reset();
-                    turnstile.reset(); // Resetta il CAPTCHA dopo il successo
-                    submitBtn.innerText = 'Notify Me';
-                    submitBtn.disabled = false;
-                })
-                .catch(error => {
-                    responseMsg.style.display = 'block';
-                    responseMsg.style.color = '#ff4d4d';
-                    responseMsg.innerText = 'Network error. Please try again later.';
-                    submitBtn.innerText = 'Notify Me';
-                    submitBtn.disabled = false;
-                });
+                } else {
+                    throw new Error('Validation failed');
+                }
+            } catch (error) {
+                responseMsg.style.display = 'block';
+                responseMsg.style.color = '#ff4d4d';
+                responseMsg.innerText = 'Network error or request denied. Please try again later.';
+            } finally {
+                submitBtn.innerText = 'Notify Me';
+                submitBtn.disabled = false;
+            }
         });
     </script>
 </body>
