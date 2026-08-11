@@ -37,11 +37,12 @@
         const submitBtn = document.getElementById('submit-btn');
         const responseMsg = document.getElementById('response-msg');
         
-        // 1. INSERISCI QUI L'INDIRIZZO DEL TUO WORKER CLOUDFLARE
-        const workerURL = 'https://INSERISCI-QUI-IL-TUO-LINK.workers.dev';
-        
+        // 1. INDIRIZZO AGGIORNATO DEL TUO WORKER CLOUDFLARE SUL TUO DOMINIO
+        // Modifica "iltuodominio.com" con "gexpit.com" o il tuo dominio reale. Niente barra finale!
+        const workerURL = 'https://api.gexpit.com';
+
         // 2. INSERISCI QUI LA STESSA PASSWORD CHE HAI MESSO SU CLOUDFLARE
-        const SECRET_TOKEN = 'INSERISCI_QUI_LA_TUA_PASSWORD'; 
+        const SECRET_TOKEN = 'ARCfrpf_piSICUREZZA';
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
