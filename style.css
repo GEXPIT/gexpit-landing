@@ -1,0 +1,114 @@
+/* Impostazioni di base e nuovo Font */
+body {
+    background-color: #040609; /* Sfondo ancora più scuro per far risaltare il container */
+    color: #a0aec0;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    text-align: center;
+}
+
+/* Contenitore principale allargato e rifinito */
+.container {
+    max-width: 750px;
+    padding: 60px 50px;
+    border: 1px solid #1a2235;
+    border-radius: 12px;
+    background-color: #0a0d14; /* Leggero contrasto con lo sfondo */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 255, 136, 0.03);
+}
+
+/* Stile del Logo */
+.logo {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Testi ingranditi e ammorbiditi */
+h2 {
+    color: #ffffff;
+    font-size: 1.4em;
+    font-weight: 600;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+p {
+    line-height: 1.7;
+    font-size: 1.15em;
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+.sub-text {
+    font-size: 1em;
+    color: #7d8b9e;
+    font-weight: 400;
+}
+
+/* Badge con colori neon della piattaforma */
+.status-badge {
+    display: inline-block;
+    background-color: rgba(0, 255, 136, 0.08);
+    color: #00ff88;
+    padding: 10px 25px;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 50px; /* Bordi completamente tondi */
+    font-weight: 600;
+    margin: 20px 0 30px 0;
+    letter-spacing: 2px;
+    font-size: 1em;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.1);
+}
+
+/* Modulo di iscrizione */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 20px;
+}
+
+input[type="email"] {
+    padding: 16px;
+    background-color: #040609;
+    border: 1px solid #283142;
+    color: #ffffff;
+    border-radius: 8px;
+    font-size: 1.1em;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    transition: border-color 0.3s;
+}
+
+input[type="email"]:focus {
+    outline: none;
+    border-color: #00d4ff; /* Accento cyan al click */
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.2);
+}
+
+button {
+    padding: 16px;
+    background-color: #1f6feb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+    font-family: 'Poppins', sans-serif;
+}
+
+button:hover {
+    background-color: #388bfd;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(31, 111, 235, 0.4);
+}
