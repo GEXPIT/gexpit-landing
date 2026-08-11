@@ -1,75 +1,281 @@
-export default {
-  async fetch(request, env, ctx) {
-    // 1. INSERISCI QUI IL TUO DOMINIO UFFICIALE (es. "https://www.gexpit.com")
-    // Non inserire lo slash finale "/"
-    const ALLOWED_ORIGIN = "https://INSERISCI_QUI_IL_TUO_DOMINIO.com";
+:root {
+    /* Color Palette */
+    --bg-color: #0b0f19;
+    --text-primary: #f0f4f8;
+    --text-secondary: #94a3b8;
+    --accent-color: #00ff88;
+    --accent-glow: rgba(0, 255, 136, 0.2);
+    --accent-hover: #00cc6d;
+    --error-color: #ff4d4d;
     
-    // 2. INSERISCI QUI IL LINK DEL TUO WEBHOOK GOOGLE APPS SCRIPT
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/INSERISCI_QUI_IL_TUO_ID/exec";
+    /* Glassmorphism */
+    --glass-bg: rgba(13, 17, 28, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
 
-    // Configurazione CORS restrittiva
-    const corsHeaders = {
-      "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, X-Secret-Token",
-    };
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    // Gestione del preflight CORS (richiesta OPTIONS automatica del browser)
-    if (request.method === "OPTIONS") {
-      return new Response(null, { headers: corsHeaders });
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- BACKGROUND --- */
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    /* Un bel blur per renderlo sfocato ed enfatizzare il pannello avanti */
+    filter: blur(12px) grayscale(30%) brightness(0.6);
+    transform: scale(1.05);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Gradiente per scurire e armonizzare con lo sfondo scuro */
+    background: radial-gradient(circle at center, rgba(11, 15, 25, 0.6) 0%, rgba(5, 7, 12, 0.95) 100%);
+}
+
+/* --- MAIN PANEL --- */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 3.5rem 3rem;
+    max-width: 650px;
+    width: 92%;
+    text-align: center;
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255,255,255,0.1);
+    margin: 2rem 0;
+    position: relative;
+    z-index: 1;
+    animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUpFade {
+    0% { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.logo {
+    width: 220px;
+    height: auto;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    user-select: none;
+    transition: transform 0.4s ease;
+}
+
+.logo:hover {
+    transform: scale(1.03);
+}
+
+h1 {
+    font-size: 1.85rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+    background: linear-gradient(to right, #ffffff 30%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.description {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    font-weight: 400;
+}
+
+/* --- BADGE COMING SOON --- */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 255, 136, 0.08);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    color: var(--accent-color);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 25px var(--accent-glow);
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.8);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.8); }
+    70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(0, 255, 136, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
+}
+
+.sub-text {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+/* --- FORM & INPUTS --- */
+.input-group {
+    display: flex;
+    position: relative;
+    gap: 12px;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 520px) {
+    .input-group {
+        flex-direction: column;
     }
+}
 
-    // Blocca qualsiasi metodo che non sia POST
-    if (request.method !== "POST") {
-      return new Response("Method not allowed", { status: 405, headers: corsHeaders });
-    }
+input[type="email"] {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    padding: 16px 22px;
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: all 0.3s ease;
+}
 
-    // Sicurezza Aggiuntiva: Controllo rigoroso dell'header Origin
-    const origin = request.headers.get("Origin");
-    if (origin !== ALLOWED_ORIGIN) {
-        return new Response("Forbidden: Invalid Origin", { status: 403, headers: corsHeaders });
-    }
+input[type="email"]:focus {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px var(--accent-glow);
+}
 
-    // Validazione dello Shared Secret Token configurato nei Secret di Cloudflare
-    const clientToken = request.headers.get("X-Secret-Token");
-    if (!clientToken || clientToken !== env.SECRET_TOKEN) {
-      return new Response("Unauthorized", { status: 401, headers: corsHeaders });
-    }
+input[type="email"]::placeholder {
+    color: rgba(148, 163, 184, 0.5);
+}
 
-    try {
-      // Estrazione e validazione del payload
-      const body = await request.json();
-      const email = body.email;
-      
-      // Regex severa per validare l'email (blocca HTML/Script injection)
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!email || !emailRegex.test(email)) {
-        return new Response("Invalid email format", { status: 400, headers: corsHeaders });
-      }
+button {
+    background: var(--accent-color);
+    color: #000;
+    border: none;
+    border-radius: 14px;
+    padding: 0 32px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+    min-width: 150px;
+    box-shadow: 0 4px 15px rgba(0, 255, 136, 0.15);
+}
 
-      // Inoltro sicuro e invisibile dei dati a Google Apps Script (Server-to-Server)
-      const googleResponse = await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          // Assicurati che il tuo Google Script si aspetti un JSON con la proprietà 'email'
-          body: JSON.stringify({ email: email }) 
-      });
+button:hover:not(:disabled) {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+}
 
-      if (!googleResponse.ok) {
-          throw new Error("Failed to forward data to Google Script");
-      }
+button:active:not(:disabled) {
+    transform: translateY(0);
+}
 
-      // Risposta di successo al frontend
-      return new Response(JSON.stringify({ success: true, message: "Registered" }), { 
-        status: 200, 
-        headers: { ...corsHeaders, "Content-Type": "application/json" } 
-      });
+button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
 
-    } catch (error) {
-      // Cattura errori di inoltro o payload malformati
-      return new Response("Bad Request or Internal Server Error", { status: 400, headers: corsHeaders });
-    }
-  }
-};
+/* --- LOADER --- */
+.loader {
+    width: 22px;
+    height: 22px;
+    border: 3px solid rgba(0,0,0,0.2);
+    border-bottom-color: #000;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- MESSAGES --- */
+.response-msg {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-top: 1.5rem;
+    padding: 14px;
+    border-radius: 10px;
+    animation: slideUpFade 0.4s ease;
+}
+
+.response-msg.success {
+    background: rgba(0, 255, 136, 0.08);
+    color: var(--accent-color);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.response-msg.error {
+    background: rgba(255, 77, 77, 0.08);
+    color: var(--error-color);
+    border: 1px solid rgba(255, 77, 77, 0.2);
+}
+
+/* --- FOOTER --- */
+.footer {
+    font-size: 0.75rem;
+    color: rgba(148, 163, 184, 0.45);
+    text-align: center;
+    max-width: 900px;
+    padding: 0 2rem;
+    margin-bottom: 2rem;
+    line-height: 1.7;
+    z-index: 1;
+}

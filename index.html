@@ -4,52 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEXPIT | 0-DTE Quant Replay & Cockpit</title>
+    <!-- Metatag SEO & UI -->
+    <meta name="description" content="Institutional-grade 0-DTE S&P 500 quantitative platform. Real-time GEX, VEX, DEX & Market Maker flow decoding.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body oncontextmenu="return false;">
-    <div class="container">
-        <img src="GEXPIT UFFICIALE RETTANGOLO.jpg" alt="GEXPIT Logo Ufficiale" class="logo" draggable="false" oncontextmenu="return false;">
+    
+    <!-- Immagine di sfondo -->
+    <div class="background">
+        <img src="SFONDO PIATTAFORMA.jpg" alt="Piattaforma Background" class="bg-image">
+        <div class="overlay"></div>
+    </div>
+    
+    <!-- Pannello Principale -->
+    <main class="container glass-panel">
+        <img src="GEXPIT UFFICIALE RETTANGOLO.jpg" alt="GEXPIT Logo Ufficiale" class="logo" draggable="false">
         
-        <h2>Institutional-grade 0-DTE S&P 500 quantitative platform.</h2>
-        <p>Real-time GEX, VEX, DEX & Market Maker flow decoding. Unfair advantage through pure data.</p>
+        <h1>Institutional-grade 0-DTE S&P 500 quantitative platform.</h1>
+        <p class="description">Real-time GEX, VEX, DEX & Market Maker flow decoding. Unfair advantage through pure data.</p>
         
-        <div class="status-badge">COMING SOON</div>
+        <div class="status-badge">
+            <span class="pulse-dot"></span> COMING SOON
+        </div>
         
         <p class="sub-text">Sign up to receive official launch updates and commercial acquisition details.</p>
         
         <form id="waitlist-form">
-            <input type="email" id="email" name="email" placeholder="Enter your professional email" required>
-            <button type="submit" id="submit-btn">Notify Me</button>
+            <div class="input-group">
+                <input type="email" id="email" name="email" placeholder="Enter your professional email" required autocomplete="email">
+                <button type="submit" id="submit-btn">
+                    <span class="btn-text">Notify Me</span>
+                    <span class="loader" style="display: none;"></span>
+                </button>
+            </div>
         </form>
-        <p id="response-msg" style="display:none; margin-top:15px; font-weight:600; font-size:0.9em;"></p>
-    </div>
+        <p id="response-msg" class="response-msg" style="display:none;"></p>
+    </main>
 
-    <div class="footer">
+    <!-- Footer -->
+    <footer class="footer">
         © 2026 GEXPIT™. Tutti i diritti riservati.<br>
         Tutti i contenuti, le interfacce, gli algoritmi e le grafiche mostrati in questo sito sono di proprietà esclusiva di GEXPIT e protetti dalle leggi internazionali sul diritto d'autore e sulla proprietà intellettuale (L. 633/1941). È severamente vietata la riproduzione, la ridistribuzione o l'utilizzo commerciale non autorizzato.
-    </div>
+    </footer>
 
+    <!-- Script della Logica -->
     <script>
         const form = document.getElementById('waitlist-form');
         const submitBtn = document.getElementById('submit-btn');
+        const btnText = document.querySelector('.btn-text');
+        const loader = document.querySelector('.loader');
         const responseMsg = document.getElementById('response-msg');
         
-        // 1. INDIRIZZO AGGIORNATO DEL TUO WORKER CLOUDFLARE SUL TUO DOMINIO
-        // Modifica "iltuodominio.com" con "gexpit.com" o il tuo dominio reale. Niente barra finale!
+        // Questo è il dominio API che creerai su Cloudflare e collegherai al Worker
         const workerURL = 'https://api.gexpit.com';
 
-        // 2. INSERISCI QUI LA STESSA PASSWORD CHE HAI MESSO SU CLOUDFLARE
+        // La stessa password che configurerai su Cloudflare come variabile d'ambiente
         const SECRET_TOKEN = 'ARCfrpf_piSICUREZZA';
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            submitBtn.innerText = 'Sending...';
+            // Animazione caricamento
+            btnText.style.display = 'none';
+            loader.style.display = 'block';
             submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+            
+            // Reset dei messaggi e classi colore
             responseMsg.style.display = 'none';
+            responseMsg.className = 'response-msg'; 
 
             const emailInput = document.getElementById('email').value;
 
@@ -65,19 +91,22 @@
 
                 if (response.ok) {
                     responseMsg.style.display = 'block';
-                    responseMsg.style.color = '#00ff88';
-                    responseMsg.innerText = 'Email successfully registered. Thank you.';
+                    responseMsg.classList.add('success');
+                    responseMsg.innerText = '✓ Email successfully registered. Thank you.';
                     form.reset();
                 } else {
                     throw new Error('Validation failed');
                 }
             } catch (error) {
                 responseMsg.style.display = 'block';
-                responseMsg.style.color = '#ff4d4d';
-                responseMsg.innerText = 'Network error or request denied. Please try again later.';
+                responseMsg.classList.add('error');
+                responseMsg.innerText = '⚠ Network error or request denied. Please try again later.';
             } finally {
-                submitBtn.innerText = 'Notify Me';
+                // Ripristino del tasto
+                btnText.style.display = 'block';
+                loader.style.display = 'none';
                 submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
             }
         });
     </script>
