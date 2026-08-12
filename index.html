@@ -1,98 +1,136 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEXPIT | SPX 0DTE Decoded</title>
-    <!-- Collegamento al file CSS che creeremo nel passaggio successivo -->
     <link rel="stylesheet" href="style.css">
-    <!-- Font istituzionale -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     
-    <!-- LIVELLO 1: Sfondo Termico Statico -->
+    <!-- LEVEL 1: Static Thermal Background -->
     <div class="ambient-background">
         <div class="glow red-glow"></div>
         <div class="glow green-glow"></div>
     </div>
 
-    <!-- LIVELLO 2: Sistema di Schede in Dissolvenza (Background Dinamico) -->
+    <!-- LEVEL 2: Fading Background System (Moved outside main UI via CSS) -->
     <div class="fading-background">
-        <!-- Scheda 1 -->
         <div class="fade-slide slide-1">
             <div class="slide-content">
-                <h2>HEATMAP GEX PIT</h2>
-                <p>Traccia i muri di liquidità dinamici dei dealer in tempo reale.</p>
+                <h2>GEXPIT HEATMAP</h2>
+                <p>Track dynamic dealer liquidity walls in real-time.</p>
             </div>
         </div>
-        <!-- Scheda 2 -->
         <div class="fade-slide slide-2">
             <div class="slide-content">
-                <h2>FLUSSI 1-MINUTO</h2>
-                <p>Rileva anomalie e sbilanciamenti di capitale istituzionale al millisecondo.</p>
+                <h2>MULTI TIMEFRAME ORDER FLOW</h2>
+                <p>Detect anomalies and institutional capital imbalances down to the millisecond.</p>
             </div>
         </div>
-        <!-- Scheda 3 -->
         <div class="fade-slide slide-3">
             <div class="slide-content">
                 <h2>TOTAL DEX EXPOSURE</h2>
-                <p>Ottieni il bias operativo di fondo monitorando il posizionamento direzionale netto.</p>
+                <p>Capture the underlying operational bias by monitoring net directional positioning.</p>
             </div>
         </div>
-        <!-- Scheda 4 -->
         <div class="fade-slide slide-4">
             <div class="slide-content">
                 <h2>0DTE VOLUME PROFILE</h2>
-                <p>Identifica la reale concentrazione di scambi istituzionali.</p>
+                <p>Identify the true concentration of institutional trades.</p>
             </div>
         </div>
-        <!-- Scheda 5 -->
         <div class="fade-slide slide-5">
             <div class="slide-content">
                 <h2>NET GEX HISTOGRAM</h2>
-                <p>Mappa l'obbligo di copertura (hedging) dei Market Maker.</p>
+                <p>Map Market Maker hedging obligations.</p>
             </div>
         </div>
     </div>
 
-    <!-- LIVELLO 3: Cockpit Centrale (Glassmorphism UI) -->
+    <!-- LEVEL 3: Central Cockpit (Glassmorphism UI) -->
     <main class="glass-container">
         
-        <!-- Intestazione e Modulo -->
+        <!-- Header & Waitlist Form -->
         <header class="hero">
             <h1>SPX 0DTE. Decoded.</h1>
-            <p class="subheadline">Il vantaggio competitivo basato su dati puri. Decodifica in tempo reale i flussi dei Market Maker.</p>
+            <p class="subheadline">The only platform for accessing the true depth of Options. Transform raw flow into a precise algorithmic edge. Sign up for the exclusive waitlist.</p>
             
-            <form id="waitlist-form" class="cta-form">
-                <input type="email" id="email" name="email" placeholder="Inserisci la tua email..." required>
-                <button type="submit" class="lens-btn">Accesso Cockpit Esclusivo</button>
+            <form class="cta-form">
+                <input type="email" name="email" placeholder="Enter your email address..." required>
+                <button type="submit" class="lens-btn">Unlock the Flow</button>
             </form>
         </header>
 
-        <!-- Motore Strategie: Probabilità Gestite -->
-        <section class="strategy-engine">
-            <h3>Nessuna Previsione. Solo Probabilità Gestite.</h3>
-            <ul class="neon-list">
-                <li><span class="icon">⚡</span> Monitoraggio Block Trades Anomali</li>
-                <li><span class="icon">⌖</span> Incroci Vol Trigger & Zero Gex</li>
-                <li><span class="icon">✓</span> Gestione Dinamica del Rischio</li>
-            </ul>
+        <!-- Feature Grid (Teaser delle Funzionalità) -->
+        <section class="feature-grid">
+            <div class="feature-card">
+                <div class="blur-overlay"></div>
+                <h4>GEXPIT HEATMAP</h4>
+                <p>Decode options positioning in milliseconds.</p>
+            </div>
+            <div class="feature-card">
+                <div class="blur-overlay"></div>
+                <h4>VEX FLOW</h4>
+                <p>Anticipate SPX volatility before it moves.</p>
+            </div>
+            <div class="feature-card">
+                <div class="blur-overlay"></div>
+                <h4>DEX EXPOSURE</h4>
+                <p>Track multi-leg and block trade exposure.</p>
+            </div>
+            <div class="feature-card">
+                <div class="blur-overlay"></div>
+                <h4>EXCLUSIVE TRIGGER</h4>
+                <p>Identify high-probability setups, algorithmically decoded.</p>
+            </div>
         </section>
 
-        <!-- Sezione Legale e Copyright -->
+        <!-- Comparison Panel -->
+        <section class="comparison-panel">
+            <div class="panel-left">
+                <h5>TRADITIONAL INDICATORS</h5>
+                <ul class="muted-list">
+                    <li><span class="icon">✗</span> Lagging indicators</li>
+                    <li><span class="icon">✗</span> Partial data</li>
+                    <li><span class="icon">✗</span> Guesswork</li>
+                </ul>
+            </div>
+            <div class="panel-divider"></div>
+            <div class="panel-right">
+                <h5>GEXPIT DECODED FLOW</h5>
+                <ul class="neon-list">
+                    <li><span class="icon">✓</span> Zero-latency data</li>
+                    <li><span class="icon">✓</span> True Options depth</li>
+                    <li><span class="icon">✓</span> Definitive signals</li>
+                </ul>
+            </div>
+        </section>
+        <p class="price-footer">Priced at $50/mo. Use your Interactive Brokers data feed (no additional GEXPIT data feed costs).</p>
+
+        <!-- Bottom CTA -->
+        <section class="bottom-cta">
+            <h3>Statistical advantage begins with a shift in perspective.</h3>
+            <p>Spots for early access to the GEXPIT platform are strictly limited. Secure yours.</p>
+            <form class="cta-form">
+                <input type="email" name="email" placeholder="Enter your email address..." required>
+                <button type="submit" class="lens-btn">Unlock the Flow</button>
+            </form>
+        </section>
+
+        <!-- Legal & Copyright -->
         <footer class="legal-footer">
             <p class="disclaimer">
-                <strong>DISCLAIMER:</strong> Le informazioni, le analisi, i grafici e le elaborazioni algoritmiche hanno scopo ESCLUSIVAMENTE EDUCATIVO e INFORMATIVO. Non costituiscono in alcun modo un servizio di consulenza finanziaria. Il trading comporta un altissimo grado di rischio e può determinare la perdita dell'intero capitale. GEXPIT non si assume alcuna responsabilità per eventuali perdite derivanti dall'utilizzo delle informazioni presentate.
+                <strong>DISCLAIMER:</strong> The information, analysis, charts, and algorithmic processing are for EDUCATIONAL and INFORMATIONAL PURPOSES ONLY. They do not constitute financial advice. Trading involves a high degree of risk and may result in the loss of your entire capital. GEXPIT assumes no responsibility for any losses incurred from the use of the presented information.
             </p>
             <p class="copyright">
-                © 2026 GEXPIT™. Tutti i diritti riservati. Tutti i contenuti, le interfacce e gli algoritmi sono di proprietà esclusiva di GEXPIT e protetti dalle leggi internazionali sul diritto d'autore (L. 633/1941).
+                © 2026 GEXPIT™. All rights reserved. All content, interfaces, and algorithms are the exclusive property of GEXPIT and are protected by international copyright laws.
             </p>
         </footer>
 
     </main>
 
-    <!-- Script per la gestione futura del modulo -->
     <script src="script.js"></script>
 </body>
 </html>
