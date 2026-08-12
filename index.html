@@ -1,102 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEXPIT | 0-DTE Quant Replay & Cockpit</title>
-    <!-- Ritorno al font Poppins richiesto per uno stile più pulito -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>GEXPIT | SPX 0DTE Decoded</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
-<body oncontextmenu="return false;">
+<body>
     
-    <div class="background">
-        <img src="SFONDO PIATTAFORMA.jpg" alt="Sfondo">
+    <!-- LIVELLO 1: Sfondo Termico Statico -->
+    <div class="ambient-background">
+        <div class="glow red-glow"></div>
+        <div class="glow green-glow"></div>
     </div>
 
-    <!-- Contenitore flessibile centrale -->
-    <main class="main-content">
-        <div class="card">
-            <img src="GEXPIT UFFICIALE RETTANGOLO.jpg" alt="GEXPIT Logo" class="logo" draggable="false">
-            
-            <h1>GEXPIT 0DTE SPX platform.</h1>
-            <p class="description">Real-time GEX, VEX, DEX & Market Maker flow decoding.<br>Unfair advantage through pure data.</p>
-            
-            <div class="badge">COMING SOON</div>
-            
-            <p class="description" style="font-size: 0.85rem;">Sign up to receive official launch updates and commercial acquisition details.</p>
-            
-            <form id="waitlist-form">
-                <input type="email" id="email" placeholder="Enter your email" required>
-                <button type="submit" id="submit-btn">Notify Me</button>
-            </form>
-            <p id="response-msg" style="display:none; margin-top: 16px; font-size: 0.9rem; font-weight: 600;"></p>
+    <!-- LIVELLO 2: Sistema di Schede in Dissolvenza (Background Dinamico) -->
+    <div class="fading-background">
+        <div class="fade-slide slide-1">
+            <div class="slide-content"><h2>LIVE ORDER FLOW</h2></div>
         </div>
+        <div class="fade-slide slide-2">
+            <div class="slide-content"><h2>ZERO GEX CONVERGENCE</h2></div>
+        </div>
+        <div class="fade-slide slide-3">
+            <div class="slide-content"><h2>BLOCK TRADE DETECTION</h2></div>
+        </div>
+        <div class="fade-slide slide-4">
+            <div class="slide-content"><h2>VOLATILITY TRIGGER</h2></div>
+        </div>
+        <div class="fade-slide slide-5">
+            <div class="slide-content"><h2>INSTITUTIONAL HEDGING</h2></div>
+        </div>
+    </div>
+
+    <!-- LIVELLO 3: Cockpit Centrale (Glassmorphism UI Ricca) -->
+    <main class="glass-container">
+        
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>SPX 0DTE. Decoded.</h1>
+            <p class="subheadline">Il vantaggio competitivo basato su dati puri. Decodifica in tempo reale i flussi dei Market Maker e il Net GEX.</p>
+            
+            <form id="waitlist-form" class="cta-form">
+                <input type="email" id="email" placeholder="Inserisci la tua email..." required>
+                <button type="submit" class="lens-btn">Accesso Cockpit Esclusivo</button>
+            </form>
+        </section>
+
+        <!-- Feature Grid (Ripristinata con i dati della Live) -->
+        <section class="feature-grid">
+            <div class="glass-card feature-card">
+                <div class="card-chart-bg chart-gex"></div>
+                <h3>HEATMAP GEX PIT</h3>
+                <p>Traccia i muri di liquidità dinamici dei dealer in tempo reale.</p>
+            </div>
+            <div class="glass-card feature-card">
+                <div class="card-chart-bg chart-vex"></div>
+                <h3>FLUSSI 1-MINUTO</h3>
+                <p>Rileva sbilanciamenti di capitale istituzionale pesati al millisecondo.</p>
+            </div>
+            <div class="glass-card feature-card">
+                <div class="card-chart-bg chart-dex"></div>
+                <h3>TOTAL DEX EXPOSURE</h3>
+                <p>Ottieni il bias operativo monitorando il posizionamento direzionale netto.</p>
+            </div>
+            <div class="glass-card feature-card">
+                <div class="card-chart-bg chart-trigger"></div>
+                <h3>0DTE VOLUME PROFILE</h3>
+                <p>Identifica la concentrazione di scambi istituzionali e i breakout.</p>
+            </div>
+        </section>
+
+        <!-- Comparison Panel (Ripristinato) -->
+        <section class="comparison-panel">
+            <div class="glass-card panel-left">
+                <h4 class="muted">INDICATORI TRADIZIONALALI</h4>
+                <ul class="comparison-list muted-list">
+                    <li><span class="icon">◷</span> Dati in ritardo (Lagging)</li>
+                    <li><span class="icon">▤</span> Volumi speculativi ciechi</li>
+                    <li><span class="icon">?</span> Previsioni e supposizioni</li>
+                </ul>
+            </div>
+            <div class="glass-card panel-right">
+                <h4 class="neon">MOTORE GEXPIT</h4>
+                <ul class="comparison-list neon-list">
+                    <li><span class="icon">⚡</span> Zero-latenza sui Market Maker</li>
+                    <li><span class="icon">⌖</span> Incroci Vol Trigger & Zero Gex</li>
+                    <li><span class="icon">✓</span> Probabilità statistiche gestite</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- Footer Legale -->
+        <footer class="legal-footer">
+            <p><strong>DISCLAIMER:</strong> Analisi a scopo ESCLUSIVAMENTE EDUCATIVO. Non costituiscono consulenza finanziaria. Il trading comporta rischio di perdita del capitale.</p>
+            <p>© 2026 GEXPIT™. Tutti i diritti riservati (L. 633/1941).</p>
+        </footer>
+
     </main>
 
-    <!-- Footer confinato al fondo della pagina -->
-    <footer>
-        © 2026 GEXPIT™. Tutti i diritti riservati.<br>
-        Tutti i contenuti, le interfacce, gli algoritmi e le grafiche mostrati in questo sito sono di proprietà esclusiva di GEXPIT e protetti dalle leggi internazionali sul diritto d'autore e sulla proprietà intellettuale (L. 633/1941). È severamente vietata la riproduzione, la ridistribuzione o l'utilizzo commerciale non autorizzato.
-    </footer>
-
-    <script>
-        const form = document.getElementById('waitlist-form');
-        const submitBtn = document.getElementById('submit-btn');
-        const responseMsg = document.getElementById('response-msg');
-        
-        // Uso l'URL nativo di Cloudflare per bypassare eventuali problemi di DNS o di zona!
-        const workerURL = 'https://gexpit-api.pitball85.workers.dev';
-        
-        const SECRET_TOKEN = 'ARCfrpf_piSICUREZZA';
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Sending...';
-            responseMsg.style.display = 'none';
-
-            const emailInput = document.getElementById('email').value;
-
-            try {
-                const response = await fetch(workerURL, { 
-                    method: 'POST', 
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Secret-Token': SECRET_TOKEN
-                    },
-                    body: JSON.stringify({ email: emailInput })
-                });
-
-                if (response.ok) {
-                    responseMsg.style.display = 'block';
-                    responseMsg.style.color = '#00ff88';
-                    responseMsg.innerText = '✓ Email successfully registered. Thank you.';
-                    form.reset();
-                } else if (response.status === 401) {
-                    throw new Error('Configurazione Cloudflare errata: SECRET_TOKEN mancante o sbagliato.');
-                } else if (response.status === 400) {
-                    throw new Error('Errore Google Apps Script o formato email rifiutato.');
-                } else {
-                    throw new Error('Errore sconosciuto dal server: ' + response.status);
-                }
-            } catch (error) {
-                responseMsg.style.display = 'block';
-                responseMsg.style.color = '#ff4d4d';
-                
-                // Se è un vero e proprio errore di rete (es. CORS fallito, dominio inesistente)
-                if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-                    responseMsg.innerText = '⚠ Connessione bloccata da Cloudflare (Network Error).';
-                } else {
-                    // Mostra l'errore specifico (es. 401, 400)
-                    responseMsg.innerText = '⚠ ' + error.message;
-                }
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Notify Me';
-            }
-        });
-    </script>
 </body>
 </html>
