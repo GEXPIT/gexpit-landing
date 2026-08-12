@@ -1,5 +1,5 @@
 /* ==========================================================================
-   GEXPIT - STILE GLOBALE E VARIABILI (Aggiornato)
+   GEXPIT - STILE GLOBALE E VARIABILI
    ========================================================================== */
 :root {
     /* Palette Colori Istituzionale */
@@ -15,7 +15,7 @@
     --glass-blur: blur(28px) saturate(180%);
 }
 
-/* Reset Matematico Base */
+/* Reset base per calcolo geometrico pulito */
 * {
     margin: 0;
     padding: 0;
@@ -30,13 +30,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40px 20px;
+    padding: 24px;
     overflow-x: hidden;
     position: relative;
 }
 
 /* ==========================================================================
-   LIVELLO 1: SFONDO TERMICO STATICO
+   LIVELLO 1: SFONDO TERMICO (Glow Ambientale)
    ========================================================================== */
 .ambient-background {
     position: fixed;
@@ -56,7 +56,7 @@ body {
 }
 
 .red-glow {
-    top: -10%;
+    top: -15%;
     right: 5%;
     width: 600px;
     height: 600px;
@@ -64,8 +64,8 @@ body {
 }
 
 .green-glow {
-    bottom: -15%;
-    left: -5%;
+    bottom: -20%;
+    left: -10%;
     width: 700px;
     height: 700px;
     background: var(--emerald-glow);
@@ -73,7 +73,7 @@ body {
 }
 
 /* ==========================================================================
-   LIVELLO 2: MOTORE DI DISSOLVENZA (Fading Background)
+   LIVELLO 2: SISTEMA DI SCHEDE IN DISSOLVENZA (Motore di Animazione)
    ========================================================================== */
 .fading-background {
     position: fixed;
@@ -85,19 +85,20 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    pointer-events: none;
+    pointer-events: none; /* Impedisce interazioni accidentali con lo sfondo */
 }
 
 .fade-slide {
     position: absolute;
     width: 100%;
+    max-width: 1200px;
     text-align: center;
     opacity: 0;
-    /* Ciclo totale 25s (5s per scheda) */
+    /* Formula: 5 slide * 5 secondi = 25s totali */
     animation: fadeCycle 25s infinite ease-in-out; 
 }
 
-/* Temporizzazione Algoritmica */
+/* Calcolo delay sfalsato per transizione continua */
 .slide-1 { animation-delay: 0s; }
 .slide-2 { animation-delay: 5s; }
 .slide-3 { animation-delay: 10s; }
@@ -105,50 +106,64 @@ body {
 .slide-5 { animation-delay: 20s; }
 
 .slide-content h2 {
-    font-size: 8vw; 
+    font-size: 5vw; /* Tipografia reattiva */
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.08); 
+    color: rgba(255, 255, 255, 0.15); /* Testo semi-trasparente */
     letter-spacing: -2px;
-    filter: blur(4px); 
-    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    filter: blur(2px); /* Effetto profondità di campo */
 }
 
-/* Keyframe Dissolvenza (100% / 5 elementi = 20% visibilità attiva) */
+.slide-content p {
+    font-size: 24px;
+    color: rgba(148, 163, 184, 0.3);
+    max-width: 600px;
+    margin: 0 auto;
+    filter: blur(1px);
+}
+
+/* 
+   Logica Keyframe per 5 elementi (100% / 5 = 20% di visibilità per elemento) 
+   0-4%: entrata | 4-16%: visibile | 16-20%: uscita | 20-100%: nascosto
+*/
 @keyframes fadeCycle {
-    0% { opacity: 0; transform: scale(0.95); }
-    4% { opacity: 1; transform: scale(1); }
-    16% { opacity: 1; transform: scale(1.02); }
-    20% { opacity: 0; transform: scale(1.05); }
+    0% { opacity: 0; transform: scale(0.95) translateY(20px); }
+    4% { opacity: 1; transform: scale(1) translateY(0); }
+    16% { opacity: 1; transform: scale(1.02) translateY(-10px); }
+    20% { opacity: 0; transform: scale(1.05) translateY(-20px); }
     100% { opacity: 0; }
 }
 
 /* ==========================================================================
-   LIVELLO 3: COCKPIT CENTRALE (Glassmorphism & Griglia UI)
+   LIVELLO 3: COCKPIT CENTRALE (UI Principale)
    ========================================================================== */
 .glass-container {
     width: 100%;
-    max-width: 900px; /* Allargato per ospitare la griglia a 4 colonne */
+    max-width: 800px;
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border: var(--glass-border);
     border-radius: 16px;
-    padding: 48px;
-    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+    padding: 56px 48px;
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
     z-index: 1;
     position: relative;
 }
 
-/* Sezione Hero */
+/* Hero Section */
 .hero {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 48px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 48px;
 }
 
 .hero h1 {
     font-size: 28px;
     font-weight: 600;
-    line-height: 1.4;
+    line-height: 1.3;
     margin-bottom: 16px;
     letter-spacing: -0.5px;
 }
@@ -156,35 +171,36 @@ body {
 .hero .subheadline {
     color: var(--text-muted);
     font-size: 15px;
-    margin-bottom: 32px;
+    margin-bottom: 40px;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
 }
 
-/* Modulo e Pulsante */
+/* Modulo di Inserimento (Waitlist) */
 .cta-form {
     display: flex;
     justify-content: center;
     gap: 12px;
-    max-width: 480px;
+    max-width: 500px;
     margin: 0 auto;
 }
 
 .cta-form input {
     flex: 1;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 8px;
-    padding: 12px 16px;
+    padding: 14px 20px;
     color: var(--text-white);
-    font-size: 14px;
+    font-size: 15px;
     outline: none;
-    transition: border 0.2s ease;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
 }
 
 .cta-form input:focus {
-    border-color: rgba(0, 245, 160, 0.4);
+    border-color: rgba(0, 245, 160, 0.5);
+    box-shadow: inset 0 0 8px rgba(0, 245, 160, 0.1);
 }
 
 .lens-btn {
@@ -192,8 +208,8 @@ body {
     border: 1px solid var(--emerald-glow);
     border-radius: 8px;
     color: var(--text-white);
-    padding: 12px 24px;
-    font-size: 14px;
+    padding: 14px 28px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     box-shadow: 0 0 18px rgba(0, 245, 160, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.1);
@@ -202,105 +218,56 @@ body {
 }
 
 .lens-btn:hover {
-    box-shadow: 0 0 24px rgba(0, 245, 160, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 28px rgba(0, 245, 160, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.2);
     transform: translateY(-1px);
 }
 
-/* ==========================================================================
-   FEATURE GRID (Le 4 Tab Operative)
-   ========================================================================== */
-.feature-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 32px;
+/* Motore Strategie (Caratteristiche) */
+.strategy-engine {
+    text-align: center;
+    margin-bottom: 48px;
 }
 
-.glass-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: var(--glass-border);
-    border-radius: 12px;
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-}
-
-.feature-card h3 {
-    font-size: 12px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    letter-spacing: 0.5px;
-    position: relative;
-    z-index: 2;
-}
-
-.feature-card p {
-    font-size: 11px;
+.strategy-engine h3 {
+    font-size: 14px;
     color: var(--text-muted);
-    line-height: 1.5;
-    position: relative;
-    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
 }
 
-/* Micro-Grafici Sfocati nelle Tab */
-.card-chart-bg {
-    position: absolute;
-    top: 20%;
-    left: 20%;
-    width: 60%;
-    height: 60%;
-    border-radius: 4px;
-    filter: blur(14px);
-    opacity: 0.25;
-    z-index: 1;
-}
-.chart-gex { background: var(--red-glow); }
-.chart-vex { background: #4A90E2; }
-.chart-dex { background: #F5A623; }
-.chart-trigger { background: var(--emerald-glow); }
-
-/* ==========================================================================
-   PANNELLO DI COMPARAZIONE (Dati Tradizionali vs GEXPIT)
-   ========================================================================== */
-.comparison-panel {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 40px;
-}
-
-.panel-left h4, .panel-right h4 {
-    font-size: 11px;
-    margin-bottom: 16px;
-    letter-spacing: 0.5px;
-}
-
-.panel-left h4 { color: var(--text-muted); }
-.panel-right h4 { color: var(--emerald-glow); }
-
-.comparison-list {
+.neon-list {
     list-style: none;
-    font-size: 13px;
-    line-height: 2.2;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-size: 15px;
+    color: var(--text-white);
+    align-items: center;
 }
 
-.comparison-list li {
+.neon-list li {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 12px 24px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    width: 100%;
+    max-width: 400px;
+    justify-content: flex-start;
 }
 
-.muted-list { color: var(--text-muted); }
-.muted-list .icon { color: #F87171; font-weight: bold; }
+.neon-list .icon {
+    color: var(--emerald-glow);
+    font-weight: bold;
+    font-size: 18px;
+}
 
-.neon-list { color: var(--text-white); }
-.neon-list .icon { color: var(--emerald-glow); font-weight: bold; }
-
-/* ==========================================================================
-   FOOTER LEGALE
-   ========================================================================== */
+/* Footer Legale */
 .legal-footer {
-    text-align: center;
+    text-align: justify;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     padding-top: 24px;
 }
@@ -309,7 +276,7 @@ body {
     font-size: 10px;
     color: #64748B;
     line-height: 1.6;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 .legal-footer strong {
@@ -317,28 +284,27 @@ body {
 }
 
 /* ==========================================================================
-   BREAKPOINTS (Responsive Design)
+   REGOLE DI RESPONSIVITÀ (Dispositivi Mobili)
    ========================================================================== */
-@media (max-width: 768px) {
-    .feature-grid {
-        grid-template-columns: 1fr 1fr; /* 2 colonne su tablet */
-    }
-    .comparison-panel {
-        grid-template-columns: 1fr; /* Singola colonna su mobile */
-    }
+@media (max-width: 600px) {
     .cta-form {
         flex-direction: column;
     }
+    
     .glass-container {
         padding: 32px 24px;
     }
-}
-
-@media (max-width: 480px) {
-    .feature-grid {
-        grid-template-columns: 1fr; /* 1 colonna su smartphone */
-    }
+    
     .hero h1 {
-        font-size: 24px;
+        font-size: 22px;
+    }
+
+    .slide-content h2 {
+        font-size: 28px;
+    }
+
+    .slide-content p {
+        font-size: 16px;
+        padding: 0 16px;
     }
 }

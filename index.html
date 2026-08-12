@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEXPIT | SPX 0DTE Decoded</title>
+    <!-- Collegamento al file CSS che creeremo nel passaggio successivo -->
     <link rel="stylesheet" href="style.css">
+    <!-- Font istituzionale -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -17,88 +19,80 @@
 
     <!-- LIVELLO 2: Sistema di Schede in Dissolvenza (Background Dinamico) -->
     <div class="fading-background">
+        <!-- Scheda 1 -->
         <div class="fade-slide slide-1">
-            <div class="slide-content"><h2>LIVE ORDER FLOW</h2></div>
+            <div class="slide-content">
+                <h2>HEATMAP GEX PIT</h2>
+                <p>Traccia i muri di liquidità dinamici dei dealer in tempo reale.</p>
+            </div>
         </div>
+        <!-- Scheda 2 -->
         <div class="fade-slide slide-2">
-            <div class="slide-content"><h2>ZERO GEX CONVERGENCE</h2></div>
+            <div class="slide-content">
+                <h2>FLUSSI 1-MINUTO</h2>
+                <p>Rileva anomalie e sbilanciamenti di capitale istituzionale al millisecondo.</p>
+            </div>
         </div>
+        <!-- Scheda 3 -->
         <div class="fade-slide slide-3">
-            <div class="slide-content"><h2>BLOCK TRADE DETECTION</h2></div>
+            <div class="slide-content">
+                <h2>TOTAL DEX EXPOSURE</h2>
+                <p>Ottieni il bias operativo di fondo monitorando il posizionamento direzionale netto.</p>
+            </div>
         </div>
+        <!-- Scheda 4 -->
         <div class="fade-slide slide-4">
-            <div class="slide-content"><h2>VOLATILITY TRIGGER</h2></div>
+            <div class="slide-content">
+                <h2>0DTE VOLUME PROFILE</h2>
+                <p>Identifica la reale concentrazione di scambi istituzionali.</p>
+            </div>
         </div>
+        <!-- Scheda 5 -->
         <div class="fade-slide slide-5">
-            <div class="slide-content"><h2>INSTITUTIONAL HEDGING</h2></div>
+            <div class="slide-content">
+                <h2>NET GEX HISTOGRAM</h2>
+                <p>Mappa l'obbligo di copertura (hedging) dei Market Maker.</p>
+            </div>
         </div>
     </div>
 
-    <!-- LIVELLO 3: Cockpit Centrale (Glassmorphism UI Ricca) -->
+    <!-- LIVELLO 3: Cockpit Centrale (Glassmorphism UI) -->
     <main class="glass-container">
         
-        <!-- Hero Section -->
-        <section class="hero">
+        <!-- Intestazione e Modulo -->
+        <header class="hero">
             <h1>SPX 0DTE. Decoded.</h1>
-            <p class="subheadline">Il vantaggio competitivo basato su dati puri. Decodifica in tempo reale i flussi dei Market Maker e il Net GEX.</p>
+            <p class="subheadline">Il vantaggio competitivo basato su dati puri. Decodifica in tempo reale i flussi dei Market Maker.</p>
             
             <form id="waitlist-form" class="cta-form">
-                <input type="email" id="email" placeholder="Inserisci la tua email..." required>
+                <input type="email" id="email" name="email" placeholder="Inserisci la tua email..." required>
                 <button type="submit" class="lens-btn">Accesso Cockpit Esclusivo</button>
             </form>
+        </header>
+
+        <!-- Motore Strategie: Probabilità Gestite -->
+        <section class="strategy-engine">
+            <h3>Nessuna Previsione. Solo Probabilità Gestite.</h3>
+            <ul class="neon-list">
+                <li><span class="icon">⚡</span> Monitoraggio Block Trades Anomali</li>
+                <li><span class="icon">⌖</span> Incroci Vol Trigger & Zero Gex</li>
+                <li><span class="icon">✓</span> Gestione Dinamica del Rischio</li>
+            </ul>
         </section>
 
-        <!-- Feature Grid (Ripristinata con i dati della Live) -->
-        <section class="feature-grid">
-            <div class="glass-card feature-card">
-                <div class="card-chart-bg chart-gex"></div>
-                <h3>HEATMAP GEX PIT</h3>
-                <p>Traccia i muri di liquidità dinamici dei dealer in tempo reale.</p>
-            </div>
-            <div class="glass-card feature-card">
-                <div class="card-chart-bg chart-vex"></div>
-                <h3>FLUSSI 1-MINUTO</h3>
-                <p>Rileva sbilanciamenti di capitale istituzionale pesati al millisecondo.</p>
-            </div>
-            <div class="glass-card feature-card">
-                <div class="card-chart-bg chart-dex"></div>
-                <h3>TOTAL DEX EXPOSURE</h3>
-                <p>Ottieni il bias operativo monitorando il posizionamento direzionale netto.</p>
-            </div>
-            <div class="glass-card feature-card">
-                <div class="card-chart-bg chart-trigger"></div>
-                <h3>0DTE VOLUME PROFILE</h3>
-                <p>Identifica la concentrazione di scambi istituzionali e i breakout.</p>
-            </div>
-        </section>
-
-        <!-- Comparison Panel (Ripristinato) -->
-        <section class="comparison-panel">
-            <div class="glass-card panel-left">
-                <h4 class="muted">INDICATORI TRADIZIONALALI</h4>
-                <ul class="comparison-list muted-list">
-                    <li><span class="icon">◷</span> Dati in ritardo (Lagging)</li>
-                    <li><span class="icon">▤</span> Volumi speculativi ciechi</li>
-                    <li><span class="icon">?</span> Previsioni e supposizioni</li>
-                </ul>
-            </div>
-            <div class="glass-card panel-right">
-                <h4 class="neon">MOTORE GEXPIT</h4>
-                <ul class="comparison-list neon-list">
-                    <li><span class="icon">⚡</span> Zero-latenza sui Market Maker</li>
-                    <li><span class="icon">⌖</span> Incroci Vol Trigger & Zero Gex</li>
-                    <li><span class="icon">✓</span> Probabilità statistiche gestite</li>
-                </ul>
-            </div>
-        </section>
-        
-        <!-- Footer Legale -->
+        <!-- Sezione Legale e Copyright -->
         <footer class="legal-footer">
-            <p><strong>DISCLAIMER:</strong> Analisi a scopo ESCLUSIVAMENTE EDUCATIVO. Non costituiscono consulenza finanziaria. Il trading comporta rischio di perdita del capitale.</p>
-            <p>© 2026 GEXPIT™. Tutti i diritti riservati (L. 633/1941).</p>
+            <p class="disclaimer">
+                <strong>DISCLAIMER:</strong> Le informazioni, le analisi, i grafici e le elaborazioni algoritmiche hanno scopo ESCLUSIVAMENTE EDUCATIVO e INFORMATIVO. Non costituiscono in alcun modo un servizio di consulenza finanziaria. Il trading comporta un altissimo grado di rischio e può determinare la perdita dell'intero capitale. GEXPIT non si assume alcuna responsabilità per eventuali perdite derivanti dall'utilizzo delle informazioni presentate.
+            </p>
+            <p class="copyright">
+                © 2026 GEXPIT™. Tutti i diritti riservati. Tutti i contenuti, le interfacce e gli algoritmi sono di proprietà esclusiva di GEXPIT e protetti dalle leggi internazionali sul diritto d'autore (L. 633/1941).
+            </p>
         </footer>
 
     </main>
 
+    <!-- Script per la gestione futura del modulo -->
+    <script src="script.js"></script>
 </body>
 </html>
