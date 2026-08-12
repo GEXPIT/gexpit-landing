@@ -1,1 +1,0 @@
-Copyright (c) 2026 GEXPIT. All rights reserved. You are not granted any rights to use, modify, distribute, or reproduce the code, assets, or algorithms contained in this repository.
