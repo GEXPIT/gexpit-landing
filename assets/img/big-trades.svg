@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d111a"/>
+      <stop offset="100%" stop-color="#080b10"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="340" fill="url(#bgGrad4)" rx="8"/>
+  <!-- Table Header -->
+  <g font-family="monospace" font-size="10" font-weight="bold" fill="#64748b">
+    <text x="30" y="35">TIME</text>
+    <text x="120" y="35">EXP/STRIKE</text>
+    <text x="250" y="35">TYPE</text>
+    <text x="340" y="35">SIZE</text>
+    <text x="430" y="35">PREMIUM</text>
+    <text x="520" y="35">ACTION</text>
+  </g>
+  <line x1="20" y1="45" x2="580" y2="45" stroke="rgba(255,255,255,0.08)"/>
+  
+  <!-- Row 1 -->
+  <g font-family="monospace" font-size="11" fill="#e2e8f0">
+    <text x="30" y="80">15:42:08</text>
+    <text x="120" y="80">0DTE 6010 C</text>
+    <text x="250" y="80" fill="#00ff88" font-weight="bold">SWEEP</text>
+    <text x="340" y="80">2,450</text>
+    <text x="430" y="80">$3.82M</text>
+    <text x="520" y="80" fill="#00ff88">ASK HIT</text>
+  </g>
+  <!-- Row 2 -->
+  <g font-family="monospace" font-size="11" fill="#e2e8f0">
+    <text x="30" y="125">15:41:44</text>
+    <text x="120" y="125">0DTE 6000 P</text>
+    <text x="250" y="125" fill="#ff4d4d" font-weight="bold">BLOCK</text>
+    <text x="340" y="125">5,000</text>
+    <text x="430" y="125">$7.15M</text>
+    <text x="520" y="125" fill="#ff4d4d">BID HIT</text>
+  </g>
+  <!-- Row 3 -->
+  <g font-family="monospace" font-size="11" fill="#e2e8f0">
+    <text x="30" y="170">15:39:12</text>
+    <text x="120" y="170">0DTE 6020 C</text>
+    <text x="250" y="170" fill="#00ff88" font-weight="bold">SPLIT</text>
+    <text x="340" y="170">1,800</text>
+    <text x="430" y="170">$2.10M</text>
+    <text x="520" y="170" fill="#00ff88">ABOVE ASK</text>
+  </g>
+  <!-- Row 4 -->
+  <g font-family="monospace" font-size="11" fill="#e2e8f0">
+    <text x="30" y="215">15:36:58</text>
+    <text x="120" y="215">0DTE 5990 P</text>
+    <text x="250" y="215" fill="#00d4ff" font-weight="bold">CROSS</text>
+    <text x="340" y="215">3,200</text>
+    <text x="430" y="215">$4.48M</text>
+    <text x="520" y="215" fill="#ffd700">MIDPOINT</text>
+  </g>
+  <!-- Row 5 -->
+  <g font-family="monospace" font-size="11" fill="#e2e8f0">
+    <text x="30" y="260">15:35:02</text>
+    <text x="120" y="260">0DTE 6005 C</text>
+    <text x="250" y="260" fill="#00ff88" font-weight="bold">SWEEP</text>
+    <text x="340" y="260">4,100</text>
+    <text x="430" y="260">$5.90M</text>
+    <text x="520" y="260" fill="#00ff88">ASK HIT</text>
+  </g>
+  
+  <rect x="20" y="295" width="560" height="30" fill="rgba(0,212,255,0.06)" rx="4"/>
+  <text x="35" y="315" font-family="monospace" font-size="10" font-weight="bold" fill="#00d4ff">LIVE FILTER: MIN NOTIONAL &gt; $1.00M • 0DTE STRICT ONLY</text>
+</svg>

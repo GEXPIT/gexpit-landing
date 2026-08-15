@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d111a"/>
+      <stop offset="100%" stop-color="#080b10"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="340" fill="url(#bgGrad2)" rx="8"/>
+  <!-- Baseline -->
+  <line x1="50" y1="170" x2="570" y2="170" stroke="rgba(255,255,255,0.15)" stroke-dasharray="4,4"/>
+  <text x="15" y="174" font-family="monospace" font-size="10" fill="#64748b">0 Δ</text>
+  <!-- Delta Bars -->
+  <g fill="rgba(0,255,136,0.65)">
+    <rect x="70" y="140" width="16" height="30" rx="2"/>
+    <rect x="95" y="125" width="16" height="45" rx="2"/>
+    <rect x="120" y="110" width="16" height="60" rx="2"/>
+    <rect x="195" y="130" width="16" height="40" rx="2"/>
+    <rect x="220" y="105" width="16" height="65" rx="2"/>
+    <rect x="345" y="90" width="16" height="80" rx="2"/>
+    <rect x="370" y="80" width="16" height="90" rx="2"/>
+    <rect x="395" y="70" width="16" height="100" rx="2"/>
+    <rect x="470" y="60" width="16" height="110" rx="2"/>
+    <rect x="495" y="50" width="16" height="120" rx="2"/>
+    <rect x="520" y="45" width="16" height="125" rx="2"/>
+  </g>
+  <g fill="rgba(255,77,77,0.65)">
+    <rect x="145" y="170" width="16" height="35" rx="2"/>
+    <rect x="170" y="170" width="16" height="50" rx="2"/>
+    <rect x="245" y="170" width="16" height="40" rx="2"/>
+    <rect x="270" y="170" width="16" height="75" rx="2"/>
+    <rect x="295" y="170" width="16" height="60" rx="2"/>
+    <rect x="320" y="170" width="16" height="25" rx="2"/>
+    <rect x="420" y="170" width="16" height="45" rx="2"/>
+    <rect x="445" y="170" width="16" height="30" rx="2"/>
+  </g>
+  <!-- Cumulative Net Flow Curve -->
+  <path d="M 60 190 Q 130 140, 200 130 T 300 180 T 400 90 T 540 40" fill="none" stroke="#00ff88" stroke-width="2.5" filter="drop-shadow(0 0 8px rgba(0,255,136,0.6))"/>
+  <circle cx="540" cy="40" r="4" fill="#00ff88"/>
+  <text x="360" y="30" font-family="monospace" font-size="11" font-weight="bold" fill="#00ff88">NET CUMULATIVE DELTA: +$4.82B</text>
+</svg>
