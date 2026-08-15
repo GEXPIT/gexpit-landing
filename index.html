@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="GEXPIT delivers zero lag institutional 0DTE options flow, proprietary real time gamma exposure analytics, and deterministic dealer hedging metrics.">
+    <meta name="theme-color" content="#080b10">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self'; connect-src 'self' https:;">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>GEXPIT - Institutional 0DTE Options Flow</title>
+
+    <!-- Brand Favicon Set (generated from the official GEXPIT logo, background
+         removed, trimmed and compressed — see AI_INSTRUCTIONS.md Section 2) -->
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
+    <link rel="shortcut icon" href="assets/img/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+
+    <!-- Social Share Preview (Open Graph / Twitter Card) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="GEXPIT - Institutional 0DTE Options Flow">
+    <meta property="og:description" content="GEXPIT delivers zero lag institutional 0DTE options flow, proprietary real time gamma exposure analytics, and deterministic dealer hedging metrics.">
+    <meta property="og:image" content="assets/img/gexpit-og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="assets/img/gexpit-og-image.jpg">
+
+    <!-- Design System & Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+<body>
+
+    <!-- Noscript Resilience Banner (BUG-02) -->
+    <noscript>
+        <div class="noscript-banner" role="alert" style="background:#dc2626;color:#ffffff;text-align:center;padding:12px;font-family:monospace;font-size:14px;font-weight:bold;z-index:9999;position:relative;">
+            ⚠️ JAVASCRIPT REQUIRED: Please enable JavaScript in your browser to access the GEXPIT quantitative cockpit and access forms.
+        </div>
+    </noscript>
+    <!-- SEZIONE 1: TOP NAVIGATION & STATUS BAR     -->
+    <!-- ========================================== -->
+    <header class="header" id="header">
+        <div class="nav-container">
+            <div class="brand-group">
+                <a href="#hero" class="brand-logo" aria-label="GEXPIT Homepage">
+                    <img src="assets/img/gexpit-logo-header.webp" alt="GEXPIT" width="175" height="32" class="brand-logo-img">
+                </a>
+                <div class="status-badge" role="status" aria-live="polite">
+                    <span class="status-dot"></span>
+                    <span class="status-text">SYSTEM: 0DTE LIVE ENGINE ACTIVE</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu" id="nav-menu" aria-label="Main Navigation">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#specs" class="nav-link">Specs</a></li>
+                    <li class="nav-item"><a href="#features" class="nav-link">Features</a></li>
+                    <li class="nav-item"><a href="#showcase" class="nav-link">Showcase</a></li>
+                    <li class="nav-item"><a href="#comparison" class="nav-link">Comparison</a></li>
+                    <li class="nav-item"><a href="#pricing" class="nav-link">Pricing</a></li>
+                    <li class="nav-item"><a href="#faq" class="nav-link">FAQ</a></li>
+                </ul>
+                <!-- Duplicate of the header's Request Access button, visible
+                     only inside the mobile drawer (see style.css) — the
+                     header version is hidden below 768px because it does
+                     not fit next to the logo + hamburger on real phone
+                     widths (measured overflow on 360-410px screens). -->
+                <a href="#hero-form" class="btn btn-primary nav-menu-cta">Request Access</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="#hero-form" class="btn btn-header">Request Access</a>
+                <!-- Mobile Navigation Toggle: nav-menu has no other way to
+                     reach it below the 768px breakpoint, this is the fix. -->
+                <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation menu">
+                    <span class="nav-toggle-bar"></span>
+                    <span class="nav-toggle-bar"></span>
+                    <span class="nav-toggle-bar"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- SEZIONE 2: HERO COCKPIT                    -->
+    <!-- ========================================== -->
+    <section id="hero" class="hero-section">
+        <!-- Ambient Decorative Typography (Background Layer) -->
+        <div class="hero-ambient-text hero-ambient-top" aria-hidden="true">INSTITUTIONAL ORDER FLOW</div>
+        <div class="hero-ambient-text hero-ambient-bottom" aria-hidden="true">DELTA NEUTRAL LIQUIDITY MATRIX</div>
+
+        <!-- Central Glassmorphism Cockpit Container -->
+        <div class="hero-wrapper">
+            <div class="glass-container hero-cockpit">
+                <div class="cockpit-header">
+                    <span class="cockpit-badge">ZERO LAG QUANTITATIVE ARCHITECTURE</span>
+                    <span class="cockpit-metric">LATENCY: &lt; 120μs</span>
+                </div>
+
+                <h1 class="hero-title">INSTITUTIONAL ZERO LAG 0DTE OPTIONS FLOW</h1>
+
+                <p class="hero-subtitle">
+                    Sub millisecond tick level gamma metrics, deterministic market maker hedging models, and institutional grade 0DTE liquidity analytics designed for high frequency execution.
+                </p>
+
+                <!-- Access Request Form with Anti-Bot Honeypot -->
+                <form id="hero-form" class="hero-access-form" action="#" method="POST" novalidate>
+                    <!-- Invisible Honeypot Trap Field (Hardened against browser autofill) -->
+                    <div class="hp-trap" aria-hidden="true">
+                        <label for="institutional_verification_code">Leave blank</label>
+                        <input type="text" id="institutional_verification_code" name="institutional_verification_code" tabindex="-1" autocomplete="new-password" aria-hidden="true">
+                    </div>
+
+                    <div class="form-controls">
+                        <div class="input-wrapper">
+                            <input 
+                                type="email" 
+                                id="institutional-email" 
+                                name="email" 
+                                class="form-input" 
+                                placeholder="Enter institutional email address" 
+                                required 
+                                autocomplete="email"
+                                spellcheck="false"
+                            >
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <span>Request Access</span>
+                        </button>
+                    </div>
+
+                    <div class="form-meta">
+                        <span class="meta-item">Tier 1 Institutional Verification</span>
+                        <span class="meta-separator">•</span>
+                        <span class="meta-item">Instant Sandbox Feed Upon Approval</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SEZIONE 3: SPECS TICKER                    -->
+    <!-- ========================================== -->
+    <section id="specs" class="specs-section">
+        <div class="specs-ticker">
+            <div class="spec-block">
+                <div class="spec-value">1 SEC WAL STREAM</div>
+                <div class="spec-label">Tick level ingestion</div>
+            </div>
+            <div class="spec-block">
+                <div class="spec-value">NUMPY NATIVE</div>
+                <div class="spec-label">Vectorized derivatives</div>
+            </div>
+            <div class="spec-block">
+                <div class="spec-value">ZERO ALLOCATION</div>
+                <div class="spec-label">Constant latency GUI</div>
+            </div>
+            <div class="spec-block">
+                <div class="spec-value">PARQUET FUSION</div>
+                <div class="spec-label">Uint64 native hash</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SEZIONE 4: FEATURES GRID                   -->
+    <!-- ========================================== -->
+    <section id="features" class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">INSTITUTIONAL ARCHITECTURE</h2>
+        </div>
+        <div class="features-grid">
+            <article class="glass-card">
+                <div class="card-header">
+                    <h3 class="card-title">GEXPIT HEATMAP</h3>
+                </div>
+                <ul class="card-list">
+                    <li>Gaussian Base &amp; Glow</li>
+                    <li>70th Percentile Isocurves</li>
+                </ul>
+                <img loading="lazy" src="assets/img/heatmap-3layer.webp" alt="GEXPIT 3 Layer Gaussian Heatmap and Isocurves" class="card-media">
+            </article>
+
+            <article class="glass-card">
+                <div class="card-header">
+                    <h3 class="card-title">MONETARY CVD</h3>
+                </div>
+                <ul class="card-list">
+                    <li>Real Notional Tracking</li>
+                    <li>Institutional Absorption</li>
+                </ul>
+                <img loading="lazy" src="assets/img/cvd-flow.webp" alt="Real Notional Monetary CVD Flow" class="card-media">
+            </article>
+
+            <article class="glass-card">
+                <div class="card-header">
+                    <h3 class="card-title">GREEKS ENGINE</h3>
+                </div>
+                <ul class="card-list">
+                    <li>Zero Gamma Crossing</li>
+                    <li>Max Call Put Walls</li>
+                </ul>
+                <img loading="lazy" src="assets/img/gexpit-levels.webp" alt="Real Time Greeks Engine and Zero Gamma Levels" class="card-media">
+            </article>
+
+            <article class="glass-card">
+                <div class="card-header">
+                    <h3 class="card-title">BIG TRADES</h3>
+                </div>
+                <ul class="card-list">
+                    <li>Size Threshold Filtering</li>
+                    <li>Block Trade Isolation</li>
+                </ul>
+                <img loading="lazy" src="assets/img/big-trades.webp" alt="Institutional Big Trades and Block Orders Detection" class="card-media">
+            </article>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SEZIONE 5: SHOWCASE TERMINAL               -->
+    <!-- ========================================== -->
+    <section id="showcase" class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">HIGH THROUGHPUT EXECUTION</h2>
+        </div>
+        <div class="terminal-container">
+            <div class="terminal-bar">
+                <div class="terminal-controls">
+                    <span class="terminal-dot dot-close"></span>
+                    <span class="terminal-dot dot-minimize"></span>
+                    <span class="terminal-dot dot-expand"></span>
+                </div>
+                <div class="terminal-title">gexpit_replay_engine --spx-0dte-stream</div>
+                <div class="terminal-status">ZERO LOSS 60FPS</div>
+            </div>
+            <div class="terminal-body">
+                <video 
+                    class="terminal-video"
+                    autoplay 
+                    loop 
+                    muted 
+                    playsinline 
+                    preload="metadata"
+                >
+                    <source src="assets/video/replay-engine.webm" type="video/webm">
+                    <source src="assets/video/replay-engine.mp4" type="video/mp4">
+                    Your browser does not support high performance HTML5 video replay.
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SEZIONE 6: COMPARISON MATRIX               -->
+    <!-- ========================================== -->
+    <section id="comparison" class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">TRADITIONAL VS INSTITUTIONAL</h2>
+        </div>
+        <div class="comparison-table-wrapper">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Analytical Metric</th>
+                        <th scope="col">Retail Data Feed</th>
+                        <th scope="col" class="col-gexpit">GEXPIT Engine</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="metric-name">Execution Speed</td>
+                        <td class="metric-retail">1 to 5 seconds jitter</td>
+                        <td class="metric-gexpit">Zero lag tick by tick</td>
+                    </tr>
+                    <tr>
+                        <td class="metric-name">Volume Flow</td>
+                        <td class="metric-retail">Raw unparsed volume</td>
+                        <td class="metric-gexpit">Real Notional CVD Breakdown</td>
+                    </tr>
+                    <tr>
+                        <td class="metric-name">Market Maker Levels</td>
+                        <td class="metric-retail">Delayed End of Day</td>
+                        <td class="metric-gexpit">Real time Zero Gamma and Vanna</td>
+                    </tr>
+                    <tr>
+                        <td class="metric-name">Data Architecture</td>
+                        <td class="metric-retail">Relational DB overhead</td>
+                        <td class="metric-gexpit">Numpy Native and WAL Engine</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SEZIONE 7: ACCESS ROADMAP (PRICING)        -->
+    <!-- ========================================== -->
+    <section id="pricing" class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">ACCESS ROADMAP</h2>
+        </div>
+        <div class="pricing-grid">
+            <!-- Tier 1: Private Beta -->
+            <article class="pricing-card glass-card">
+                <div class="pricing-header">
+                    <h3 class="pricing-tier-name">PRIVATE BETA</h3>
+                    <div class="pricing-price">FREE / INVITE ONLY</div>
+                </div>
+                <ul class="pricing-features">
+                    <li>Early data access</li>
+                    <li>Formula documentation</li>
+                </ul>
+                <div class="pricing-action">
+                    <a href="#bottom-form" class="btn btn-card">Join Waitlist</a>
+                </div>
+            </article>
+
+            <!-- Tier 2: Founder License (Featured) -->
+            <article class="pricing-card glass-card featured">
+                <div class="pricing-badge">First 100 Seats</div>
+                <div class="pricing-header">
+                    <h3 class="pricing-tier-name">FOUNDER LICENSE</h3>
+                    <div class="pricing-price">ONE TIME FEE</div>
+                </div>
+                <ul class="pricing-features">
+                    <li>Desktop v27 Lifetime</li>
+                    <li>Priority Support</li>
+                </ul>
+                <div class="pricing-action">
+                    <a href="#bottom-form" class="btn btn-primary btn-featured">Reserve Seat</a>
+                </div>
+            </article>
+
+            <!-- Tier 3: Pro Quant Suite -->
+            <article class="pricing-card glass-card">
+                <div class="pricing-header">
+                    <h3 class="pricing-tier-name">PRO QUANT SUITE</h3>
+                    <div class="pricing-price">MONTHLY SUBSCRIPTION</div>
+                </div>
+                <ul class="pricing-features">
+                    <li>Integrated Feed</li>
+                    <li>Algorithmic strategies (S1 to S4)</li>
+                </ul>
+                <div class="pricing-action">
+                    <button class="btn btn-card btn-disabled" disabled>Coming Soon</button>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SEZIONE 8: FAQ & BOTTOM ACCESS CTA         -->
+    <!-- ========================================== -->
+    <section id="faq" class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">TECHNICAL SPECIFICATIONS</h2>
+        </div>
+
+        <div class="faq-container">
+            <details class="faq-item">
+                <summary class="faq-question">OS and Hardware requirements?</summary>
+                <div class="faq-answer">
+                    <p>64-bit Python/PyQtGraph native application, optimized for Windows, macOS, and Linux.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">What is the primary data source?</summary>
+                <div class="faq-answer">
+                    <p>High resolution Parquet and tick-by-tick streaming WAL engine.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">Is this a trading algorithm?</summary>
+                <div class="faq-answer">
+                    <p>No, it is a quantitative cockpit designed to manage statistical probabilities and dealer hedging flow.</p>
+                </div>
+            </details>
+        </div>
+
+        <!-- Bottom Waitlist Access Cockpit -->
+        <div class="bottom-cta-wrapper">
+            <div class="glass-container bottom-cockpit">
+                <div class="cockpit-header">
+                    <span class="cockpit-badge">INSTITUTIONAL ALLOCATION GATEWAY</span>
+                    <span class="cockpit-metric">0DTE REAL TIME DESK</span>
+                </div>
+
+                <h3 class="cta-title">SECURE YOUR ACCESS</h3>
+
+                <p class="cta-subtitle">
+                    Join the institutional zero lag liquidity network. Real time market microstructure analytics at deterministic sub millisecond resolution.
+                </p>
+
+                <!-- Bottom Access Request Form with Anti-Bot Honeypot -->
+                <form id="bottom-form" class="hero-access-form" action="#" method="POST" novalidate>
+                    <!-- Invisible Honeypot Trap Field (Hardened against browser autofill) -->
+                    <div class="hp-trap" aria-hidden="true">
+                        <label for="bottom_verification_code">Leave blank</label>
+                        <input type="text" id="bottom_verification_code" name="bottom_verification_code" tabindex="-1" autocomplete="new-password" aria-hidden="true">
+                    </div>
+
+                    <div class="form-controls">
+                        <div class="input-wrapper">
+                            <input 
+                                type="email" 
+                                id="bottom-email" 
+                                name="email" 
+                                class="form-input" 
+                                placeholder="Enter institutional email address" 
+                                required 
+                                autocomplete="email"
+                                spellcheck="false"
+                            >
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <span>Request Access</span>
+                        </button>
+                    </div>
+
+                    <div class="form-meta">
+                        <span class="meta-item">Tier 1 Institutional Verification</span>
+                        <span class="meta-separator">•</span>
+                        <span class="meta-item">Instant Sandbox Feed Upon Approval</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- FOOTER & LEGAL DISCLAIMER                  -->
+    <!-- ========================================== -->
+    <footer id="footer" class="footer-container">
+        <div class="footer-content">
+            <p class="footer-copyright">© 2026 GEXPIT Quantitative Architecture. All rights reserved.</p>
+            <p class="footer-disclaimer">Derivatives trading involves high risk. This cockpit is for informational and statistical analysis only.</p>
+        </div>
+    </footer>
+
+    <!-- Core Interactive Logic -->
+    <script src="script.js"></script>
+</body>
+</html>
