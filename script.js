@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ------------------------------------------------------------------------
     // 1. QUANTITATIVE CONFIGURATION & EDGE GATEWAY ENDPOINTS
     // ------------------------------------------------------------------------
-    const WORKER_ENDPOINT = window.GEXPIT_API_ENDPOINT || "/api/waitlist";
+    const WORKER_ENDPOINT = https://gexpitnuovosito.pitball85.workers.dev";
     const MAX_REQUESTS = 2;
     const COOLDOWN_MS = 60000; // 60 seconds rolling window
     const STORAGE_KEY = "gexpit_telemetry_ts";
