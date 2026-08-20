@@ -484,12 +484,32 @@ body {
     justify-content: center;
 }
 
-/* Glassmorphism Cockpit Card
-   Marketing rationale: a flat blurred panel reads as "template". Layering an outer
-   luminous edge + an inner light rim + a diagonal refraction sheen sells the illusion
-   of thick optical glass, which is what makes a premium/institutional product feel
-   physically real instead of decorative. All additions are background-image /
-   box-shadow only, so there is zero reflow cost. */
+/* Cockpit Container (Zero Blur & Zero Masking Ancestor for Fluid Video Compositing) */
+.hero-cockpit {
+    background-color: rgba(12, 16, 24, 0.96);
+    background-image: var(--sheen-glass);
+    border: 1px solid var(--border-glass-outer);
+    border-radius: 16px;
+    box-shadow: var(--shadow-glass-depth), var(--shadow-cockpit-glow);
+    padding: 3.25rem 3.5rem;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    transition: var(--transition-smooth);
+}
+
+.hero-cockpit::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.4) 50%, transparent 100%);
+    pointer-events: none;
+}
+
+/* Glassmorphism Generic Card (Used for non-video sections) */
 .glass-container {
     background-color: var(--bg-card);
     background-image: var(--sheen-glass);
@@ -573,6 +593,49 @@ body {
     font-weight: 400;
     /* Contrast boost against blurred/bright glass background, paint-only */
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
+/* --------------------------------------------------------------------------
+   4B. FLOATING COCKPIT TERMINAL VIDEO SHOWCASE (HARDWARE-ISOLATED 3D ENGINE)
+   -------------------------------------------------------------------------- */
+.hero-video-wrapper {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    margin: 0 auto 2.5rem auto;
+    border-radius: 12px;
+    border: 1px solid var(--border-glow);
+    background-color: #080b10;
+    box-shadow: var(--shadow-glass-depth), var(--shadow-cockpit-glow), 0 0 30px rgba(0, 212, 255, 0.05);
+    position: relative;
+    /* No overflow:hidden to eliminate offscreen GPU alpha masking */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Subtle Static Top Rim Highlight */
+.hero-video-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.4) 50%, transparent 100%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.hero-showcase-video {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    z-index: 1; /* Forza un stacking context isolato */
+    background-color: #080b10; /* --bg-main per evitare flash trasparenti */
+    display: block;
 }
 
 /* --------------------------------------------------------------------------
@@ -900,10 +963,43 @@ body {
 /* --------------------------------------------------------------------------
    8. SECTION 4: FEATURES GRID (2x2 GLASSMORPHISM)
    -------------------------------------------------------------------------- */
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
+/* Alternating Feature Rows — replaces the compact card grid, which cropped
+   the native 16:9 desktop screenshots down to an unreadable sliver. Airy,
+   editorial rhythm: full section width per row, generous vertical gap,
+   text and screenshot given equal weight instead of being boxed together. */
+.features-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 6rem;
+}
+
+.feature-row {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+.feature-row > .feature-row-text,
+.feature-row > .feature-row-media {
+    flex: 1 1 50%;
+    min-width: 0; /* lets the wide screenshot shrink inside flex instead of overflowing */
+}
+
+/* Row 2 / 4 read Image-Left, Text-Right — alternating scan rhythm down the
+   section instead of a monotone left-aligned stack. */
+.feature-row-reverse {
+    flex-direction: row-reverse;
+}
+
+/* Row 6 (Local Database & Replay) has no dedicated screenshot by design —
+   text-only, centered as the section's closing statement instead of
+   leaving a forced/empty image slot beside it. */
+.feature-row-text-only {
+    justify-content: center;
+}
+
+.feature-row-text-only .feature-row-text {
+    flex: 0 1 720px;
 }
 
 .glass-card {
@@ -934,46 +1030,53 @@ body {
     box-shadow: inset 0 1px 0 0 var(--border-glass-inner), inset 0 0 0 1px rgba(255, 255, 255, 0.02), 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 24px var(--border-glow);
 }
 
-/* Feature Card Accent Mapping
-   Ties each metric card to its matching signal color from the quantitative
-   palette already used across the ticker/status UI — GEXPIT Heatmap reads
-   zero gamma cyan, Monetary CVD reads call/volume green, Greeks Engine reads
-   spot gold, Big Trades reads put red. Four visually identical cards become
-   a color coded instrument panel instead of generic feature tiles. */
-.features-grid .glass-card::after {
+/* Feature Row Accent Mapping
+   Ties each row to its matching signal color from the quantitative palette
+   already used across the ticker/status UI — GEXPIT Heatmap reads zero
+   gamma cyan, Monetary CVD reads call/volume green, Greeks Engine reads
+   spot gold, Big Trades reads put red. A left accent rule on the text
+   column carries the same "color coded instrument panel" identity the
+   card grid used to express via its top edge glow. */
+.feature-row-text {
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.feature-row-text::before {
     content: '';
     position: absolute;
-    top: 0;
     left: 0;
-    right: 0;
-    height: 2px;
+    top: 0.3rem;
+    bottom: 0.3rem;
+    width: 2px;
     background: var(--accent-zerogamma);
     box-shadow: 0 0 12px currentColor;
     opacity: 0.75;
     color: var(--accent-zerogamma);
 }
 
-.features-grid .glass-card:nth-child(2)::after { background: var(--accent-call); color: var(--accent-call); }
-.features-grid .glass-card:nth-child(3)::after { background: var(--accent-spot); color: var(--accent-spot); }
-.features-grid .glass-card:nth-child(4)::after { background: var(--accent-put); color: var(--accent-put); }
+.features-rows .feature-row:nth-of-type(2) .feature-row-text::before { background: var(--accent-call); color: var(--accent-call); }
+.features-rows .feature-row:nth-of-type(3) .feature-row-text::before { background: var(--accent-spot); color: var(--accent-spot); }
+.features-rows .feature-row:nth-of-type(4) .feature-row-text::before { background: var(--accent-put); color: var(--accent-put); }
+.features-rows .feature-row:nth-of-type(5) .feature-row-text::before { background: #ff9100; color: #ff9100; }
+.features-rows .feature-row:nth-of-type(6) .feature-row-text::before { background: #00e5ff; color: #00e5ff; }
 
-.features-grid .glass-card:nth-child(1) .card-list li::before { color: var(--accent-zerogamma); }
-.features-grid .glass-card:nth-child(2) .card-list li::before { color: var(--accent-call); }
-.features-grid .glass-card:nth-child(3) .card-list li::before { color: var(--accent-spot); }
-.features-grid .glass-card:nth-child(4) .card-list li::before { color: var(--accent-put); }
-
-.features-grid .glass-card:nth-child(1):hover { border-color: rgba(0, 212, 255, 0.35); box-shadow: inset 0 1px 0 0 var(--border-glass-inner), inset 0 0 0 1px rgba(255, 255, 255, 0.02), 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 26px rgba(0, 212, 255, 0.3); }
-.features-grid .glass-card:nth-child(2):hover { border-color: rgba(0, 255, 136, 0.3); box-shadow: inset 0 1px 0 0 var(--border-glass-inner), inset 0 0 0 1px rgba(255, 255, 255, 0.02), 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 26px rgba(0, 255, 136, 0.25); }
-.features-grid .glass-card:nth-child(3):hover { border-color: rgba(255, 215, 0, 0.3); box-shadow: inset 0 1px 0 0 var(--border-glass-inner), inset 0 0 0 1px rgba(255, 255, 255, 0.02), 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 26px rgba(255, 215, 0, 0.22); }
-.features-grid .glass-card:nth-child(4):hover { border-color: rgba(255, 77, 77, 0.3); box-shadow: inset 0 1px 0 0 var(--border-glass-inner), inset 0 0 0 1px rgba(255, 255, 255, 0.02), 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 26px rgba(255, 77, 77, 0.22); }
+.features-rows .feature-row:nth-of-type(1) .card-list li::before { color: var(--accent-zerogamma); }
+.features-rows .feature-row:nth-of-type(2) .card-list li::before { color: var(--accent-call); }
+.features-rows .feature-row:nth-of-type(3) .card-list li::before { color: var(--accent-spot); }
+.features-rows .feature-row:nth-of-type(4) .card-list li::before { color: var(--accent-put); }
+.features-rows .feature-row:nth-of-type(5) .card-list li::before { color: #ff9100; }
+.features-rows .feature-row:nth-of-type(6) .card-list li::before { color: #00e5ff; }
 
 .card-header {
-    margin-bottom: 0.85rem;
+    margin-bottom: 1rem;
 }
 
 .card-title {
     font-family: var(--font-mono);
-    font-size: 1.15rem;
+    /* Bumped from the old cramped-card size (1.15rem) now that each title
+       has half the section width to itself instead of a ~320px card. */
+    font-size: 1.45rem;
     font-weight: 700;
     color: var(--text-primary);
     letter-spacing: 0.05em;
@@ -984,47 +1087,59 @@ body {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 0.45rem;
-    margin-bottom: 1.5rem;
+    gap: 0.7rem;
+    margin-bottom: 0;
 }
 
 .card-list li {
-    font-size: 0.88rem;
+    font-size: 0.98rem;
+    line-height: 1.5;
     color: var(--text-secondary);
     display: flex;
     align-items: center;
-    gap: 0.55rem;
+    gap: 0.6rem;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
 .card-list li::before {
     content: "▹";
     color: var(--accent-zerogamma);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     line-height: 1;
+    flex-shrink: 0;
 }
 
-.card-media {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    border: 1px solid var(--border-glass);
-    display: block;
-    object-fit: cover;
-    margin-top: auto;
-    background-color: rgba(8, 11, 16, 0.6);
+/* Institutional floating terminal screen: the wrapper (not the image
+   itself) carries the multi level glass depth token, same as
+   .glass-container — border-glass-outer + shadow-glass-depth — so every
+   screenshot reads as suspended hardware. object-fit: contain on the
+   image guarantees the full 16:9 frame is always visible, never cropped. */
+.feature-row-media {
+    border-radius: 12px;
+    border: 1px solid var(--border-glass-outer);
+    box-shadow: var(--shadow-glass-depth);
+    background-color: #000000;
+    overflow: hidden;
     transition: var(--transition-smooth);
 }
 
-.glass-card:hover .card-media {
-    border-color: rgba(0, 212, 255, 0.2);
+.feature-row:hover .feature-row-media {
+    border-color: rgba(0, 212, 255, 0.4);
+}
+
+.feature-media {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    display: block;
 }
 
 /* --------------------------------------------------------------------------
    9. SECTION 5: SHOWCASE TERMINAL & MEDIA PLAYER
    -------------------------------------------------------------------------- */
 .terminal-container {
-    max-width: 1040px;
+    max-width: 1180px;
     margin: 0 auto;
     background-color: #000000;
     border: 1px solid var(--border-glass-outer);
@@ -1124,12 +1239,39 @@ body {
     pointer-events: none;
 }
 
-.terminal-video {
+/* --------------------------------------------------------------------------
+   9B. REPLAY VIDEO WRAPPER & GPU ISOLATION (ZERO REFLOW HARDWARE LAYER)
+   -------------------------------------------------------------------------- */
+.replay-video-wrapper {
+    position: relative;
     width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #080b10;
+    border-radius: 0 0 12px 12px;
+    border: 1px solid var(--border-glass-outer);
+    box-shadow: var(--shadow-glass-depth);
+    /* Strict Zero Reflow: NO backdrop-filter, NO overflow: hidden to prevent Composite Storm */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+.hardware-accelerated {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
+    border-radius: inherit;
+}
+
+.showcase-video {
+    width: 100%;
+    height: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
-    background-color: #000000;
+    display: block;
+    background-color: #080b10;
 }
 
 /* --------------------------------------------------------------------------
@@ -1214,10 +1356,10 @@ body {
    -------------------------------------------------------------------------- */
 .pricing-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.25rem;
     align-items: stretch;
-    max-width: 1140px;
+    max-width: 860px;
     margin: 0 auto;
 }
 
@@ -1262,21 +1404,6 @@ body {
 @keyframes founder-ambient-glow {
     0%, 100% { opacity: 0.4; }
     50% { opacity: 0.9; }
-}
-
-/* Pro tier gets a quiet gold top accent so the eye still registers three
-   distinct products, without competing for attention against the featured
-   Founder License card (which is deliberately the loudest element here). */
-.pricing-grid .pricing-card:nth-child(3)::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 8%;
-    right: 8%;
-    height: 2px;
-    background: var(--accent-spot);
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
-    opacity: 0.55;
 }
 
 .pricing-badge {
@@ -1650,10 +1777,35 @@ details[open] .faq-question::after {
     body.nav-open {
         overflow: hidden;
     }
+
+    .hero-video-wrapper {
+        margin-bottom: 2rem;
+    }
+
+    /* Alternating Feature Rows stack Text-above-Image below the same
+       breakpoint already used for the nav drawer — a 50/50 split reads as
+       too narrow per column under ~1180px for these ultra-wide desktop
+       screenshots (native ~1.9:1, framed at 16:9). */
+    .feature-row,
+    .feature-row-reverse {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .feature-row > .feature-row-text,
+    .feature-row > .feature-row-media {
+        flex: 1 1 auto;
+        width: 100%;
+    }
+
+    .feature-row-text-only .feature-row-text {
+        flex-basis: auto;
+    }
 }
 
 @media (max-width: 992px) {
-    .glass-container {
+    .glass-container,
+    .hero-cockpit {
         padding: 2.75rem 2.25rem;
     }
 
@@ -1706,9 +1858,15 @@ details[open] .faq-question::after {
         padding-right: max(1rem, env(safe-area-inset-right));
     }
 
-    .glass-container {
+    .glass-container,
+    .hero-cockpit {
         padding: 2rem 1.5rem;
         border-radius: 12px;
+    }
+
+    .hero-video-wrapper {
+        margin-bottom: 1.75rem;
+        border-radius: 10px;
     }
 
     /* Tighter vertical rhythm so sections don't feel like empty scroll gaps
@@ -1750,8 +1908,14 @@ details[open] .faq-question::after {
         text-align: center;
     }
 
-    .features-grid {
-        grid-template-columns: 1fr;
+    /* Tighter vertical rhythm on phones, matching the .section-container
+       compression already applied at this breakpoint. */
+    .features-rows {
+        gap: 3.5rem;
+    }
+
+    .feature-row-text {
+        padding-left: 1.1rem;
     }
 
     .pricing-grid {
@@ -1760,6 +1924,14 @@ details[open] .faq-question::after {
 
     .terminal-title {
         display: none;
+    }
+
+    /* Near-full-width single tile swipe on phones/small tablets, matching
+       the same touch-scroll pattern already used on .comparison-table. */
+    .showcase-gallery {
+        grid-auto-columns: minmax(0, 90%);
+        gap: 1rem;
+        padding: 1rem;
     }
 
     .faq-container {
@@ -1790,6 +1962,11 @@ details[open] .faq-question::after {
 
     .hero-subtitle {
         font-size: 0.95rem;
+    }
+
+    .hero-video-wrapper {
+        margin-bottom: 1.5rem;
+        border-radius: 8px;
     }
 
     .form-meta {
@@ -1842,6 +2019,10 @@ details[open] .faq-question::after {
 
     .hero-subtitle {
         margin-bottom: 1.25rem;
+    }
+
+    .hero-video-wrapper {
+        margin-bottom: 1rem;
     }
 }
 

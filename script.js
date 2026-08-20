@@ -324,7 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ------------------------------------------------------------------------
-    // 7. OFFSCREEN VIDEO PAUSE (Showcase Terminal)
+    // 7. OFFSCREEN VIDEO PAUSE (Hero & Terminal Showcase Videos)
     // ------------------------------------------------------------------------
     // Marketing rationale for keeping it at all: the looping replay demo is
     // the single best proof of "zero lag" the page has. Marketing rationale
@@ -333,25 +333,26 @@ document.addEventListener("DOMContentLoaded", () => {
     // it leaves the viewport (and resuming on return) keeps that cost paid
     // only while a visitor is actually looking at it.
     if ("IntersectionObserver" in window) {
-        const showcaseVideo = document.querySelector(".terminal-video");
+        const showcaseVideos = document.querySelectorAll(".hero-showcase-video, .terminal-video");
 
-        if (showcaseVideo) {
+        if (showcaseVideos.length > 0) {
             const videoObserver = new IntersectionObserver(
                 (entries) => {
                     entries.forEach((entry) => {
+                        const vid = entry.target;
                         if (entry.isIntersecting) {
-                            showcaseVideo.play().catch(() => {
+                            vid.play().catch(() => {
                                 /* Autoplay can be blocked by the browser; non-fatal. */
                             });
                         } else {
-                            showcaseVideo.pause();
+                            vid.pause();
                         }
                     });
                 },
                 { threshold: 0.15 }
             );
 
-            videoObserver.observe(showcaseVideo);
+            showcaseVideos.forEach((vid) => videoObserver.observe(vid));
         }
     }
 
