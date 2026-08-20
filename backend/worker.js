@@ -16,6 +16,10 @@ const EVICTION_BATCH_SIZE = 500;
 // RFC 5322 Compliant Email Regex Validator
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
 
+// Micro Proof-of-Work (PoW) Constants (Anti-DoS Shield)
+const POW_PREFIX = "000";
+const POW_MAX_AGE_MS = 300000; // 5 minutes validity window
+
 /**
  * Builds standardized Security & CORS Response Headers with origin validation
  * @param {Request} request
