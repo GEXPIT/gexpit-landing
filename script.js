@@ -423,4 +423,34 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    // ------------------------------------------------------------------------
+    // STICKY CTA BAR — appare dopo il 50% di scroll, chiudibile dall'utente
+    // ------------------------------------------------------------------------
+    const stickyCta   = document.getElementById("sticky-cta");
+    const stickyClose = document.getElementById("sticky-cta-close");
+
+    if (stickyCta && stickyClose) {
+        let ctaDismissed = false;
+
+        // Mostra la bar quando l'utente ha scrollato oltre il 50% della pagina
+        const showStickyCta = () => {
+            if (ctaDismissed) return;
+            const scrolled  = window.scrollY + window.innerHeight;
+            const docHeight = document.documentElement.scrollHeight;
+            if (scrolled / docHeight >= 0.50) {
+                stickyCta.classList.add("visible");
+            } else {
+                stickyCta.classList.remove("visible");
+            }
+        };
+
+        window.addEventListener("scroll", showStickyCta, { passive: true });
+
+        // Pulsante X — nasconde definitivamente la bar per questa sessione
+        stickyClose.addEventListener("click", () => {
+            ctaDismissed = true;
+            stickyCta.classList.remove("visible");
+        });
+    }
 });

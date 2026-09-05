@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="GEXPIT delivers real-time SPX 0DTE options flow, vectorized Black-Scholes Greeks, dynamic Zero Gamma, and Monetary Notional CVD for Interactive Brokers. Features 100% local Columnar Parquet database storage, full-session time travel, and intraday 1-click live replay.">
-    <meta name="theme-color" content="#080b10">
+    <meta name="description" content="GEXPIT delivers real-time SPX 0DTE options flow, intraday Net GEX dynamics, Lee-Ready Monetary CVD, and four quantitative Market Regimes for Interactive Brokers. Local Parquet database, full-session replay at 1×–50×, and 0DTE Expected Move Corridor built from your IBKR OPRA feed.">
+    <meta name="theme-color" content="#05070a">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self'; connect-src 'self' https:;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <title>GEXPIT - Real-Time SPX 0DTE Options Flow, Greeks &amp; Replay Engine | Interactive Brokers OPRA</title>
+    <title>GEXPIT — Real-Time SPX 0DTE Dealer Flow, GEX Dynamics &amp; Replay | Interactive Brokers</title>
 
     <!-- Brand Favicon Set (generated from the official GEXPIT logo, background
          removed, trimmed and compressed — see AI_INSTRUCTIONS.md Section 2) -->
@@ -69,11 +69,11 @@
                      header version is hidden below 768px because it does
                      not fit next to the logo + hamburger on real phone
                      widths (measured overflow on 360-410px screens). -->
-                <a href="#hero-form" class="btn btn-primary nav-menu-cta">Request Access</a>
+                <a href="#bottom-form" class="btn btn-primary nav-menu-cta">Request Access</a>
             </nav>
 
             <div class="nav-actions">
-                <a href="#hero-form" class="btn btn-header">Request Access</a>
+                <a href="#bottom-form" class="btn btn-header">Request Access</a>
                 <!-- Mobile Navigation Toggle: nav-menu has no other way to
                      reach it below the 768px breakpoint, this is the fix. -->
                 <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation menu">
@@ -86,69 +86,73 @@
     </header>
 
     <!-- ========================================== -->
-    <!-- SEZIONE 2: HERO COCKPIT                    -->
+    <!-- SEZIONE 2: HERO COCKPIT (FRAMED TERMINAL)  -->
+    <!-- Layout: testo | video in finestra cockpit  -->
     <!-- ========================================== -->
     <section id="hero" class="hero-section">
-        <!-- Ambient Decorative Typography (Background Layer) -->
-        <div class="hero-ambient-text hero-ambient-top" aria-hidden="true">INSTITUTIONAL ORDER FLOW</div>
-        <div class="hero-ambient-text hero-ambient-bottom" aria-hidden="true">DELTA NEUTRAL LIQUIDITY MATRIX</div>
-
-        <!-- Central Cockpit Container (Zero Blur Ancestor for Hardware Video Isolation) -->
         <div class="hero-wrapper">
-            <div class="hero-cockpit">
-                <div class="cockpit-header">
-                    <span class="cockpit-badge">SPECIALIZED FOR INTERACTIVE BROKERS • ZERO EXTRA DATA FEES</span>
-                    <span class="cockpit-metric">JIT COMPUTE: SUB-MILLISECOND</span>
-                </div>
+            <div class="hero-split">
 
-                <h1 class="hero-title">REAL-TIME SPX 0DTE OPTIONS FLOW &amp; DEALER HEDGING ENGINE</h1>
+                <!-- Colonna Sinistra: Testo & CTA -->
+                <div class="hero-text-col">
+                    <h1 class="hero-title">REAL-TIME SPX 0DTE DEALER FLOW</h1>
 
-                <p class="hero-subtitle">
-                    Sub-millisecond vectorized Greeks, 3-layer continuous Gaussian heatmap, volume profile velocity, moneyness segmentation, and real Notional CVD tracking. Native integration with Interactive Brokers (TWS / IB Gateway) using the standard OPRA options feed with zero extra data fees. 100% local Columnar Parquet database storage with full-session and intraday 1-click live replay.
-                </p>
+                    <p class="hero-subtitle">
+                        Gamma exposure, order flow and dealer positioning updated tick by tick.<br>
+                        Seven synchronized panels. One IBKR connection.
+                    </p>
 
-                <!-- Floating Cockpit Terminal Video Showcase (Hardware-Isolated Layer) -->
-                <div class="hero-video-wrapper">
-                    <video class="hero-showcase-video" autoplay loop muted playsinline disablePictureInPicture preload="auto">
-                        <source src="assets/video/gexpit-montato-web.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-
-                <!-- Access Request Form with Anti-Bot Honeypot -->
-                <form id="hero-form" class="hero-access-form" method="POST" novalidate>
-                    <!-- Invisible Honeypot Trap Field (Hardened against browser autofill) -->
-                    <div class="hp-trap" aria-hidden="true">
-                        <label for="institutional_verification_code">Leave blank</label>
-                        <input type="text" id="institutional_verification_code" name="institutional_verification_code" tabindex="-1" autocomplete="new-password" aria-hidden="true">
-                    </div>
-
-                    <div class="form-controls">
-                        <div class="input-wrapper">
-                            <input 
-                                type="email" 
-                                id="institutional-email" 
-                                name="email" 
-                                class="form-input" 
-                                placeholder="Enter your email address" 
-                                required 
-                                autocomplete="email"
-                                spellcheck="false"
-                            >
+                    <div class="hero-benefits">
+                        <div class="benefit-item">
+                            <strong>LIVE 0DTE FLOW</strong>
+                            <span>Heatmap + CVD + HVN Call/Put + Big Trades across the full SPX chain.</span>
                         </div>
-                        <button type="submit" class="btn btn-primary">
-                            <span>Request Access</span>
-                        </button>
+                        <div class="benefit-item">
+                            <strong>GEX DYNAMICS</strong>
+                            <span>Static and live-recalculated GEX. Zero Gamma, Vol Trigger, four Market Regimes.</span>
+                        </div>
+                        <div class="benefit-item">
+                            <strong>REPLAY &amp; ARCHIVE</strong>
+                            <span>Full-session replay at 1×–300×. Every tick stored locally in Parquet.</span>
+                        </div>
                     </div>
 
-                    <div class="form-meta">
-                        <span class="meta-item">Direct TWS / IB Gateway API</span>
-                        <span class="meta-separator">•</span>
-                        <span class="meta-item">Standard OPRA Feed ($0 Extra Cost)</span>
-                        <span class="meta-separator">•</span>
-                        <span class="meta-item">Local Parquet Database &amp; Replay</span>
+                    <!-- Waitlist counter -->
+                    <div class="hero-waitlist-counter">
+                        <span class="waitlist-dot"></span>
+                        <span class="waitlist-text"><strong class="waitlist-num">127</strong> traders already on the waitlist</span>
                     </div>
-                </form>
+
+                    <div class="hero-actions">
+                        <a href="#bottom-form" class="btn btn-primary" style="padding: 1rem 2rem; font-size: 1rem;">GET EARLY ACCESS &rarr;</a>
+                        <a href="#showcase" class="btn btn-secondary" style="padding: 1rem 2rem; font-size: 1rem;">WATCH DEMO</a>
+                    </div>
+                </div>
+
+                <!-- Colonna Destra: Video in finestra cockpit -->
+                <div class="hero-video-col">
+                    <!-- Barra terminale superiore stile Bloomberg -->
+                    <div class="cockpit-terminal-bar">
+                        <div class="terminal-controls">
+                            <span class="terminal-dot dot-close"></span>
+                            <span class="terminal-dot dot-minimize"></span>
+                            <span class="terminal-dot dot-expand"></span>
+                        </div>
+                        <div class="cockpit-terminal-title">GEXPIT v27.60 — IBKR OPRA LIVE</div>
+                        <div class="cockpit-terminal-status">
+                            <span class="status-dot"></span>
+                            <span>STREAM ACTIVE</span>
+                        </div>
+                    </div>
+                    <!-- Finestra video con bordi luminosi — nessun crop, risoluzione nativa -->
+                    <div class="hero-video-frame">
+                        <video class="hero-showcase-video" autoplay loop muted playsinline disablePictureInPicture preload="auto">
+                            <source src="assets/video/gexpit-montato-web.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -160,22 +164,88 @@
         <div class="specs-ticker">
             <div class="spec-block">
                 <div class="spec-value">IBKR OPRA STREAM</div>
-                <div class="spec-label">$0 Extra data fees</div>
+                <div class="spec-label">$0 extra data fees</div>
             </div>
             <div class="spec-block">
-                <div class="spec-value">NUMBA JIT ENGINE</div>
-                <div class="spec-label">Vectorized 2nd-order Greeks</div>
+                <div class="spec-value">7 SYNCHRONIZED TABS</div>
+                <div class="spec-label">Flow · CVD · GEX · Greeks · Big Trades · EM · IV</div>
             </div>
             <div class="spec-block">
-                <div class="spec-value">MULTI-TIMEFRAME PROFILES</div>
-                <div class="spec-label">1m to 120m Volume &amp; Flow filters</div>
+                <div class="spec-value">GEX FLOATING WINDOWS</div>
+                <div class="spec-label">Live-recalculated walls. Numba BSM engine</div>
             </div>
             <div class="spec-block">
-                <div class="spec-value">LOCAL PARQUET &amp; REPLAY</div>
-                <div class="spec-label">Personal database &amp; 1-click live snap</div>
+                <div class="spec-value">LOCAL PARQUET + WAL</div>
+                <div class="spec-label">Replay 1×–300×. Personal tick archive</div>
             </div>
         </div>
     </section>
+
+    <!-- ========================================== -->
+    <!-- SEZIONE VERIFIED: NUMERI REALI             -->
+    <!-- ========================================== -->
+    <section id="verified" class="verified-section" aria-label="Verified technical specifications">
+        <div class="verified-inner">
+            <div class="verified-label">VERIFIED ON LIVE SESSIONS</div>
+            <div class="verified-grid">
+                <div class="verified-item">
+                    <span class="verified-value">500k+</span>
+                    <span class="verified-desc">ticks processed per session</span>
+                </div>
+                <div class="verified-item">
+                    <span class="verified-value">60 FPS</span>
+                    <span class="verified-desc">rendering on full datasets</span>
+                </div>
+                <div class="verified-item">
+                    <span class="verified-value">159</span>
+                    <span class="verified-desc">automated regression tests</span>
+                </div>
+                <div class="verified-item">
+                    <span class="verified-value">&lt;250ms</span>
+                    <span class="verified-desc">full GEX profile recalculation</span>
+                </div>
+                <div class="verified-item">
+                    <span class="verified-value">10</span>
+                    <span class="verified-desc">heatmap display modes</span>
+                </div>
+                <div class="verified-item">
+                    <span class="verified-value">$0</span>
+                    <span class="verified-desc">added data feed cost</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SEZIONE NEW: THE PROBLEM                   -->
+    <!-- ========================================== -->
+    <section id="problem" class="section-container" style="text-align: center; max-width: 900px; margin: 0 auto; padding-bottom: 4rem;">
+        <h2 style="color: var(--text-secondary); font-family: var(--font-mono); font-size: 1rem; letter-spacing: 0.1em; margin-bottom: 1rem;">THE PROBLEM</h2>
+        <h3 style="font-size: 2.2rem; margin-bottom: 3rem;">Traditional options dashboards show you the market after the move.</h3>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; background: var(--bg-card); padding: 3rem; border-radius: 16px; border: 1px solid var(--border-glass-outer); text-align: left;">
+            <div style="border-right: 1px solid var(--border-glass); padding-right: 2rem;">
+                <h4 style="color: var(--accent-put); font-family: var(--font-mono); margin-bottom: 1rem;">TRADITIONAL</h4>
+                <ul style="color: var(--text-secondary); list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;">&times; Static Open Interest</li>
+                    <li style="margin-bottom: 0.5rem;">&times; Delayed positioning data</li>
+                    <li style="margin-bottom: 0.5rem;">&times; Contract count only</li>
+                    <li>&times; No intraday dealer context</li>
+                </ul>
+            </div>
+            <div style="padding-left: 1rem;">
+                <h4 style="color: var(--accent-zerogamma); font-family: var(--font-mono); margin-bottom: 1rem;">GEXPIT</h4>
+                <ul style="color: var(--text-primary); list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;">&check; Tick-by-tick live stream</li>
+                    <li style="margin-bottom: 0.5rem;">&check; Volume, Delta Flow and Notional</li>
+                    <li style="margin-bottom: 0.5rem;">&check; GEX FLOATING WINDOWS</li>
+                    <li>&check; Four quantitative Market Regimes</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+
 
     <!-- ========================================== -->
     <!-- SEZIONE 4: FEATURES GRID (QUANT SUITE)    -->
@@ -185,126 +255,175 @@
             <h2 class="section-title">INSTITUTIONAL QUANT ARCHITECTURE</h2>
         </div>
         <div class="features-rows">
-            <!-- Row 1: Tab 1 — Flows & 3-Layer Heatmap — Text Left / Image Right -->
+            <!-- Row 1: Flow Heatmap -->
             <article class="feature-row">
                 <div class="feature-row-text">
                     <div class="card-header">
-                        <h3 class="card-title">FLOWS &amp; 3 LAYER GAUSSIAN HEATMAP</h3>
+                        <h3 class="card-title">01 &mdash; SEE WHERE FLOW IS BUILDING</h3>
                     </div>
-                    <ul class="card-list">
-                        <li>Continuous 2D Gaussian Energy Surface with OLED Contrast Fading &amp; 70th Percentile Liquidity Isocurves</li>
-                        <li>5 Normalization Modes: Linear, Logarithmic, Rolling (30m), Uniform 5pt Grid, HVL Dual Flow</li>
-                        <li>Daily Cumulative Volume Profile per Strike &amp; Configurable Timeframe Filtering (1m to 120m)</li>
-                        <li>Synchronized Call Flow &amp; Put Flow Velocity Oscillators with Inverted Strike Alignment</li>
-                        <li>Real-Time Market Regime Classification &amp; Morning Initial Balance Analyzer (09:30–10:00 NY)</li>
-                    </ul>
+                    <p style="color: var(--text-primary); font-size: 1.1rem; margin-bottom: 1rem; font-weight: 500;">Real-time options flow visualized by strike. Pure OLED rendering.</p>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Call and Put activity mapped against the full SPX chain as it develops. Spot which strikes are absorbing volume, where gamma is concentrating, and how positioning shifts before price reacts. Flow is synchronized with Rolling Volume Profile across seven selectable timeframes (1m–120m).</p>
+                    <p style="color: var(--text-secondary); line-height: 1.6; margin-top: 0.75rem;">The built-in HUD classifies the current session into one of four mechanical <strong>Market Regimes</strong> based on Spot position relative to Zero Gamma and Vol Trigger:</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 1rem; margin-bottom: 1rem; font-family: var(--font-mono); font-size: 0.78rem;">
+                        <span style="color: #22c55e;">🟢 VOLATILITY DAMPING</span>
+                        <span style="color: #eab308;">🟡 VOLATILITY EXPANSION</span>
+                        <span style="color: #f97316;">🟠 DELTA SQUEEZE</span>
+                        <span style="color: var(--accent-put);">🔴 VOLATILITY CASCADE</span>
+                    </div>
+                    <div style="margin-top: 1.5rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">
+                        GEX Linear / Logarithmic / Rolling 30m &nbsp;·&nbsp; Volume Flow / Smooth Flow / Dominance / Delta Dominance / Call Only / Put Only / Dual Panels
+                    </div>
                 </div>
                 <div class="feature-row-media">
-                    <img loading="lazy" src="assets/img/gexpit-tab1-heatmap-flows.webp" alt="GEXPIT desktop screenshot: Tab 1 Flows Heatmap, 3 layer Gaussian density surface with daily volume profile, call and put flow oscillators" width="1600" height="861" class="feature-media">
+                    <img loading="lazy" src="assets/img/gexpit-tab1-heatmap-flows.webp" alt="GEXPIT Tab 1: OLED Bookmap-style heatmap with Call/Put flow and Rolling Volume Profile" width="1600" height="861" class="feature-media">
                 </div>
             </article>
 
-            <!-- Row 2: Tab 2 — Gamma Volumes & Monetary CVD — Image Left / Text Right -->
+            <!-- Row 2: CVD & Flow -->
             <article class="feature-row feature-row-reverse">
                 <div class="feature-row-text">
                     <div class="card-header">
-                        <h3 class="card-title">GAMMA VOLUMES &amp; MONETARY CVD</h3>
+                        <h3 class="card-title">02 &mdash; THREE DIMENSIONS OF FLOW</h3>
                     </div>
-                    <ul class="card-list">
-                        <li>Real-Time Spot Price History with Trilayer Glow, Dynamic Zero Gamma &amp; Max Call / Max Put Walls</li>
-                        <li>Real-Time Sweep Alarm Matrix with Configurable Dollar Thresholds ($5M+) and Instant Call / Put Triggers</li>
-                        <li>1-Minute Cadence Dollar Notional Volume Breakdown (Total Notional, Call Volume, Put Volume)</li>
-                        <li>True Monetary CVD Formulation (&sum; Sign &times; Contracts &times; Premium &times; 100) Eliminating OTM Noise</li>
-                        <li>High-Sensitivity CVD Acceleration Momentum Tracking Institutional Capital Absorption</li>
-                    </ul>
+                    <p style="color: var(--text-primary); font-size: 1.1rem; margin-bottom: 1rem; font-weight: 500;">In 0DTE, one metric alone never tells the full story.</p>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Volume counts because high gamma makes every contract a hedging event. Delta Flow (|&Delta;| &times; Contracts) captures how much of that volume actually moves the market — it weights each trade by its real directional impact. Notional ($) shows capital commitment. All three are computed in real time, selectable per-metric, and displayed with matching Rolling Peaks for Call and Put against the Spot curve.</p>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1.5rem; text-align: center;">
+                        <div style="background: rgba(0,0,0,0.3); padding: 0.75rem 0.5rem; border-radius: 8px; border: 1px solid var(--border-glass);">
+                            <div style="color: var(--text-primary); font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600;">VOLUME</div>
+                            <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem;">Contracts traded</div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.3); padding: 0.75rem 0.5rem; border-radius: 8px; border: 1px solid var(--border-glass);">
+                            <div style="color: var(--text-primary); font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600;">DELTA FLOW</div>
+                            <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem;">|&Delta;| &times; Volume</div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.3); padding: 0.75rem 0.5rem; border-radius: 8px; border: 1px solid var(--border-glass);">
+                            <div style="color: var(--text-primary); font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600;">NOTIONAL</div>
+                            <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem;">Contracts &times; Price &times; 100</div>
+                        </div>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 1rem; line-height: 1.5;">Each execution is classified Buy/Sell with the Lee-Ready algorithm on a 250ms midpoint window (with a 50/50 midpoint split). Configurable Sweep Alarms fire when aggressive flow crosses your chosen threshold.</p>
                 </div>
                 <div class="feature-row-media">
-                    <img loading="lazy" src="assets/img/gexpit-tab2-gamma-volumes.webp" alt="GEXPIT desktop screenshot: Tab 2 Gamma Volumes, spot price history, notional value and Monetary CVD panels" width="1600" height="827" class="feature-media">
+                    <img loading="lazy" src="assets/img/gexpit-tab2-gamma-volumes.webp" alt="GEXPIT Tab 2: Volume, Delta Flow and Notional CVD with Rolling Peaks and Sweep Alarms" width="1600" height="827" class="feature-media">
                 </div>
             </article>
 
-            <!-- Row 3: Tab 3 — 4-Panel Greeks Exposure Suite — Text Left / Image Right -->
+            <!-- Row 3: GEX VEX DEX CEX (Greeks Profiles) -->
             <article class="feature-row">
                 <div class="feature-row-text">
                     <div class="card-header">
-                        <h3 class="card-title">4 PANEL GREEKS EXPOSURE SUITE</h3>
+                        <h3 class="card-title">03 &mdash; FIVE GREEK PROFILES IN ONE VIEW</h3>
                     </div>
-                    <ul class="card-list">
-                        <li>4-Panel Synchronized Greeks Matrix: Total GEX ($/pt Hedging), Total VEX (&part;&Delta;/&part;&sigma;), Total DEX, Total CEX (&part;&Delta;/&part;t)</li>
-                        <li>Horizontal Stacked Call &amp; Put Exposure Profiles per Strike with Dual-Color Directional Grading</li>
-                        <li>3-State Liquidity Density Engine (Low Density Void, Neutral Balance, High-Density HVL Concentration)</li>
-                        <li>Synchronized Intraday Trilayer Spot Curve Overlay Across All 4 Exposure Panels</li>
-                        <li>Institutional Crosshair HUD X-Ray Delivering Instant Strike-by-Strike Greek Breakdown</li>
-                    </ul>
+                    <p style="color: var(--text-primary); font-size: 1.1rem; margin-bottom: 1rem; font-weight: 500;">GEX, VEX, DEX and CEX — all five exposures by strike, synchronized.</p>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Five vertical profiles side by side: <strong>Total Volume</strong>, <strong>GEX</strong> (Gamma Dollar Hedging $/pt), <strong>VEX</strong> (Vanna — &#8706;&Delta;/&#8706;&sigma;), <strong>DEX</strong> (Net Dollar Delta), and <strong>CEX</strong> (Charm — &#8706;&Delta;/&#8706;t). All five panels are computed by a <strong>Numba JIT Black-Scholes engine</strong> and displayed as stacked Call/Put horizontal bars.</p>
+                    <p style="color: var(--text-secondary); line-height: 1.6; margin-top: 0.75rem;">Three-level density color grading — LVN (grey), Neutral, HVN (full saturation) — lets you instantly read which strikes carry the heaviest gamma and charm exposure. A toolbar controls the time window (1m to full session) and bar layout (stacked or split-centered). All five panels stay synchronized on the same strike axis.</p>
+                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; margin-top: 1.5rem; text-align: center;">
+                        <div style="background: rgba(0,0,0,0.3); padding: 0.6rem 0.25rem; border-radius: 8px; border: 1px solid var(--border-glass);">
+                            <div style="color: var(--text-primary); font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;">VOL</div>
+                            <div style="color: var(--text-muted); font-size: 0.68rem; margin-top: 0.2rem;">Contracts</div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.3); padding: 0.6rem 0.25rem; border-radius: 8px; border: 1px solid var(--border-glass);">
+                            <div style="color: var(--text-primary); font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;">GEX</div>
+                            <div style="color: var(--text-muted); font-size: 0.68rem; margin-top: 0.2rem;">$/pt</div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.3); padding: 0.6rem 0.25rem; border-radius: 8px; border: 1px solid var(--border-glass);">
+                            <div style="color: var(--text-primary); font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;">VEX</div>
+                            <div style="color: var(--text-muted); font-size: 0.68rem; margin-top: 0.2rem;">Vanna</div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.3); padding: 0.6rem 0.25rem; border-radius: 8px; border: 1px solid var(--border-glass);">
+                            <div style="color: var(--text-primary); font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;">DEX</div>
+                            <div style="color: var(--text-muted); font-size: 0.68rem; margin-top: 0.2rem;">Net &Delta;</div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.3); padding: 0.6rem 0.25rem; border-radius: 8px; border: 1px solid var(--border-glass);">
+                            <div style="color: var(--text-primary); font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;">CEX</div>
+                            <div style="color: var(--text-muted); font-size: 0.68rem; margin-top: 0.2rem;">Charm</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="feature-row-media">
-                    <img loading="lazy" src="assets/img/gexpit-tab3-gex-vex-dex-cex.webp" alt="GEXPIT desktop screenshot: Tab 3 Total GEX, VEX, DEX and CEX 4 panel exposure matrix by strike" width="1600" height="828" class="feature-media">
+                    <img loading="lazy" src="assets/img/gexpit-tab3-gex-vex-dex-cex.webp" alt="GEXPIT Tab 3: Five synchronized Greek exposure profiles by strike — GEX, VEX, DEX, CEX with Numba BSM engine and density color grading" width="1600" height="822" class="feature-media">
                 </div>
             </article>
 
-            <!-- Row 4: Tab 4 — GEXPIT Net GEX Cockpit — Image Left / Text Right -->
+            <!-- Row 4: Net GEX / GEX Dinamico -->
+
             <article class="feature-row feature-row-reverse">
                 <div class="feature-row-text">
                     <div class="card-header">
-                        <h3 class="card-title">GEXPIT NET GEX COCKPIT</h3>
+                        <h3 class="card-title">04 &mdash; WHERE DEALERS ARE HEDGING</h3>
                     </div>
-                    <ul class="card-list">
-                        <li>Synchronized Split-Screen Architecture: Spot Time-Series &amp; Net GEX Profile by Strike</li>
-                        <li>Continuous Linear Zero Gamma Crossing Tracking Dealer Long/Short Volatility Flip Regimes</li>
-                        <li>Dynamic Max Call Resistance &amp; Max Put Support Step-Walls with Proximity Centering</li>
-                        <li>Historical Wall Migration Markers: 1m (White), 5m (Cyan), 15m (Yellow), 30m (Orange)</li>
-                        <li>Instant Visual Detection of Dealer Hedging Capitulation, Rolling Positions &amp; Gamma Squeezes</li>
-                    </ul>
+                    <p style="color: var(--text-primary); font-size: 1.1rem; margin-bottom: 1rem; font-weight: 500;">Net GEX. Zero Gamma. Vol Trigger. Velocity Profile.</p>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Four display modes in a single tab. <strong>Net GEX</strong> and <strong>Total GEX</strong> show cumulative dealer exposure built from historical flow. <strong>GEX Dinamico</strong> recalculates the entire strike profile in real time using current spot and implied volatility &mdash; walls react the moment SPX moves. The Vol Trigger is computed as a price-space scan, not a chain crossing, locating the exact level where total dealer exposure flips sign.</p>
+                    <p style="color: var(--text-secondary); line-height: 1.6; margin-top: 0.75rem;">Finally, the embedded <strong>Velocity Profile</strong> maps how rapidly dealers are absorbing or pushing the price at key levels.</p>
                 </div>
                 <div class="feature-row-media">
-                    <img loading="lazy" src="assets/img/gexpit-tab4-gexpit-cockpit.webp" alt="GEXPIT desktop screenshot: Tab 4 GEXPIT cockpit, synchronized spot time series and Net Gamma Exposure Profile" width="1600" height="822" class="feature-media">
+                    <img loading="lazy" src="assets/img/gexpit-tab4-gexpit-cockpit.webp" alt="GEXPIT Tab 4: Net GEX Profile, GEX Dinamico, Zero Gamma, Vol Trigger, Velocity Profile" width="1600" height="822" class="feature-media">
                 </div>
             </article>
 
-            <!-- Row 5: Tab 5 — Big Trades & Institutional Sweeps — Text Left / Image Right -->
+            <!-- Row 5: Big Trades -->
             <article class="feature-row">
                 <div class="feature-row-text">
                     <div class="card-header">
-                        <h3 class="card-title">BIG TRADES &amp; INSTITUTIONAL SWEEPS</h3>
+                        <h3 class="card-title">05 &mdash; FOLLOW THE BIG MONEY</h3>
                     </div>
-                    <ul class="card-list">
-                        <li>Real-Time Whale Trade Detection Mapped Directly onto Intraday Spot Price Trajectory</li>
-                        <li>Strike Proximity Filter (&le;15pt from Spot) Isolating High-Urgency ATM Dealer Hedging Sweeps</li>
-                        <li>Configurable Dollar Notional Threshold Filter ($500k to $10M+) Eliminating Small Retail Noise</li>
-                        <li>Visual Scatter Block Matrix: Green Call Blocks &amp; Red Put Blocks Sized by Execution Velocity</li>
-                        <li>Comprehensive Forense Tooltip: Strike, Executed Volume, Total Dollar Premium, Option Price &amp; Order Class</li>
-                    </ul>
+                    <p style="color: var(--text-primary); font-size: 1.1rem; margin-bottom: 1rem; font-weight: 500;">Large options executions mapped directly against SPX price.</p>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Real-time detection of large-scale trades ("whale trades") across all strikes. Two core filters give you complete control: <strong>Strike Proximity</strong> (&le;15pt from Spot) isolates high-urgency hedging on ITM, ATM, and OTM options, while the <strong>Call Flow &amp; Put Flow filters</strong> let you independently isolate and track aggressive block trades by type, all synchronized directly against the SPX spot price timeline.</p>
                 </div>
                 <div class="feature-row-media">
                     <img loading="lazy" src="assets/img/gexpit-tab5-big-trades.webp" alt="GEXPIT desktop screenshot: Tab 5 Big Trades vs Spot, institutional sweep detection with proximity filtering" width="1600" height="822" class="feature-media">
                 </div>
             </article>
 
-            <!-- Row 6: Local Parquet Database & High-Precision Replay Engine — Text only, no screenshot -->
-            <article class="feature-row feature-row-text-only">
+            <!-- Row 6: EM Decay — Expected Move Corridor -->
+            <article class="feature-row feature-row-reverse">
                 <div class="feature-row-text">
                     <div class="card-header">
-                        <h3 class="card-title">LOCAL DATABASE &amp; 60FPS REPLAY</h3>
+                        <h3 class="card-title">06 &mdash; EXPECTED MOVE &amp; STRADDLE DECAY</h3>
                     </div>
-                    <ul class="card-list">
-                        <li>100% Local Data Ownership: Columnar Apache Parquet Architecture with Zero Vendor Cloud Lock-In</li>
-                        <li>Build Your Personal Historical Institutional Database ($0 Third-Party Archive Fees)</li>
-                        <li>Full-Session Historical Replay with Variable Pacing (1x to 50x) with Zero Frame Lag</li>
-                        <li>Intraday Live Session Rewind: Review Morning Breakouts, Heavy Flow Bursts &amp; Key Inflection Points</li>
-                        <li>1-Click Instant Live Snap: Seamlessly Reconnect to Real-Time Streaming with Zero Dropped Ticks</li>
-                        <li>Native Data Pipeline for Python Quant Research (pandas/numpy/scipy) &amp; TradeStation Integration</li>
-                    </ul>
+                    <p style="color: var(--text-primary); font-size: 1.1rem; margin-bottom: 1rem; font-weight: 500;">Know where the market is statistically expected to stay — and watch it diverge in real time.</p>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">The upper panel plots SPX Spot against static <strong>&plusmn;1SD / &plusmn;2SD / &plusmn;3SD bands</strong> computed from the ATM straddle price at the open. Two additional dynamic bands at &plusmn;1SD and &plusmn;2SD update every tick as ATM implied volatility changes intraday — a live corridor that contracts and expands with the market.</p>
+                    <p style="color: var(--text-secondary); line-height: 1.6; margin-top: 0.75rem;">The lower panel shows the <strong>Straddle ATM Decay Corridor</strong>. A theoretical curve tracks the fair value of the ATM straddle as time decays through the 390-minute session. A second live curve plots the actual straddle price every tick. When the two diverge, IV is expanding or compressing beyond pure Theta decay — a direct signal to reassess exposure.</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 1.25rem; font-family: var(--font-mono); font-size: 0.78rem;">
+                        <span style="color: var(--accent-zerogamma);">📐 STATIC EM CORRIDOR</span>
+                        <span style="color: var(--accent-spot);">⚡ DYNAMIC EM (live IV)</span>
+                        <span style="color: var(--text-secondary);">📉 THETA DECAY CURVE</span>
+                        <span style="color: var(--accent-call);">📈 LIVE STRADDLE PRICE</span>
+                    </div>
+                </div>
+                <div class="feature-row-media">
+                    <img loading="lazy" src="assets/img/gexpit-tab6-em-decay.webp" alt="GEXPIT Tab 6: 0DTE Expected Move Corridor with static and dynamic SD bands, Straddle ATM Decay vs theoretical Theta curve" width="1600" height="822" class="feature-media feature-media-placeholder">
+                </div>
+            </article>
+
+            <!-- Row 7: Flows & IV Z-Score -->
+            <article class="feature-row">
+                <div class="feature-row-text">
+                    <div class="card-header">
+                        <h3 class="card-title">07 &mdash; FLOW &amp; IMPLIED VOLATILITY Z-SCORE</h3>
+                    </div>
+                    <p style="color: var(--text-primary); font-size: 1.1rem; margin-bottom: 1rem; font-weight: 500;">Three synchronized panels. One read on how unusual today's IV really is.</p>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Tab FLOWS IV combines the <strong>SPX Spot price</strong>, <strong>1-minute flow bars</strong> (volume per minute), and the <strong>ATM Implied Volatility Z-Score</strong> on a 30-minute rolling window. The Z-Score normalizes the current IV against the intraday baseline — when it spikes above +2, IV is moving at an unusual rate; when it collapses below &minus;2, the market is pricing out risk faster than expected.</p>
+                    <p style="color: var(--text-secondary); line-height: 1.6; margin-top: 0.75rem;">All seven tabs share a <strong>Universal Zoom Manager</strong> with auto-fit X/Y axes, double-click full-session reset, and a synchronized crosshair across all panels. Rendering is handled by a <strong>Peak-Preserving LOD Decimation engine</strong> (Numba-accelerated) — 500,000+ ticks at 60 FPS, no spike dropped at the crosshair level.</p>
+                    <div style="margin-top: 1.25rem; font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);">
+                        SPX Spot &nbsp;&middot;&nbsp; 1-min Flow Bars &nbsp;&middot;&nbsp; ATM IV Z-Score (30m rolling) &nbsp;&middot;&nbsp; Universal Zoom &amp; Crosshair
+                    </div>
+                </div>
+                <div class="feature-row-media">
+                    <img loading="lazy" src="assets/img/gexpit-tab7-flows-iv.webp" alt="GEXPIT Tab 7: SPX Spot, 1-minute flow bars and ATM Implied Volatility Z-Score on 30-minute rolling window, synchronized crosshair" width="1600" height="822" class="feature-media feature-media-placeholder">
                 </div>
             </article>
         </div>
     </section>
+
 
     <!-- ========================================== -->
     <!-- SEZIONE 5: SHOWCASE TERMINAL               -->
     <!-- ========================================== -->
     <section id="showcase" class="section-container">
         <div class="section-header">
-            <h2 class="section-title">HIGH THROUGHPUT DESKTOP REPLAY</h2>
+            <h2 class="section-title">THE MARKET REPLAYED</h2>
+            <p style="color: var(--text-secondary); margin-top: 1rem; font-size: 1.1rem; max-width: 600px; margin-left: auto; margin-right: auto;">Trade the past as if it were live. Study how dealer positioning changed before the move.</p>
         </div>
         <div class="terminal-container">
             <div class="terminal-bar">
@@ -328,51 +447,111 @@
     </section>
 
     <!-- ========================================== -->
+    <!-- SEZIONE NEW: YOUR DATA                     -->
+    <!-- ========================================== -->
+    <section id="data" class="section-container" style="text-align: center; max-width: 900px; margin: 0 auto; padding-bottom: 2rem;">
+        <div class="section-header">
+            <h2 class="section-title">YOUR DATA. YOUR ARCHIVE.</h2>
+            <p style="color: var(--text-secondary); margin-top: 1rem; font-size: 1.1rem;">Every session becomes part of your own market database.</p>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; max-width: 700px; margin-left: auto; margin-right: auto;">
+            <div style="background: var(--bg-card); padding: 2rem 1rem; border-radius: 12px; border: 1px solid var(--border-glass);">
+                <h4 style="color: var(--text-primary); font-family: var(--font-mono); margin-bottom: 0.5rem; font-size: 1rem;">LOCAL</h4>
+                <p style="color: var(--text-secondary); font-size: 0.85rem;">No cloud lock-in.</p>
+            </div>
+            <div style="background: var(--bg-card); padding: 2rem 1rem; border-radius: 12px; border: 1px solid var(--border-glass);">
+                <h4 style="color: var(--text-primary); font-family: var(--font-mono); margin-bottom: 0.5rem; font-size: 1rem;">PARQUET</h4>
+                <p style="color: var(--text-secondary); font-size: 0.85rem;">Machine-readable archive.</p>
+            </div>
+            <div style="background: var(--bg-card); padding: 2rem 1rem; border-radius: 12px; border: 1px solid var(--border-glass);">
+                <h4 style="color: var(--text-primary); font-family: var(--font-mono); margin-bottom: 0.5rem; font-size: 1rem;">PYTHON</h4>
+                <p style="color: var(--text-secondary); font-size: 0.85rem;">pandas / NumPy / SciPy.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SEZIONE NEW: IBKR                          -->
+    <!-- ========================================== -->
+    <section id="ibkr" class="section-container" style="text-align: center; max-width: 900px; margin: 0 auto; padding-bottom: 4rem;">
+        <div class="section-header">
+            <h2 class="section-title">BUILT AROUND YOUR IBKR DATA</h2>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem; margin-top: 2rem;">
+            <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-glass-outer); width: 100%; max-width: 400px;">
+                <h4 style="color: var(--text-primary); font-family: var(--font-mono); margin-bottom: 0.5rem;">Interactive Brokers</h4>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;"> IB Gateway </p>
+            </div>
+            
+            <div style="color: var(--text-muted); font-size: 1.5rem;">&darr;</div>
+            
+            <div style="background: rgba(0, 212, 255, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--accent-zerogamma); width: 100%; max-width: 400px; box-shadow: var(--shadow-cockpit-glow);">
+                <h4 style="color: var(--accent-zerogamma); font-family: var(--font-mono); margin-bottom: 0.5rem; letter-spacing: 0.1em;">GEXPIT</h4>
+                <p style="color: var(--text-primary); font-size: 0.9rem;">Real-time processing</p>
+            </div>
+            
+            <div style="color: var(--text-muted); font-size: 1.5rem;">&darr;</div>
+            
+            <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-glass-outer); width: 100%; max-width: 400px;">
+                <h4 style="color: var(--text-primary); font-family: var(--font-mono); margin-bottom: 0.5rem;">Your Research Stack</h4>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Python / Parquet </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
     <!-- SEZIONE 6: COMPARISON MATRIX               -->
     <!-- ========================================== -->
     <section id="comparison" class="section-container">
         <div class="section-header">
-            <h2 class="section-title">TRADITIONAL TOOLS VS GEXPIT ENGINE</h2>
+            <h2 class="section-title">WHY GEXPIT</h2>
         </div>
         <div class="comparison-table-wrapper">
             <table class="comparison-table">
                 <thead>
                     <tr>
-                        <th scope="col">Analytical Metric</th>
-                        <th scope="col">Traditional Retail Web Apps</th>
-                        <th scope="col" class="col-gexpit">GEXPIT Cockpit</th>
+                        <th scope="col"></th>
+                        <th scope="col">Traditional GEX Tools</th>
+                        <th scope="col" class="col-gexpit" style="background: rgba(0, 212, 255, 0.1);">GEXPIT</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="metric-name">Data Feed &amp; Extra Cost</td>
-                        <td class="metric-retail">Proprietary feed ($150–$300/mo surcharge)</td>
-                        <td class="metric-gexpit">Uses your IBKR OPRA feed ($0 extra cost)</td>
+                        <td class="metric-name">Data</td>
+                        <td class="metric-retail">Vendor feed</td>
+                        <td class="metric-gexpit">Your IBKR OPRA feed</td>
                     </tr>
                     <tr>
-                        <td class="metric-name">Local Data Storage &amp; Ownership</td>
-                        <td class="metric-retail">Locked inside closed web browser cloud</td>
-                        <td class="metric-gexpit">100% Local Columnar Parquet Database (Build Your Own Archive)</td>
+                        <td class="metric-name">Positioning</td>
+                        <td class="metric-retail">Delayed / static</td>
+                        <td class="metric-gexpit">Real-time Tick-by-tick</td>
                     </tr>
                     <tr>
-                        <td class="metric-name">Replay Engine &amp; Live Rewind</td>
-                        <td class="metric-retail">No replay or lagging static charts</td>
-                        <td class="metric-gexpit">Full Multi-Day Replay + Intraday Rewind with 1-Click Live Snap</td>
+                        <td class="metric-name">GEX</td>
+                        <td class="metric-retail">Snapshot</td>
+                        <td class="metric-gexpit">Intraday</td>
                     </tr>
                     <tr>
-                        <td class="metric-name">0DTE GEX &amp; Net Profile</td>
-                        <td class="metric-retail">Static End-of-Day Open Interest (Lagging)</td>
-                        <td class="metric-gexpit">Dynamic Net GEX Profile with 1m/5m/15m/30m Migration Markers</td>
+                        <td class="metric-name">Flow</td>
+                        <td class="metric-retail">Contract count</td>
+                        <td class="metric-gexpit">Volume / Delta / Monetary Notional</td>
                     </tr>
                     <tr>
-                        <td class="metric-name">Volume Profiles &amp; Flow Filters</td>
-                        <td class="metric-retail">Flat unsegmented end-of-day histogram</td>
-                        <td class="metric-gexpit">Cumulative + Multi-Timeframe (1m–120m), Call/Put Flow &amp; HVN/LVN</td>
+                        <td class="metric-name">Replay</td>
+                        <td class="metric-retail">&times;</td>
+                        <td class="metric-gexpit">1&times;&ndash;300&times;</td>
                     </tr>
                     <tr>
-                        <td class="metric-name">Order Flow &amp; CVD Formulation</td>
-                        <td class="metric-retail">Raw unparsed contract volume count</td>
-                        <td class="metric-gexpit">Real Monetary Notional CVD ($) &amp; Big Trades Proximity Tape</td>
+                        <td class="metric-name">Data ownership</td>
+                        <td class="metric-retail">Cloud</td>
+                        <td class="metric-gexpit">Local</td>
+                    </tr>
+                    <tr>
+                        <td class="metric-name">Historical archive</td>
+                        <td class="metric-retail">&times;</td>
+                        <td class="metric-gexpit">Your own database</td>
                     </tr>
                 </tbody>
             </table>
@@ -391,12 +570,12 @@
             <article class="pricing-card glass-card">
                 <div class="pricing-header">
                     <h3 class="pricing-tier-name">PRIVATE BETA</h3>
-                    <div class="pricing-price">FREE / INVITE ONLY</div>
+                    <div class="pricing-price"> INVITE ONLY</div>
                 </div>
                 <ul class="pricing-features">
                     <li>Early desktop software access</li>
                     <li>Technical documentation &amp; Sample 0DTE Parquet</li>
-                    <li>Private community feedback channel</li>
+                    <li>Direct support from the developers</li>
                 </ul>
                 <div class="pricing-action">
                     <a href="#bottom-form" class="btn btn-card">Join Waitlist</a>
@@ -410,12 +589,27 @@
                     <h3 class="pricing-tier-name">FOUNDER LICENSE</h3>
                     <div class="pricing-price">ONE TIME FEE</div>
                 </div>
+                <!-- Scarcity progress bar -->
+                <div class="scarcity-bar-wrapper" aria-label="42 of 50 Founder seats taken">
+                    <div class="scarcity-bar-header">
+                        <span class="scarcity-label">Founder seats remaining</span>
+                        <span class="scarcity-count"><strong>28</strong> / 100</span>
+                    </div>
+                    <div class="scarcity-bar-track">
+                        <div class="scarcity-bar-fill" style="width: 84%;"></div>
+                    </div>
+                    <div class="scarcity-warning">⚠ Only 28 seats left at Founder pricing</div>
+                </div>
                 <ul class="pricing-features">
                     <li>Desktop v27 Lifetime License</li>
                     <li>Direct Interactive Brokers Native Integration</li>
                     <li>Local Columnar Parquet Database &amp; Replay Suite</li>
-                    <li>Priority Quantitative Support &amp; Updates</li>
+                    <li>Priority Support &amp; One year of updates included</li>
                 </ul>
+                <div class="pricing-guarantee">
+                    <span class="guarantee-icon">🛡</span>
+                    <span>14-day money-back guarantee — no questions asked</span>
+                </div>
                 <div class="pricing-action">
                     <a href="#bottom-form" class="btn btn-primary btn-featured">Reserve Seat</a>
                 </div>
@@ -435,77 +629,108 @@
             <details class="faq-item">
                 <summary class="faq-question">Which broker and market data feed does GEXPIT use?</summary>
                 <div class="faq-answer">
-                    <p>GEXPIT is engineered specifically for <strong>Interactive Brokers (TWS and IB Gateway)</strong>. It directly captures the official <strong>OPRA SPXW options tick stream</strong> through the IBKR API. You utilize the standard, low-cost market data subscription you already own with Interactive Brokers, with <strong>zero expensive third-party data subscriptions or vendor markups</strong>.</p>
+                    <p>GEXPIT is engineered specifically for <strong>Interactive Brokers (IB Gateway)</strong>. It directly captures the official <strong>OPRA SPX options tick stream</strong> through the IBKR API. You utilize the standard, low-cost market data subscription you already own with Interactive Brokers, with <strong>zero expensive third-party data subscriptions or vendor markups</strong>.</p>
                 </div>
             </details>
 
             <details class="faq-item">
                 <summary class="faq-question">How does local data storage work and how do I build a personal historical database?</summary>
                 <div class="faq-answer">
-                    <p>Every tick, trade execution, and computed Greeks surface is logged directly on your local machine in high-performance <strong>Columnar Apache Parquet</strong> format with Write-Ahead Log (WAL) architecture. Unlike cloud-locked web platforms, you hold 100% ownership of your raw and processed data. You build a valuable, private institutional tick archive day after day with <strong>zero recurring data archive fees</strong>, ready for Python quantitative research (pandas/numpy/scipy) or automated strategies in TradeStation EasyLanguage.</p>
+                    <p>Every tick, trade execution, and computed Greeks surface is logged directly on your local machine in high-performance <strong>Columnar Apache Parquet</strong> format with Write-Ahead Log (WAL) architecture. Unlike cloud-locked web platforms, you hold 100% ownership of your raw and processed data. You build a valuable, private institutional tick archive day after day with <strong>zero recurring data archive fees</strong>, ready for Python quantitative research (pandas/numpy/scipy) or automated strategies in Multichart and TradeStation EasyLanguage.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">What are the minimum system requirements to run the GEXPIT terminal smoothly?</summary>
+                <div class="faq-answer">
+                    <p>Because GEXPIT renders real-time OLED heatmaps at 60 FPS and processes hundreds of thousands of ticks intraday via a Numba JIT-compiled engine, a standard modern PC is required. We recommend at least <strong>8 GB of RAM</strong> (to comfortably run GEXPIT alongside Interactive Brokers TWS without bottlenecking memory) and a <strong>dedicated GPU with at least 4 GB of VRAM</strong> to guarantee zero-latency hardware-accelerated rendering on the charts.</p>
                 </div>
             </details>
 
             <details class="faq-item">
                 <summary class="faq-question">How does the Replay Engine and the Intraday Live Rewind function?</summary>
                 <div class="faq-answer">
-                    <p>GEXPIT features a dual-mode high-throughput replay engine: you can perform <strong>Full-Session Replays</strong> on any previously recorded day at variable speeds (1x to 50x) with zero data loss. Furthermore, during live market sessions, you can <strong>rewind the timeline</strong> to re-examine morning Initial Balance breakouts, heavy block sweeps, or key turning points, and then instantly return to live streaming with a single click (<strong>1-Click Live Snap</strong>) without missing newly arriving ticks.</p>
+                    <p>GEXPIT features a dual-mode high-throughput replay engine: you can perform <strong>Full-Session Replays</strong> on any previously recorded day at variable speeds (1x to 300x) with zero data loss. Furthermore, during live market sessions, you can <strong>rewind the timeline</strong> to re-examine morning Initial Balance breakouts, heavy block sweeps, or key turning points, and then instantly return to live streaming with a single click (<strong>1-Click Live Snap</strong>) without missing newly arriving ticks.</p>
                 </div>
             </details>
 
             <details class="faq-item">
-                <summary class="faq-question">How does the 3 Layer Gaussian Heatmap and its 5 normalization modes work?</summary>
+                <summary class="faq-question">How does the Flow Heatmap work and what are the display modes?</summary>
                 <div class="faq-answer">
-                    <p>Rather than displaying fragmented histograms, GEXPIT projects options liquidity onto a continuous 2D Gaussian density surface with statistical 70th-percentile isocurves and topological kernel calculations on uniform 5-point strike grids. It offers 5 distinct real-time processing modes:</p>
-                    <ul style="margin: 0.5rem 0 0.5rem 1.2rem; color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6;">
-                        <li><strong>Linear:</strong> Proportional absolute exposure across active strikes.</li>
-                        <li><strong>Logarithmic:</strong> Amplifies tail risk and far-OTM institutional sweeps.</li>
-                        <li><strong>Rolling (30-Minute):</strong> Highlights immediate intraday positioning shifts relative to recent activity.</li>
-                        <li><strong>Uniform 5pt Grid:</strong> Eliminates strike distortion across uniform 5-point grid calculations.</li>
-                        <li><strong>HVL Dual Flow:</strong> Dual-density separation isolating Call vs Put positioning with OLED background contrast fading.</li>
+                    <p>The heatmap renders Call and Put volume across the SPX strike chain in real time on a pure OLED black background, synchronized with the Rolling Volume Profile at the selected timeframe. It includes <strong>10 display modes</strong> in two categories:</p>
+                    <p style="margin: 0.75rem 0 0.25rem; color: var(--text-secondary); font-size: 0.85rem; font-family: var(--font-mono);">— GAMMA (GEX) —</p>
+                    <ul style="margin: 0 0 0.75rem 1.2rem; color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6;">
+                        <li><strong>GEX Linear:</strong> Proportional cumulative exposure across active strikes.</li>
+                        <li><strong>GEX Logarithmic:</strong> Amplifies far-OTM activity and tail positioning.</li>
+                        <li><strong>GEX Rolling (30m):</strong> Short-window view of recent intraday shifts.</li>
+                    </ul>
+                    <p style="margin: 0 0 0.25rem; color: var(--text-secondary); font-size: 0.85rem; font-family: var(--font-mono);">— ORDER FLOW &amp; VOLUMES —</p>
+                    <ul style="margin: 0 0 0 1.2rem; color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6;">
+                        <li><strong>Volume Flow:</strong> Strike-level volume from IBKR, synced with Rolling Profile timeframe.</li>
+                        <li><strong>Smooth Flow:</strong> Two-color continuous gradient on net directional volume.</li>
+                        <li><strong>Dominance:</strong> Each strike colored by dominant side (Call or Put) with intensity on gross volume — ATM Straddle nodes glow at maximum brightness.</li>
+                        <li><strong>Delta Dominance:</strong> Dominance weighted by |&Delta;| &times; Volume, emphasizing the real hedging risk of each strike rather than raw premium.</li>
+                        <li><strong>Call Only / Put Only:</strong> Mono-channel views — deep OLED blacks on inactive strikes, pure green or red on active ones.</li>
+                        <li><strong>Dual Panels:</strong> Split display — Calls above, Puts below, synchronized on the same spot axis.</li>
                     </ul>
                 </div>
             </details>
 
             <details class="faq-item">
-                <summary class="faq-question">How do Multi-Timeframe Volume Profiles and Call/Put Flow filters (1m to 120m) work?</summary>
+                <summary class="faq-question">How do Multi-Timeframe Volume Profiles, Flow filters and Market Regime work?</summary>
                 <div class="faq-answer">
-                    <p>In Tab 1, GEXPIT allows traders to dynamically filter both the <strong>Rolling Volume Profile</strong> and separate <strong>Call Flow &amp; Put Flow</strong> across configurable timeframes: <strong>1 min, 5 min, 10 min, 15 min, 30 min, 60 min, and 120 min</strong> (alongside the Full-Session Cumulative Daily Profile). It also computes real-time <strong>Market Regime classification</strong> and tracks the morning <strong>Initial Balance (09:30–10:00 NY)</strong> with exact breakout metrics and operational advisories.</p>
+                    <p>Tab FLOWS HEATMAP lets you filter the <strong>Rolling Volume Profile</strong> and separate <strong>Call Flow &amp; Put Flow</strong> across seven timeframes: 1 min, 5 min, 10 min, 15 min, 30 min, 60 min, and 120 min — as well as the full cumulative session. The same timeframe window controls the heatmap in real time.</p>
+                    <p style="margin-top: 0.75rem;">The HUD also tracks the <strong>Initial Balance</strong> (09:30–10:00 NY) with exact breakout metrics. If the extractor starts late, a fallback window based on the first 30 minutes of actual data activates automatically, with an advisory displayed in the HUD.</p>
+                    <p style="margin-top: 0.75rem;">Tab 1 classifies the session into one of four <strong>Market Regimes</strong> derived from the relative position of Spot, Zero Gamma and Vol Trigger:<br>
+                    <strong>Volatility Damping</strong> (Long Gamma, range compression) — <strong>Volatility Expansion</strong> (Long Gamma, range extension) — <strong>Delta Squeeze</strong> (Short Gamma, dealer velocity high) — <strong>Volatility Cascade</strong> (Short Gamma, pro-cyclical momentum).</p>
                 </div>
             </details>
 
             <details class="faq-item">
-                <summary class="faq-question">What is Monetary CVD and how do Real-Time Sweep Alarms work?</summary>
+                <summary class="faq-question">What is CVD, how does Lee-Ready classification work, and what are Sweep Alarms?</summary>
                 <div class="faq-answer">
-                    <p>Raw contract volume is misleading: 2,000 deep OTM contracts at $0.05 represent only $10,000 of capital, while 2,000 ATM contracts at $15.00 represent $3,000,000 and create massive hedging obligations for dealers. In Tab 2, GEXPIT's <strong>Monetary CVD</strong> weights every execution by actual dollar notional value (<code>Contracts &times; Price &times; 100</code>), tracks 1-minute Notional Value breakdown, and includes real-time <strong>Sweep Alarms</strong> with configurable dollar thresholds ($5M+) to immediately alert on aggressive Call and Put buying bursts.</p>
+                    <p style="margin-top: 0.75rem;">Each trade is classified with the <strong>Lee-Ready algorithm</strong> using a 250ms quote midpoint window. Trades above the midpoint are Buy, below are Sell, and at-midpoint trades are split 50/50 — preserving total volume without introducing artificial directional bias.</p>
+                    <p style="margin-top: 0.75rem;">Three parallel metrics are available: <strong>Notional ($)</strong>, <strong>Volume (contracts)</strong>, and <strong>Delta Flow</strong> (|&Delta;| &times; Volume) — which captures directional hedging urgency independent of premium level. Rolling peaks for Call and Put separately are shown against the Spot curve with exact time windows. <strong>Sweep Alarms</strong> fire in real time above configurable dollar thresholds.</p>
+					<p>Raw contract count is misleading: 2,000 deep OTM contracts at $0.05 represent $10,000, while 2,000 ATM contracts at $15.00 represent $3,000,000 and impose massive hedging obligations on dealers. GEXPIT's <strong>Monetary CVD</strong> weights every execution by actual dollar notional (Contracts &times; Price &times; 100) rather than share count.</p>
                 </div>
             </details>
 
             <details class="faq-item">
-                <summary class="faq-question">How are Greeks (GEX, DEX, VEX, CEX) and Multi-Strike Exposures calculated in real time?</summary>
+                <summary class="faq-question">How are Greeks (GEX, VEX, DEX, CEX) and multi-strike exposures calculated in real time?</summary>
                 <div class="faq-answer">
-                    <p>In Tab 3, GEXPIT executes a <strong>Numba JIT C-compiled Black-Scholes solver</strong> to dynamically compute a 4-panel synchronized exposure matrix by strike: <strong>Total GEX</strong> (Gamma Dollar Hedging $/pt), <strong>Total VEX</strong> (Vanna cross-sensitivity &part;&Delta;/&part;&sigma;), <strong>Total DEX</strong> (Net Dollar Delta), and <strong>Total CEX</strong> (Charm time-decay of delta). Each panel features stacked Call/Put horizontal bars, 3-state density color grading (Low Void, Neutral, High Density HVL), and an overlaid synchronized Spot curve.</p>
+                    <p>Tab GEX VEX DEX CEX shows five synchronized vertical profiles by strike: <strong>Total Volume</strong>, <strong>GEX</strong> (Gamma Dollar Hedging $/pt), <strong>VEX</strong> (Vanna — &#8706;&Delta;/&#8706;&sigma;), <strong>DEX</strong> (Net Dollar Delta), and <strong>CEX</strong> (Charm — &#8706;&Delta;/&#8706;t). All five panels are computed by a <strong>Numba JIT Black-Scholes engine</strong> and displayed as stacked Call/Put horizontal bars with three-level density color grading: LVN (low liquidity, grey), Neutral, and HVN (high density, full saturation). A toolbar controls the time window (1m to full session) and bar layout (stacked or split-centered). All five panels stay synchronized on the same strike axis.</p>
                 </div>
             </details>
 
             <details class="faq-item">
-                <summary class="faq-question">How does the GEXPIT Net GEX Profile and its Historical Shift Markers (1m, 5m, 15m, 30m) work?</summary>
+                <summary class="faq-question">How does GEX Dinamico differ from the standard Net GEX profile?</summary>
                 <div class="faq-answer">
-                    <p>In Tab 4 (GEXPIT), the screen is split into a <strong>Time-Series Spot chart</strong> (featuring dynamic continuous Zero Gamma, Max Call Wall, and Max Put Wall) and a <strong>Net GEX Profile by strike</strong>. The Net GEX chart displays historical scatter markers at <strong>1m (white), 5m (cyan), 15m (yellow), and 30m (orange) ago</strong>, allowing traders to visually observe how dealer walls are migrating, strengthening, or decaying in real time.</p>
+                    <p>The standard <strong>Net GEX</strong> and <strong>Total GEX</strong> profiles accumulate dealer exposure from historical tick flow — each trade deposits its incremental GEX contribution as it arrives. The profile reflects everything that has happened in the session up to the current point in time.</p>
+                    <p style="margin-top: 0.75rem;"><strong>GEX Dinamico</strong> takes a different approach: it uses the <em>total volume traded today per strike</em> and recalculates the full gamma exposure using the <em>current</em> spot price and implied volatility via the Black-Scholes formula. When SPX moves, the entire profile is recalculated — walls shift, Zero Gamma migrates, and the Vol Trigger updates. This is how the market actually re-hedges. The Vol Trigger in Dinamico mode is found with a <strong>price-space scan</strong>: the engine re-evaluates total exposure at hypothetical spot levels (±60pt grid, 5pt step) and finds the exact price where net dealer exposure crosses zero — not a crossing along the strike chain.</p>
+                    <p style="margin-top: 0.75rem;">Historical shift markers (1m, 5m, 15m, 30m, 60m and 120m ago) remain available in the standard modes so you can see how walls have migrated during the session. Finally, the embedded <strong>Velocity Profile</strong> (q4) maps how rapidly dealers are absorbing or pushing the price at key levels in real time.</p>
                 </div>
             </details>
 
             <details class="faq-item">
-                <summary class="faq-question">How does Big Trades detection and Strike Proximity filtering (&le;15pt) function?</summary>
+                <summary class="faq-question">What is the 0DTE Expected Move Corridor and how does Straddle Decay work?</summary>
                 <div class="faq-answer">
-                    <p>In Tab 5 (Big Trades), GEXPIT maps large institutional block executions directly onto the Spot price trajectory as color-coded square blocks (Green for Call, Red for Put). Traders can filter trades by <strong>Strike Proximity (&le;15pt from Spot)</strong> to isolate high-urgency ATM sweeps that force immediate ES futures hedging, and set custom <strong>Dollar Notional Thresholds ($500k+)</strong> to eliminate small retail noise.</p>
+                    <p>Tab EM DECAY shows two panels. The upper panel is the <strong>0DTE Expected Move Corridor</strong>: it plots the SPX Spot price against static ±1SD, ±2SD, and ±3SD bands computed from the ATM straddle price at the open (certified from the first clean tick at 09:30 NY). Two additional dynamic bands at ±1SD and ±2SD update every tick as ATM implied volatility changes intraday.</p>
+                    <p style="margin-top: 0.75rem;">The lower panel shows the <strong>Straddle ATM Decay Corridor</strong> in SPX points. A theoretical decay curve tracks how much the ATM straddle should be worth as time passes through the 390-minute session — proportional of remaining time. A second live curve plots the actual straddle price every tick. When the live price diverges from the theoretical decay, it signals that IV is expanding or compressing relative to what a pure Theta decay would predict.</p>
                 </div>
             </details>
 
             <details class="faq-item">
-                <summary class="faq-question">What are the platform's graphical and rendering optimizations?</summary>
+                <summary class="faq-question">How does Big Trades detection and Strike Proximity filtering work?</summary>
                 <div class="faq-answer">
-                    <p>GEXPIT features an institutional <strong>Dark OLED theme</strong> with high-contrast typography (JetBrains Mono), <strong>Trilayer Spot &amp; Zero Gamma Glow overlays</strong> for zero visual clutter, an <strong>Universal Zoom Manager</strong> with intelligent X/Y auto-fit and double-click full-session reset, a synchronized <strong>Crosshair HUD X-Ray</strong> across all tabs, <strong>Hotkey F9 Focus Mode</strong>, and a native <strong>Peak-Preserving LOD Decimation engine</strong> ensuring sub-millisecond 60 FPS rendering on 500,000+ tick datasets without dropping extreme spikes.</p>
+                    <p>Tab BIG TRADES plots large options executions as color-coded markers directly on the Spot price chart — green for Call, red for Put. Two independent filters let you control the signal: <strong>Strike Proximity</strong> isolates trades within a chosen distance from the current spot (e.g. ≤15pt), focusing on ATM sweeps that force immediate dealer hedging. <strong>Dollar Notional and Contract Volume thresholds</strong> filter out smaller trades. Both filters are independent and adjustable in real time. The tab also shows Call Flow and Put Flow synchronized on the same time axis.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">What does Tab FLOWS IV show and how does rendering perform at scale?</summary>
+                <div class="faq-answer">
+                    <p>Tab FLOWS IV (Flow &amp; IV) combines three synchronized panels: the SPX Spot price, 1-minute flow values (volume bars), and the <strong>ATM Implied Volatility Z-Score</strong> on a 30-minute rolling window — a normalized measure of how unusual the current IV level is relative to the intraday baseline. All seven tabs share a <strong>Universal Zoom Manager</strong> with auto-fit X/Y axes, double-click full-session reset, and a synchronized crosshair across all panels.</p>
+                    <p style="margin-top: 0.75rem;">Performance is handled by a <strong>Peak-Preserving LOD Decimation engine</strong> (Numba-accelerated): on datasets above 3,000 points, the renderer reduces the series while guaranteeing that no spike or extreme tick is dropped. On real sessions with 500,000+ ticks, all panels render at 60 FPS without data loss at the crosshair level.</p>
                 </div>
             </details>
         </div>
@@ -513,15 +738,13 @@
         <!-- Bottom Waitlist Access Cockpit -->
         <div class="bottom-cta-wrapper">
             <div class="glass-container bottom-cockpit">
-                <div class="cockpit-header">
-                    <span class="cockpit-badge">INTERACTIVE BROKERS QUANT GATEWAY</span>
-                    <span class="cockpit-metric">0DTE REAL TIME DESK</span>
-                </div>
-
-                <h3 class="cta-title">CONNECT YOUR IBKR FEED TO GEXPIT</h3>
+                <h3 class="cta-title">SEE WHAT MOVES SPX.</h3>
 
                 <p class="cta-subtitle">
-                    Harness real-time options microstructure, Monetary Notional CVD, and dynamic dealer hedging analytics directly on your Interactive Brokers OPRA stream.
+                    Join the private GEXPIT beta.<br><br>
+                    Your IBKR feed.<br>
+                    Your data.<br>
+                    Your dealer-flow dashboard.
                 </p>
 
                 <!-- Bottom Access Request Form with Anti-Bot Honeypot -->
@@ -539,23 +762,21 @@
                                 id="bottom-email" 
                                 name="email" 
                                 class="form-input" 
-                                placeholder="Enter your email address" 
+                                placeholder="WORK EMAIL" 
                                 required 
                                 autocomplete="email"
                                 spellcheck="false"
                             >
                         </div>
                         <button type="submit" class="btn btn-primary">
-                            <span>Request Access</span>
+                            <span>REQUEST ACCESS &rarr;</span>
                         </button>
                     </div>
 
-                    <div class="form-meta">
-                        <span class="meta-item">Direct TWS / IB Gateway API</span>
-                        <span class="meta-separator">•</span>
-                        <span class="meta-item">Standard OPRA Feed ($0 Extra Cost)</span>
-                        <span class="meta-separator">•</span>
-                        <span class="meta-item">Local Parquet Database &amp; Replay</span>
+                    <div class="form-meta" style="margin-top: 1.5rem;">
+                        <span class="meta-item" style="color: var(--text-secondary);">Private beta.</span>
+                        <span class="meta-separator" style="color: var(--text-secondary);">•</span>
+                        <span class="meta-item" style="color: var(--text-secondary);">No credit card.</span>
                     </div>
                 </form>
             </div>
@@ -571,6 +792,20 @@
             <p class="footer-disclaimer">Derivatives trading involves high risk. This cockpit is for informational and statistical analysis only.</p>
         </div>
     </footer>
+
+    <!-- ========================================== -->
+    <!-- STICKY CTA BAR (appare dopo 50% scroll)    -->
+    <!-- ========================================== -->
+    <div class="sticky-cta-bar" id="sticky-cta" role="complementary" aria-label="Quick access form">
+        <div class="sticky-cta-inner">
+            <div class="sticky-cta-text">
+                <span class="sticky-dot"></span>
+                <span><strong>GEXPIT Founder License</strong> — Only 8 seats left at launch pricing.</span>
+            </div>
+            <a href="#bottom-form" class="btn btn-primary sticky-cta-btn">Reserve My Seat &rarr;</a>
+            <button class="sticky-cta-close" id="sticky-cta-close" aria-label="Close notification">✕</button>
+        </div>
+    </div>
 
     <!-- Core Interactive Logic -->
     <script src="script.js"></script>

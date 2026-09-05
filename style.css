@@ -9,19 +9,19 @@
    -------------------------------------------------------------------------- */
 :root {
     /* Color Palette — Institutional Dark Spectrum */
-    --bg-main: #080b10;
-    --bg-surface: #121620;
-    --bg-card: rgba(18, 22, 32, 0.65);
+    --bg-main: #05070a;
+    --bg-surface: #0b0f14;
+    --bg-card: rgba(11, 15, 20, 0.65);
     
     /* Quantitative & Microstructure Signal Accents */
     --accent-spot: #ffd700;
-    --accent-zerogamma: #00d4ff;
-    --accent-call: #00ff88;
-    --accent-put: #ff4d4d;
+    --accent-zerogamma: #00d9ff;
+    --accent-call: #24e6a4;
+    --accent-put: #ff4d67;
     
     /* Typography Color Hierarchy (secondary brightened slightly for glass-surface legibility) */
-    --text-primary: #f0f6fc;
-    --text-secondary: #aab8cc;
+    --text-primary: #f4f7fa;
+    --text-secondary: #89929e;
     --text-muted: #4a5568;
     
     /* Glassmorphism & Depth Infrastructure */
@@ -124,6 +124,16 @@ body {
 ::selection {
     background: rgba(0, 212, 255, 0.3);
     color: #ffffff;
+}
+
+/* Keyboard Focus Ring — visibile su Chrome, Edge, Safari (macOS/iOS)
+   Rimosso il focus di default del browser, sostituito con anello cyan
+   coerente col design system. :focus-visible è supportato da tutti i
+   browser moderni e si attiva SOLO per navigazione keyboard, non al click. */
+:focus-visible {
+    outline: 2px solid var(--accent-zerogamma);
+    outline-offset: 3px;
+    border-radius: 4px;
 }
 
 /* --------------------------------------------------------------------------
@@ -423,26 +433,9 @@ body {
    gradient still looks rich but is painted once and then costs nothing. */
 .hero-section {
     position: relative;
-    min-height: 100vh;
-    /* See the body rule above for why: avoids the hero being taller than
-       the actually-visible area (or jumping) as mobile browser chrome
-       shows/hides. */
-    min-height: 100dvh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8rem 1.5rem 5rem 1.5rem;
-    /* Keeps the cockpit content clear of the iPhone notch/Dynamic Island
-       and Android display cutouts in landscape, where they intrude from
-       the side rather than the top. No-op on devices without a cutout. */
-    padding-left: max(1.5rem, env(safe-area-inset-left));
-    padding-right: max(1.5rem, env(safe-area-inset-right));
+    /* No min-height needed: video fills the viewport naturally */
     overflow: hidden;
-    background: radial-gradient(circle at 50% 38%, rgba(0, 212, 255, 0.05) 0%, transparent 60%),
-                radial-gradient(circle at 84% 16%, rgba(0, 255, 136, 0.03) 0%, transparent 45%),
-                radial-gradient(circle at 12% 80%, rgba(255, 215, 0, 0.028) 0%, transparent 42%),
-                radial-gradient(circle at 92% 88%, rgba(0, 212, 255, 0.03) 0%, transparent 40%),
-                var(--bg-main);
+    background: var(--bg-main);
 }
 
 /* Ambient Faded Typographic Background Layer */
@@ -452,7 +445,7 @@ body {
     font-size: clamp(3.5rem, 8.5vw, 8rem);
     font-weight: 800;
     color: #ffffff;
-    opacity: 0.025;
+    opacity: 0.018;
     letter-spacing: 0.28em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -473,18 +466,103 @@ body {
     transform: translateX(-50%);
 }
 
-/* Hero Content Wrapper */
+/* ── Cinematic Full-Width Hero Wrapper ─────────────────────────────────────
+   The video is the hero. Text lives in an overlay at the bottom.
+   No 50/50 grid: the cockpit speaks for itself. */
 .hero-wrapper {
     position: relative;
     z-index: 10;
     width: 100%;
-    max-width: 920px;
-    margin: 0 auto;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
 }
 
-/* Cockpit Container (Zero Blur & Zero Masking Ancestor for Fluid Video Compositing) */
+/* Video container — full viewport width. The video is an absolutely
+   positioned background layer (see .hero-video-wrapper below) so this
+   box's height is driven purely by .hero-content's normal-flow height:
+   the overlay can never be taller than its container and get clipped,
+   no matter how much text it holds at a given viewport width. min-height
+   restores the cinematic "video fills the viewport" feel on viewports
+   where the text is short relative to the screen; flex + justify-content
+   keeps the text pinned to the bottom either way. */
+.hero-media {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: clamp(420px, 78vh, 820px);
+}
+
+/* Text overlay: normal-flow child of .hero-media, pushed to the bottom by
+   the flex container above; the video sits behind it as a full-bleed
+   absolute layer, so the overlay is always exactly as tall as its content
+   needs and is never cropped. */
+.hero-content {
+    position: relative;
+    z-index: 20;
+    padding: 3rem clamp(1.5rem, 5vw, 5rem) 2.5rem clamp(1.5rem, 5vw, 5rem);
+    /* Dark gradient scrim so text stays legible over any video frame —
+       pure CSS, zero extra asset, zero ongoing cost */
+    background: linear-gradient(
+        to top,
+        rgba(5, 7, 10, 0.96) 0%,
+        rgba(5, 7, 10, 0.82) 40%,
+        rgba(5, 7, 10, 0.45) 72%,
+        transparent 100%
+    );
+}
+
+/* Hero benefits bar: horizontal below the title */
+.hero-benefits {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.benefit-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.benefit-item strong {
+    font-family: var(--font-mono);
+    color: var(--accent-zerogamma);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.15rem;
+}
+
+.benefit-item span {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid var(--text-secondary);
+    color: var(--text-primary);
+    padding: 0.8rem 1.6rem;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.btn-secondary:hover {
+    border-color: var(--accent-zerogamma);
+    color: var(--accent-zerogamma);
+    transform: translateY(-1px);
+}
+
+/* Cockpit Container — kept for other uses (bottom CTA, etc.) */
 .hero-cockpit {
     background-color: rgba(12, 16, 24, 0.96);
     background-image: var(--sheen-glass);
@@ -562,26 +640,23 @@ body {
     letter-spacing: 0.08em;
 }
 
-/* Hero Typography (Strictly Zero Hyphens in Titles)
-   Marketing rationale: a flat white-to-grey gradient reads as "generic SaaS".
-   Widening the gradient to three stops plus a dual drop-shadow (a faint light
-   rim above, a soft dark contact shadow below) mimics light hitting engraved
-   metal/glass lettering -- it signals precision engineering, which supports
-   the "mathematical edge" positioning. filter: drop-shadow is compositor
-   only, so it costs nothing on the frame budget. */
+/* ── Hero Title — larger for cinematic layout ───────────────────────────── */
 .hero-title {
     font-family: var(--font-main);
-    font-size: clamp(2.1rem, 4.2vw, 3.1rem);
+    /* Bigger: was 2.1–3.1rem, now 2.8–4.2rem */
+    font-size: clamp(2.8rem, 5.5vw, 4.2rem);
     font-weight: 700;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
     text-transform: uppercase;
-    margin-bottom: 1.35rem;
+    margin-bottom: 1rem;
     color: #ffffff;
     background: linear-gradient(180deg, #ffffff 0%, #e3ecf7 42%, #9fb4cf 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.12)) drop-shadow(0 3px 10px rgba(0, 0, 0, 0.5));
+    /* Prevent line-wrap breaking the cinematic feel on tablets */
+    max-width: 18ch;
 }
 
 .hero-subtitle {
@@ -589,39 +664,40 @@ body {
     line-height: 1.65;
     color: var(--text-secondary);
     max-width: 720px;
-    margin: 0 auto 2.5rem auto;
+    margin: 0 0 1.5rem 0;
     font-weight: 400;
-    /* Contrast boost against blurred/bright glass background, paint-only */
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 /* --------------------------------------------------------------------------
    4B. FLOATING COCKPIT TERMINAL VIDEO SHOWCASE (HARDWARE-ISOLATED 3D ENGINE)
    -------------------------------------------------------------------------- */
 .hero-video-wrapper {
+    /* Full-bleed background layer filling .hero-media, whatever height
+       that ends up being (see .hero-media above) — not the other way
+       around. The <video> itself uses object-fit: cover, so it always
+       fills this box cleanly regardless of aspect ratio. */
+    position: absolute;
+    inset: 0;
     width: 100%;
-    max-width: 100%;
-    aspect-ratio: 16 / 9;
-    margin: 0 auto 2.5rem auto;
-    border-radius: 12px;
-    border: 1px solid var(--border-glow);
-    background-color: #080b10;
-    box-shadow: var(--shadow-glass-depth), var(--shadow-cockpit-glow), 0 0 30px rgba(0, 212, 255, 0.05);
-    position: relative;
-    /* No overflow:hidden to eliminate offscreen GPU alpha masking */
+    height: 100%;
+    overflow: hidden;
+    border: none;
+    border-bottom: 1px solid var(--border-glow);
+    background-color: #05070a;
     transform: translateZ(0);
     backface-visibility: hidden;
 }
 
-/* Subtle Static Top Rim Highlight */
+/* Static top rim — kept for visual continuity with header */
 .hero-video-wrapper::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 10%;
-    right: 10%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.4) 50%, transparent 100%);
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.3) 50%, transparent 100%);
     z-index: 2;
     pointer-events: none;
 }
@@ -629,13 +705,427 @@ body {
 .hero-showcase-video {
     transform: translateZ(0);
     backface-visibility: hidden;
-    object-fit: cover;
+    /* Nel nuovo layout Framed Terminal il video occupa la sua finestra
+       senza crop aggressivo — object-fit: contain preserva la risoluzione nativa */
+    object-fit: contain;
     width: 100%;
     height: 100%;
-    border-radius: 12px;
-    z-index: 1; /* Forza un stacking context isolato */
-    background-color: #080b10; /* --bg-main per evitare flash trasparenti */
     display: block;
+    background-color: #05070a;
+}
+
+
+/* --------------------------------------------------------------------------
+   4B-NEW. HERO FRAMED TERMINAL LAYOUT
+   Split 2 colonne: testo | video in finestra cockpit con bordi luminosi.
+   Il video viene mostrato nel suo aspect-ratio nativo: zero upscaling,
+   zero sgranatura su monitor large. Aspetto Bloomberg Terminal.
+   -------------------------------------------------------------------------- */
+
+/* Wrapper orizzontale con padding laterale e min-height per respiro verticale */
+.hero-split {
+    display: grid;
+    grid-template-columns: 42fr 58fr;
+    gap: 3rem;
+    align-items: center;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 5rem clamp(1.5rem, 5vw, 4rem) 4rem;
+    min-height: clamp(560px, 80vh, 860px);
+}
+
+/* Colonna sinistra: testo + CTA */
+.hero-text-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    z-index: 20;
+}
+
+/* Colonna destra: finestra video cockpit */
+.hero-video-col {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 20;
+    /* Bordo luminoso esterno della finestra cockpit */
+    border-radius: 14px;
+    box-shadow:
+        0 0 0 1px rgba(0, 212, 255, 0.25),
+        0 0 50px rgba(0, 212, 255, 0.08),
+        0 8px 40px rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+}
+
+/* Barra terminale superiore stile Bloomberg / macOS dark */
+.cockpit-terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(10, 14, 22, 0.98);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.18);
+    padding: 0.6rem 1rem;
+    flex-shrink: 0;
+}
+
+.cockpit-terminal-title {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.06em;
+    flex: 1;
+    text-align: center;
+}
+
+.cockpit-terminal-status {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--accent-call);
+    letter-spacing: 0.08em;
+}
+
+/* Contenitore video: aspect-ratio fisso 16:9, nessun crop */
+.hero-video-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #05070a;
+    overflow: hidden;
+}
+
+.hero-video-frame video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    background-color: #05070a;
+}
+
+/* Waitlist FOMO counter */
+.hero-waitlist-counter {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 1.25rem 0 1.5rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.waitlist-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-call);
+    box-shadow: 0 0 8px var(--accent-call);
+    flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.waitlist-num {
+    color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   4B-NEW-2. SCARCITY BAR (Pricing section)
+   -------------------------------------------------------------------------- */
+
+.scarcity-bar-wrapper {
+    margin: 1rem 0 1.5rem;
+    padding: 0.875rem 1rem;
+    background: rgba(255, 215, 0, 0.04);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    border-radius: 8px;
+}
+
+.scarcity-bar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+}
+
+.scarcity-label {
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+}
+
+.scarcity-count {
+    color: var(--accent-spot);
+}
+
+.scarcity-count strong {
+    font-size: 1rem;
+    color: var(--accent-spot);
+}
+
+.scarcity-bar-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.scarcity-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-call) 0%, var(--accent-spot) 100%);
+    border-radius: 3px;
+    transition: width 0.8s ease;
+}
+
+.scarcity-warning {
+    margin-top: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent-spot);
+    letter-spacing: 0.06em;
+}
+
+/* Garanzia 30 giorni */
+.pricing-guarantee {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.75rem 0 1rem;
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    padding: 0.6rem 0.75rem;
+    background: rgba(36, 230, 164, 0.04);
+    border-radius: 6px;
+    border: 1px solid rgba(36, 230, 164, 0.12);
+}
+
+.guarantee-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   4B-NEW-3. STICKY CTA BAR
+   Appare dal basso dopo che l'utente ha scrollato oltre il 50%.
+   Rimane nascosta finché JS non aggiunge la classe .visible.
+   -------------------------------------------------------------------------- */
+
+.sticky-cta-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(10, 14, 22, 0.97);
+    border-top: 1px solid rgba(0, 212, 255, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+
+.sticky-cta-bar.visible {
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.sticky-cta-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0.875rem clamp(1rem, 4vw, 3rem);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.sticky-cta-text {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex: 1;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.sticky-cta-text strong {
+    color: var(--text-primary);
+}
+
+.sticky-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-zerogamma);
+    box-shadow: 0 0 8px var(--accent-zerogamma);
+    flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.sticky-cta-btn {
+    white-space: nowrap;
+    padding: 0.65rem 1.5rem;
+    font-size: 0.875rem;
+}
+
+.sticky-cta-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.25rem 0.5rem;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: color 0.15s;
+}
+
+.sticky-cta-close:hover {
+    color: var(--text-primary);
+}
+
+
+/* --------------------------------------------------------------------------
+   4C. VERIFIED NUMBERS STRIP
+   Pure static layout — no animation, no JS. Six hard numbers from real
+   sessions. Communicates depth of engineering without a single adjective.
+   -------------------------------------------------------------------------- */
+.verified-section {
+    width: 100%;
+    background: rgba(0, 212, 255, 0.03);
+    border-top: 1px solid rgba(0, 212, 255, 0.1);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+    padding: 2.5rem 2rem;
+}
+
+.verified-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.verified-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    color: var(--accent-zerogamma);
+    text-align: center;
+    margin-bottom: 1.75rem;
+    opacity: 0.7;
+}
+
+.verified-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+    text-align: center;
+}
+
+.verified-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.verified-value {
+    font-family: var(--font-mono);
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+    /* Subtle gradient to match the hero title treatment */
+    background: linear-gradient(180deg, #ffffff 0%, #9fb4cf 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.verified-desc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* --------------------------------------------------------------------------
+   4D. TIMELINE SECTION — A DAY IN GEXPIT
+   Vertical timeline with a left connecting line. Pure CSS, no JS.
+   On mobile the layout collapses gracefully to a stacked list.
+   -------------------------------------------------------------------------- */
+.timeline-section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+
+.timeline-list {
+    list-style: none;
+    position: relative;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+/* The vertical connecting line */
+.timeline-list::before {
+    content: '';
+    position: absolute;
+    left: 6.5rem;
+    top: 0.6rem;
+    bottom: 0.6rem;
+    width: 1px;
+    background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(0, 212, 255, 0.25) 8%,
+        rgba(0, 212, 255, 0.25) 92%,
+        transparent 100%
+    );
+}
+
+.timeline-item {
+    display: grid;
+    grid-template-columns: 6rem 1.2rem 1fr;
+    gap: 0 1.25rem;
+    align-items: start;
+    margin-bottom: 2.5rem;
+    position: relative;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-time {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent-zerogamma);
+    letter-spacing: 0.04em;
+    padding-top: 0.1rem;
+    text-align: right;
+}
+
+.timeline-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent-zerogamma);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    margin-top: 0.3rem;
+    justify-self: center;
+    flex-shrink: 0;
+}
+
+.timeline-body {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    padding-bottom: 0.25rem;
+}
+
+.timeline-body strong {
+    color: var(--text-primary);
+    font-weight: 600;
 }
 
 /* --------------------------------------------------------------------------
@@ -1060,6 +1550,8 @@ body {
 .features-rows .feature-row:nth-of-type(4) .feature-row-text::before { background: var(--accent-put); color: var(--accent-put); }
 .features-rows .feature-row:nth-of-type(5) .feature-row-text::before { background: #ff9100; color: #ff9100; }
 .features-rows .feature-row:nth-of-type(6) .feature-row-text::before { background: #00e5ff; color: #00e5ff; }
+.features-rows .feature-row:nth-of-type(7) .feature-row-text::before { background: #a855f7; color: #a855f7; }
+.features-rows .feature-row:nth-of-type(8) .feature-row-text::before { background: #22d3ee; color: #22d3ee; }
 
 .features-rows .feature-row:nth-of-type(1) .card-list li::before { color: var(--accent-zerogamma); }
 .features-rows .feature-row:nth-of-type(2) .card-list li::before { color: var(--accent-call); }
@@ -1067,6 +1559,26 @@ body {
 .features-rows .feature-row:nth-of-type(4) .card-list li::before { color: var(--accent-put); }
 .features-rows .feature-row:nth-of-type(5) .card-list li::before { color: #ff9100; }
 .features-rows .feature-row:nth-of-type(6) .card-list li::before { color: #00e5ff; }
+.features-rows .feature-row:nth-of-type(7) .card-list li::before { color: #a855f7; }
+.features-rows .feature-row:nth-of-type(8) .card-list li::before { color: #22d3ee; }
+
+/* Placeholder per screenshot mancanti (Tab 6 e 7): aspect-ratio corretto
+   mantenuto, colore uniforme al resto del sito. Quando carichi il file webp
+   corretto nella cartella assets/img con il nome esatto, si sostituisce
+   automaticamente senza modificare il CSS. */
+.feature-media-placeholder {
+    background-color: rgba(5, 7, 10, 0.95);
+    min-height: 200px;
+}
+
+/* Nasconde l'alt text broken-image icon quando il file non esiste ancora —
+   sostituisce con un box scuro pulito (nessun testo visibile al visitatore) */
+.feature-media-placeholder:not([src*=".webp"]),
+img.feature-media-placeholder[src=""],
+img.feature-media-placeholder {
+    /* L'img con src mancante mostra il box scuro dell'aspect-ratio container */
+    color: transparent;
+}
 
 .card-header {
     margin-bottom: 1rem;
@@ -1778,10 +2290,6 @@ details[open] .faq-question::after {
         overflow: hidden;
     }
 
-    .hero-video-wrapper {
-        margin-bottom: 2rem;
-    }
-
     /* Alternating Feature Rows stack Text-above-Image below the same
        breakpoint already used for the nav drawer — a 50/50 split reads as
        too narrow per column under ~1180px for these ultra-wide desktop
@@ -1850,23 +2358,79 @@ details[open] .faq-question::after {
        .nav-menu-cta, which carries its own min-height: 48px. */
 
     .hero-section {
-        /* padding-top/bottom only (not the shorthand) so this doesn't clobber
-           the safe-area-aware left/right padding set on the base rule. */
-        padding-top: 6.5rem;
-        padding-bottom: 3.5rem;
-        padding-left: max(1rem, env(safe-area-inset-left));
-        padding-right: max(1rem, env(safe-area-inset-right));
+        /* Cinematic hero: no padding needed, video fills full width */
+        overflow: hidden;
+    }
+
+    /* On mobile the hero overlay text runs the full width with bottom padding
+       so the CTA sits above the safe area */
+    .hero-content {
+        padding: 2rem 1.25rem 2rem 1.25rem;
+        padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    }
+
+    /* Framed Terminal: stack verticale su mobile */
+    .hero-split {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 3rem 1.25rem 2rem;
+        min-height: auto;
+    }
+
+    .hero-video-col {
+        order: -1; /* Video prima del testo su mobile */
+    }
+
+    /* Sticky CTA bar: testo accorciato su mobile */
+    .sticky-cta-text span:last-child {
+        font-size: 0.8rem;
+    }
+
+    .sticky-cta-btn {
+        padding: 0.55rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    /* Verified grid: 3 columns on tablet, 2 on phone (handled in 480px) */
+    .verified-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem 1rem;
+    }
+
+    /* Timeline: hide vertical line, simplify to stacked items */
+    .timeline-list::before {
+        display: none;
+    }
+
+    .timeline-item {
+        grid-template-columns: 4rem 1fr;
+        grid-template-rows: auto auto;
+        gap: 0.25rem 0.75rem;
+    }
+
+    .timeline-time {
+        text-align: left;
+        grid-row: 1;
+        grid-column: 1;
+    }
+
+    .timeline-dot {
+        display: none;
+    }
+
+    .timeline-body {
+        grid-row: 2;
+        grid-column: 1 / -1;
+        padding-left: 0.25rem;
+        padding-bottom: 1.25rem;
+        border-left: 2px solid rgba(0, 212, 255, 0.2);
+        padding-left: 0.75rem;
     }
 
     .glass-container,
     .hero-cockpit {
         padding: 2rem 1.5rem;
         border-radius: 12px;
-    }
-
-    .hero-video-wrapper {
-        margin-bottom: 1.75rem;
-        border-radius: 10px;
     }
 
     /* Tighter vertical rhythm so sections don't feel like empty scroll gaps
@@ -1964,11 +2528,6 @@ details[open] .faq-question::after {
         font-size: 0.95rem;
     }
 
-    .hero-video-wrapper {
-        margin-bottom: 1.5rem;
-        border-radius: 8px;
-    }
-
     .form-meta {
         flex-direction: column;
         gap: 0.3rem;
@@ -1980,6 +2539,10 @@ details[open] .faq-question::after {
 
     .specs-ticker {
         grid-template-columns: 1fr;
+    }
+
+    .verified-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .comparison-table th,
@@ -2019,10 +2582,6 @@ details[open] .faq-question::after {
 
     .hero-subtitle {
         margin-bottom: 1.25rem;
-    }
-
-    .hero-video-wrapper {
-        margin-bottom: 1rem;
     }
 }
 
