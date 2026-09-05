@@ -194,11 +194,14 @@ section {
 }
 
 .yt-profile-icon {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid #333;
+    height: 18px;
+    width: auto;
+    max-width: 100px;
+    object-fit: contain;
+    border-radius: 0;
+    border: none;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .btn-nav {
@@ -249,7 +252,7 @@ section {
 .main-nav {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1.25rem;
 }
 
 .main-nav a:not(.btn) {
@@ -409,6 +412,12 @@ section {
 }
 .feature-reverse .feature-grid > * {
     direction: ltr;
+}
+
+.feature-grid + .feature-grid {
+    margin-top: 5rem;
+    padding-top: 5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .feature-text {
@@ -596,12 +605,15 @@ details[open] .faq-question::after {
 @media (max-width: 1024px) {
     .hero-title { font-size: 3rem; }
     .feature-grid { gap: 3rem; }
+    .main-nav { gap: 0.85rem; }
+    .main-nav a:not(.btn) { font-size: 0.82rem; }
 }
 
 @media (max-width: 768px) {
     .hero-grid { grid-template-columns: 1fr; }
     .hero-title { font-size: 2.5rem; }
     .feature-grid { grid-template-columns: 1fr; }
+    .feature-grid + .feature-grid { margin-top: 3.5rem; padding-top: 3.5rem; }
     .feature-reverse .feature-grid { direction: ltr; }
     .walls-grid { grid-template-columns: 1fr; }
     .regime-grid { grid-template-columns: 1fr 1fr; }
