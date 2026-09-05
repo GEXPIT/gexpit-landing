@@ -1,2593 +1,617 @@
 /* ==========================================================================
-   GEXPIT INSTITUTIONAL PLATFORM — CORE DESIGN SYSTEM & STYLESHEET
-   Version: 1.0.0 (Phase 2 Master Blueprint)
-   Stack: Pure Vanilla CSS3 (Zero Framework Overhead, Hardware Accelerated)
+   GEXPIT - QUANTITATIVE DESIGN SYSTEM (Full Dark Premium)
+   Base: Near-black / OLED-inspired
+   Accents: Emerald Green, Crimson Red, Graphite
+   Typography: Inter (UI), JetBrains Mono (Data/Tech)
    ========================================================================== */
 
-/* --------------------------------------------------------------------------
-   1. DESIGN TOKENS & CSS VARIABLES (ROOT)
-   -------------------------------------------------------------------------- */
 :root {
-    /* Color Palette — Institutional Dark Spectrum */
-    --bg-main: #05070a;
-    --bg-surface: #0b0f14;
-    --bg-card: rgba(11, 15, 20, 0.65);
+    /* Color Palette - 100% Dark Theme */
+    --bg-oled: #000000;
+    --bg-dark: #05070a;
+    --bg-card-dark: #0a0c10;
     
-    /* Quantitative & Microstructure Signal Accents */
-    --accent-spot: #ffd700;
-    --accent-zerogamma: #00d9ff;
-    --accent-call: #24e6a4;
-    --accent-put: #ff4d67;
+    /* Instead of white, we use deep slate/graphite for alternating sections */
+    --bg-light: #0d1117; 
+    --bg-card-light: #161b22;
     
-    /* Typography Color Hierarchy (secondary brightened slightly for glass-surface legibility) */
-    --text-primary: #f4f7fa;
-    --text-secondary: #89929e;
-    --text-muted: #4a5568;
+    --text-primary-dark: #ffffff;
+    --text-secondary-dark: #a1a1aa;
+    --text-muted-dark: #52525b;
     
-    /* Glassmorphism & Depth Infrastructure */
-    --border-glass: rgba(255, 255, 255, 0.08);
-    --border-glow: rgba(0, 212, 255, 0.2);
-    /* PERFORMANCE: lowered from 16px. backdrop-filter blur cost scales with
-       radius, and this value is reused on 7 cards + the comparison table +
-       both cockpit panels simultaneously — 12px still reads as thick glass
-       but samples a meaningfully smaller area per element. */
-    --blur-glass: blur(12px);
-    --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
-    --shadow-cockpit-glow: 0 0 50px rgba(0, 212, 255, 0.05);
-
-    /* Multi Level Glass Depth (inner rim + outer luminous edge + refraction sheen) */
-    --border-glass-inner: rgba(255, 255, 255, 0.14);
-    --border-glass-outer: rgba(0, 212, 255, 0.16);
-    --sheen-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 32%, rgba(255, 255, 255, 0) 68%, rgba(0, 212, 255, 0.035) 100%);
-    --shadow-glass-depth: 0 8px 32px 0 rgba(0, 0, 0, 0.6), inset 0 1px 0 0 var(--border-glass-inner), inset 0 0 0 1px rgba(255, 255, 255, 0.025), 0 0 0 1px var(--border-glass-outer);
-
-    /* Typography Families */
-    --font-main: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
-
-    /* Transitions & Motion Curves (Zero Reflow) */
-    --transition-fast: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-    --transition-smooth: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    --transition-slow: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --text-primary-light: #f0f6fc;
+    --text-secondary-light: #8b949e;
+    --text-muted-light: #484f58;
+    
+    --accent-green: #00E676;
+    --accent-green-glow: rgba(0, 230, 118, 0.15);
+    --accent-red: #FF0000; /* YouTube Red */
+    --accent-red-glow: rgba(255, 0, 0, 0.15);
+    
+    --border-dark: #27272a;
+    --border-light: #30363d;
+    
+    /* Typography */
+    --font-ui: 'Inter', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    
+    /* Spacing */
+    --space-xs: 0.5rem;
+    --space-s: 1rem;
+    --space-m: 2rem;
+    --space-l: 4rem;
+    --space-xl: 6rem;
 }
 
-/* --------------------------------------------------------------------------
-   2. ARCHITECTURAL RESET & BASE SETUP
-   -------------------------------------------------------------------------- */
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
+/* ==========================================================================
+   RESET & BASE
+   ========================================================================== */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 html {
     scroll-behavior: smooth;
-    text-rendering: optimizeLegibility;
+}
+
+body {
+    font-family: var(--font-ui);
+    background-color: var(--bg-oled);
+    color: var(--text-primary-dark);
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: 16px;
-    height: 100%;
-    /* Stops iOS Safari auto-inflating font size on device rotation
-       (the "text size adjust" quirk), which otherwise makes layouts jump
-       between portrait and landscape for no visual reason. */
-    -webkit-text-size-adjust: 100%;
-    text-size-adjust: 100%;
 }
 
-/* Removes the gray/blue flash Android Chrome and iOS Safari draw on every
-   tap of a link/button by default — small thing, but it's what makes a
-   site feel like a native app instead of "a webpage" on a phone. */
-* {
-    -webkit-tap-highlight-color: transparent;
-}
-
-/* Global Mesh Backdrop + Blueprint Grid
-   Marketing rationale: a flat #080b10 canvas is what makes long sections
-   (Features, Comparison, FAQ) feel dead between the glass panels. Layering
-   four soft, low opacity color blobs from the existing quant palette plus a
-   faint engineering grid turns every scroll position into something that
-   looks alive and instrument-grade, not just a stack of cards on black.
-   Everything here is a static background-image — one paint at load/resize,
-   zero animation cost, zero reflow risk. */
-body {
-    background-color: var(--bg-main);
-    background-image:
-        radial-gradient(circle at 12% 8%, rgba(0, 212, 255, 0.07) 0%, transparent 32%),
-        radial-gradient(circle at 88% 5%, rgba(255, 215, 0, 0.045) 0%, transparent 28%),
-        radial-gradient(circle at 92% 55%, rgba(0, 255, 136, 0.035) 0%, transparent 30%),
-        radial-gradient(circle at 6% 68%, rgba(0, 212, 255, 0.05) 0%, transparent 30%),
-        radial-gradient(circle at 50% 100%, rgba(255, 77, 77, 0.025) 0%, transparent 35%),
-        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.014) 0px, rgba(255, 255, 255, 0.014) 1px, transparent 1px, transparent 72px),
-        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.014) 0px, rgba(255, 255, 255, 0.014) 1px, transparent 1px, transparent 72px);
-    /* Deliberately NOT background-attachment: fixed — known jank/repaint
-       cost on iOS Safari when scrolling; a static, scroll-with-content
-       background is just as rich here and stays perfectly smooth on mobile. */
-    color: var(--text-primary);
-    font-family: var(--font-main);
-    line-height: 1.6;
-    overflow-x: hidden;
-    min-height: 100vh;
-    /* 100dvh (dynamic viewport height) accounts for the iOS Safari / Android
-       Chrome address bar showing and hiding as the user scrolls, which
-       100vh does not — 100vh is sized to the LARGEST possible viewport, so
-       content can end up taller than the visible area on load. Declared
-       second so it overrides 100vh only in browsers that understand it;
-       100vh remains the fallback everywhere else. */
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Selection State */
-::selection {
-    background: rgba(0, 212, 255, 0.3);
-    color: #ffffff;
-}
-
-/* Keyboard Focus Ring — visibile su Chrome, Edge, Safari (macOS/iOS)
-   Rimosso il focus di default del browser, sostituito con anello cyan
-   coerente col design system. :focus-visible è supportato da tutti i
-   browser moderni e si attiva SOLO per navigazione keyboard, non al click. */
-:focus-visible {
-    outline: 2px solid var(--accent-zerogamma);
-    outline-offset: 3px;
-    border-radius: 4px;
-}
-
-/* --------------------------------------------------------------------------
-   3. SECTION 1: TOP NAVIGATION & STATUS BAR
-   -------------------------------------------------------------------------- */
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
+.container {
     width: 100%;
-    z-index: 100;
-    background: rgba(8, 11, 16, 0.85);
-    /* PERFORMANCE: this blur re-samples on every scroll frame since it's a
-       fixed element with scrolling content behind it — kept modest (10px,
-       down from 12px) and the background made slightly more opaque to
-       compensate, so it still reads solid even with less blur. */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border-glass);
-    transition: var(--transition-smooth);
-    /* Keeps the fixed header clear of the iPhone status bar / notch and
-       Android display cutouts. Zero effect on devices without one. */
-    padding-top: env(safe-area-inset-top);
-}
-
-.nav-container {
-    max-width: 1280px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0.9rem 2rem;
-    padding-left: max(2rem, env(safe-area-inset-left));
-    padding-right: max(2rem, env(safe-area-inset-right));
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
+    padding: 0 2rem;
 }
 
-/* Brand & Status Group */
-.brand-group {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-/* Brand mark: official logo image (replaces the old text wordmark). Sized
-   in CSS via max-height so it scales down gracefully at smaller breakpoints
-   without a layout jump — the img's own width/height attributes in the
-   HTML reserve the correct aspect ratio before the file even loads. */
-.brand-logo {
-    display: inline-flex;
-    align-items: center;
-    text-decoration: none;
-    transition: var(--transition-smooth);
-}
-
-.brand-logo-img {
-    display: block;
-    height: 28px;
-    width: auto;
+img {
     max-width: 100%;
-    transition: filter var(--transition-smooth), transform var(--transition-smooth);
-}
-
-.brand-logo:hover .brand-logo-img {
-    filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.55));
-    transform: translateY(-1px);
-}
-
-/* Live Engine Active Status Badge */
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.3rem 0.75rem;
-    background: rgba(0, 255, 136, 0.06);
-    border: 1px solid rgba(0, 255, 136, 0.22);
-    border-radius: 9999px;
-    user-select: none;
-}
-
-.status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: var(--accent-call);
-    box-shadow: 0 0 8px var(--accent-call);
-    animation: pulse-green 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    will-change: transform, box-shadow, opacity;
-}
-
-@keyframes pulse-green {
-    0%, 100% {
-        opacity: 1;
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.6);
-    }
-    50% {
-        opacity: 0.65;
-        transform: scale(1.15);
-        box-shadow: 0 0 0 5px rgba(0, 255, 136, 0);
-    }
-}
-
-.status-text {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--accent-call);
-    letter-spacing: 0.06em;
-}
-
-/* Navigation Links */
-.nav-menu {
-    display: flex;
-    align-items: center;
-}
-
-.nav-list {
-    display: flex;
-    list-style: none;
-    align-items: center;
-    gap: 2rem;
-}
-
-/* Mobile-drawer-only duplicate CTA — see the ≤1180px block for why the
-   header's own Request Access button is hidden there instead. Invisible
-   and out of flow on desktop/tablet, where the header button is used.
-   BUGFIX: this used to be plain `.nav-menu-cta { display: none; }`, which
-   has the same specificity (0,1,0) as the later `.btn { display:
-   inline-flex; }` base rule — since .btn is declared further down in this
-   file, it won on ties and made the drawer CTA visible on desktop too,
-   producing two "Request Access" buttons in the header at once. The
-   `.nav-menu` prefix below raises specificity to (0,2,0) so this always
-   wins regardless of declaration order. */
-.nav-menu .nav-menu-cta {
-    display: none;
-}
-
-.nav-item {
-    display: inline-flex;
-}
-
-.nav-link {
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    transition: var(--transition-smooth);
-    position: relative;
-    padding: 0.25rem 0;
-}
-
-.nav-link:hover {
-    color: var(--text-primary);
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
-}
-
-.nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0%;
-    height: 1px;
-    background: var(--accent-zerogamma);
-    transition: var(--transition-smooth);
-}
-
-.nav-link:hover::after {
-    width: 100%;
-}
-
-/* Header Action Button */
-.nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-/* Mobile Navigation Toggle (hamburger). Hidden on desktop by default — the
-   768px breakpoint below turns it on and turns .nav-menu into a dropdown
-   drawer it controls. Three plain bars, no icon font/SVG dependency. */
-.nav-toggle {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 5px;
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
-    padding: 0;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--border-glass);
-    border-radius: 6px;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.nav-toggle-bar {
+    height: auto;
     display: block;
-    width: 18px;
-    height: 2px;
-    border-radius: 1px;
-    background: var(--text-primary);
-    transition: transform var(--transition-fast), opacity var(--transition-fast);
 }
 
-/* Animate the three bars into an X when the menu is open. transform/opacity
-   only, so this costs nothing on the frame budget. */
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
+/* ==========================================================================
+   TYPOGRAPHY UTILITIES
+   ========================================================================== */
+.mono-title {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
-    opacity: 0;
+.mono-text {
+    font-family: var(--font-mono);
 }
 
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.max-w-center { max-width: 700px; margin-left: auto; margin-right: auto; }
+
+.mb-s { margin-bottom: var(--space-s); }
+.mb-m { margin-bottom: var(--space-m); }
+.mb-l { margin-bottom: var(--space-l); }
+.mb-xl { margin-bottom: var(--space-xl); }
+.mt-s { margin-top: var(--space-s); }
+.mt-m { margin-top: var(--space-m); }
+.mt-l { margin-top: var(--space-l); }
+.mt-xl { margin-top: var(--space-xl); }
+
+/* ==========================================================================
+   SECTION STYLES
+   ========================================================================== */
+section {
+    padding: var(--space-xl) 0;
 }
 
+.section-dark {
+    background-color: var(--bg-dark);
+    color: var(--text-primary-dark);
+    border-top: 1px solid var(--border-dark);
+    border-bottom: 1px solid var(--border-dark);
+}
+.section-dark .section-heading { color: var(--text-primary-dark); }
+.section-dark .section-desc { color: var(--text-secondary-dark); }
+.section-dark .border-color { border-color: var(--border-dark); }
+
+.section-light {
+    background-color: var(--bg-light);
+    color: var(--text-primary-light);
+}
+.section-light .section-heading { color: var(--text-primary-light); }
+.section-light .section-desc { color: var(--text-secondary-light); }
+.section-light h3, .section-light h4 { color: var(--text-primary-light); }
+.section-light p { color: var(--text-secondary-light); }
+.section-light .note-box { color: var(--text-muted-light); }
+
+.section-heading {
+    font-size: 2.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+}
+
+.section-desc {
+    font-size: 1.125rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   BUTTONS & LINKS
+   ========================================================================== */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.btn-primary {
+    background-color: var(--text-primary-dark);
+    color: var(--bg-oled);
+}
+.btn-primary:hover {
+    background-color: var(--text-secondary-dark);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text-primary-dark);
+    border: 1px solid var(--border-dark);
+}
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.btn-youtube {
+    background-color: rgba(255, 0, 0, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 0, 0, 0.3);
+}
+.btn-youtube:hover {
+    background-color: rgba(255, 0, 0, 0.2);
+    border-color: rgba(255, 0, 0, 0.5);
+}
+
+.yt-profile-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #333;
+}
+
+.btn-nav {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    background: transparent;
+    border: 1px solid var(--border-dark);
+    color: var(--text-primary-dark);
+}
+.btn-nav:hover {
+    border-color: var(--text-secondary-dark);
+}
+
+.link-action {
+    display: inline-block;
+    color: var(--accent-green);
     font-family: var(--font-mono);
     text-decoration: none;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    transition: var(--transition-smooth);
-    white-space: nowrap;
-    /* PERFORMANCE: no blanket will-change here on purpose. Hinting every
-       button (header, primary, card, featured, disabled) to pre-promote to
-       its own GPU layer at all times — even while sitting idle — was one of
-       the causes of the constant background GPU/CPU load. Browsers promote
-       a hovered/transitioning element to a compositor layer on their own
-       when the transition actually starts; that's enough for a simple
-       translateY/scale hover. */
-}
-
-.btn-header {
-    font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    padding: 0.55rem 1.25rem;
-    color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid var(--border-glass);
-    border-radius: 6px;
-    /* PERFORMANCE: removed the nested backdrop-filter — this button already
-       sits inside .header, which is already blurring everything behind it.
-       A second blur pass on a small element added cost for almost no
-       visible difference; background opacity bumped slightly to compensate. */
-}
-
-.btn-header:hover {
-    color: #ffffff;
-    border-color: var(--accent-zerogamma);
-    background: rgba(0, 212, 255, 0.08);
-    transform: translateY(-1px) scale(1.02);
-    box-shadow: 0 0 18px var(--border-glow);
-}
-
-.btn-header:active {
-    transform: translateY(0) scale(1);
-    animation: none;
-    box-shadow: 0 0 16px var(--border-glow);
-}
-
-/* Touch devices (Android/iPhone) apply :hover on tap and there is no mouse
-   to ever "leave", so an infinite pulse animation gated only by :hover
-   would keep glowing indefinitely after a tap until the user happens to
-   tap elsewhere — reads as a glitch, not a feature. (hover: hover) is only
-   true on devices with a real hover-capable pointer (mouse/trackpad), so
-   the breathing glow is desktop-only; touch still gets the instant color/
-   border/lift feedback above, just without the infinite loop. */
-@media (hover: hover) and (pointer: fine) {
-    .btn-header:hover {
-        /* Breathing glow reads as "alive" and draws the eye back to the CTA
-           on every pass, which is the whole point of a header action button. */
-        animation: btn-glow-pulse-cyan 1.7s ease-in-out infinite;
-    }
-}
-
-/* --------------------------------------------------------------------------
-   4. SECTION 2: HERO COCKPIT & AMBIENT ENVIRONMENT
-   -------------------------------------------------------------------------- */
-/* PERFORMANCE NOTE: this background is intentionally STATIC (no
-   background-position animation). Animating a multi-layer gradient behind an
-   element that has backdrop-filter: blur() (the cockpit glass panel sitting
-   on top) forces the browser to resample the blur from a changing source
-   every single frame, for as long as the tab is open — that combination is
-   what was spiking CPU/GPU and spinning the fan on first load. A static
-   gradient still looks rich but is painted once and then costs nothing. */
-.hero-section {
-    position: relative;
-    /* No min-height needed: video fills the viewport naturally */
-    overflow: hidden;
-    background: var(--bg-main);
-}
-
-/* Ambient Faded Typographic Background Layer */
-.hero-ambient-text {
-    position: absolute;
-    font-family: var(--font-mono);
-    font-size: clamp(3.5rem, 8.5vw, 8rem);
-    font-weight: 800;
-    color: #ffffff;
-    opacity: 0.018;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    user-select: none;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.hero-ambient-top {
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.hero-ambient-bottom {
-    bottom: 8%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-/* ── Cinematic Full-Width Hero Wrapper ─────────────────────────────────────
-   The video is the hero. Text lives in an overlay at the bottom.
-   No 50/50 grid: the cockpit speaks for itself. */
-.hero-wrapper {
-    position: relative;
-    z-index: 10;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Video container — full viewport width. The video is an absolutely
-   positioned background layer (see .hero-video-wrapper below) so this
-   box's height is driven purely by .hero-content's normal-flow height:
-   the overlay can never be taller than its container and get clipped,
-   no matter how much text it holds at a given viewport width. min-height
-   restores the cinematic "video fills the viewport" feel on viewports
-   where the text is short relative to the screen; flex + justify-content
-   keeps the text pinned to the bottom either way. */
-.hero-media {
-    width: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    min-height: clamp(420px, 78vh, 820px);
-}
-
-/* Text overlay: normal-flow child of .hero-media, pushed to the bottom by
-   the flex container above; the video sits behind it as a full-bleed
-   absolute layer, so the overlay is always exactly as tall as its content
-   needs and is never cropped. */
-.hero-content {
-    position: relative;
-    z-index: 20;
-    padding: 3rem clamp(1.5rem, 5vw, 5rem) 2.5rem clamp(1.5rem, 5vw, 5rem);
-    /* Dark gradient scrim so text stays legible over any video frame —
-       pure CSS, zero extra asset, zero ongoing cost */
-    background: linear-gradient(
-        to top,
-        rgba(5, 7, 10, 0.96) 0%,
-        rgba(5, 7, 10, 0.82) 40%,
-        rgba(5, 7, 10, 0.45) 72%,
-        transparent 100%
-    );
-}
-
-/* Hero benefits bar: horizontal below the title */
-.hero-benefits {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1rem 2.5rem;
-    margin-bottom: 2rem;
-}
-
-.benefit-item {
-    display: flex;
-    flex-direction: column;
-}
-
-.benefit-item strong {
-    font-family: var(--font-mono);
-    color: var(--accent-zerogamma);
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.15rem;
-}
-
-.benefit-item span {
-    color: var(--text-secondary);
     font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: opacity 0.2s;
+}
+.link-action:hover {
+    opacity: 0.8;
+}
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+.site-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(5, 7, 10, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-dark);
+    z-index: 100;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.main-nav a:not(.btn) {
+    color: var(--text-secondary-dark);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+.main-nav a:not(.btn):hover {
+    color: var(--text-primary-dark);
+}
+
+/* ==========================================================================
+   HERO SECTION
+   ========================================================================== */
+.hero-section {
+    padding-top: 150px;
+    padding-bottom: var(--space-xl);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent-green);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+    display: block;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary-dark);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.hero-supporting {
+    font-size: 1rem;
+    color: var(--text-muted-dark);
+    margin-bottom: 2rem;
 }
 
 .hero-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    align-items: center;
-}
-
-.btn-secondary {
-    background: transparent;
-    border: 1px solid var(--text-secondary);
-    color: var(--text-primary);
-    padding: 0.8rem 1.6rem;
-    border-radius: 6px;
-    font-weight: 600;
-}
-
-.btn-secondary:hover {
-    border-color: var(--accent-zerogamma);
-    color: var(--accent-zerogamma);
-    transform: translateY(-1px);
-}
-
-/* Cockpit Container — kept for other uses (bottom CTA, etc.) */
-.hero-cockpit {
-    background-color: rgba(12, 16, 24, 0.96);
-    background-image: var(--sheen-glass);
-    border: 1px solid var(--border-glass-outer);
-    border-radius: 16px;
-    box-shadow: var(--shadow-glass-depth), var(--shadow-cockpit-glow);
-    padding: 3.25rem 3.5rem;
-    width: 100%;
-    text-align: center;
-    position: relative;
-    transition: var(--transition-smooth);
-}
-
-.hero-cockpit::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 10%;
-    right: 10%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.4) 50%, transparent 100%);
-    pointer-events: none;
-}
-
-/* Glassmorphism Generic Card (Used for non-video sections) */
-.glass-container {
-    background-color: var(--bg-card);
-    background-image: var(--sheen-glass);
-    backdrop-filter: var(--blur-glass);
-    -webkit-backdrop-filter: var(--blur-glass);
-    border: 1px solid var(--border-glass-outer);
-    border-radius: 16px;
-    box-shadow: var(--shadow-glass-depth), var(--shadow-cockpit-glow);
-    padding: 3.25rem 3.5rem;
-    width: 100%;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    transition: var(--transition-smooth);
-}
-
-/* Subtle Top Rim Highlight */
-.glass-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 10%;
-    right: 10%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.4) 50%, transparent 100%);
-}
-
-
-/* Cockpit Top Bar / Telemetry */
-.cockpit-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-}
-
-.cockpit-badge {
-    color: var(--accent-zerogamma);
-    font-weight: 600;
-    letter-spacing: 0.1em;
-}
-
-.cockpit-metric {
-    color: var(--accent-spot);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-}
-
-/* ── Hero Title — larger for cinematic layout ───────────────────────────── */
-.hero-title {
-    font-family: var(--font-main);
-    /* Bigger: was 2.1–3.1rem, now 2.8–4.2rem */
-    font-size: clamp(2.8rem, 5.5vw, 4.2rem);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.025em;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-    color: #ffffff;
-    background: linear-gradient(180deg, #ffffff 0%, #e3ecf7 42%, #9fb4cf 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.12)) drop-shadow(0 3px 10px rgba(0, 0, 0, 0.5));
-    /* Prevent line-wrap breaking the cinematic feel on tablets */
-    max-width: 18ch;
-}
-
-.hero-subtitle {
-    font-size: 1.05rem;
-    line-height: 1.65;
-    color: var(--text-secondary);
-    max-width: 720px;
-    margin: 0 0 1.5rem 0;
-    font-weight: 400;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-}
-
-/* --------------------------------------------------------------------------
-   4B. FLOATING COCKPIT TERMINAL VIDEO SHOWCASE (HARDWARE-ISOLATED 3D ENGINE)
-   -------------------------------------------------------------------------- */
-.hero-video-wrapper {
-    /* Full-bleed background layer filling .hero-media, whatever height
-       that ends up being (see .hero-media above) — not the other way
-       around. The <video> itself uses object-fit: cover, so it always
-       fills this box cleanly regardless of aspect ratio. */
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    border: none;
-    border-bottom: 1px solid var(--border-glow);
-    background-color: #05070a;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-}
-
-/* Static top rim — kept for visual continuity with header */
-.hero-video-wrapper::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.3) 50%, transparent 100%);
-    z-index: 2;
-    pointer-events: none;
-}
-
-.hero-showcase-video {
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    /* Nel nuovo layout Framed Terminal il video occupa la sua finestra
-       senza crop aggressivo — object-fit: contain preserva la risoluzione nativa */
-    object-fit: contain;
-    width: 100%;
-    height: 100%;
-    display: block;
-    background-color: #05070a;
-}
-
-
-/* --------------------------------------------------------------------------
-   4B-NEW. HERO FRAMED TERMINAL LAYOUT
-   Split 2 colonne: testo | video in finestra cockpit con bordi luminosi.
-   Il video viene mostrato nel suo aspect-ratio nativo: zero upscaling,
-   zero sgranatura su monitor large. Aspetto Bloomberg Terminal.
-   -------------------------------------------------------------------------- */
-
-/* Wrapper orizzontale con padding laterale e min-height per respiro verticale */
-.hero-split {
-    display: grid;
-    grid-template-columns: 42fr 58fr;
-    gap: 3rem;
-    align-items: center;
-    width: 100%;
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 5rem clamp(1.5rem, 5vw, 4rem) 4rem;
-    min-height: clamp(560px, 80vh, 860px);
-}
-
-/* Colonna sinistra: testo + CTA */
-.hero-text-col {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    position: relative;
-    z-index: 20;
-}
-
-/* Colonna destra: finestra video cockpit */
-.hero-video-col {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    z-index: 20;
-    /* Bordo luminoso esterno della finestra cockpit */
-    border-radius: 14px;
-    box-shadow:
-        0 0 0 1px rgba(0, 212, 255, 0.25),
-        0 0 50px rgba(0, 212, 255, 0.08),
-        0 8px 40px rgba(0, 0, 0, 0.7);
-    overflow: hidden;
-}
-
-/* Barra terminale superiore stile Bloomberg / macOS dark */
-.cockpit-terminal-bar {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    background: rgba(10, 14, 22, 0.98);
-    border-bottom: 1px solid rgba(0, 212, 255, 0.18);
-    padding: 0.6rem 1rem;
-    flex-shrink: 0;
-}
-
-.cockpit-terminal-title {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--text-secondary);
-    letter-spacing: 0.06em;
-    flex: 1;
-    text-align: center;
-}
-
-.cockpit-terminal-status {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    color: var(--accent-call);
-    letter-spacing: 0.08em;
-}
-
-/* Contenitore video: aspect-ratio fisso 16:9, nessun crop */
-.hero-video-frame {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    background-color: #05070a;
-    overflow: hidden;
-}
-
-.hero-video-frame video {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: contain;
-    background-color: #05070a;
-}
-
-/* Waitlist FOMO counter */
-.hero-waitlist-counter {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    margin: 1.25rem 0 1.5rem;
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-}
-
-.waitlist-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--accent-call);
-    box-shadow: 0 0 8px var(--accent-call);
-    flex-shrink: 0;
-    animation: pulse 2s ease-in-out infinite;
-}
-
-.waitlist-num {
-    color: var(--text-primary);
-}
-
-/* --------------------------------------------------------------------------
-   4B-NEW-2. SCARCITY BAR (Pricing section)
-   -------------------------------------------------------------------------- */
-
-.scarcity-bar-wrapper {
-    margin: 1rem 0 1.5rem;
-    padding: 0.875rem 1rem;
-    background: rgba(255, 215, 0, 0.04);
-    border: 1px solid rgba(255, 215, 0, 0.15);
-    border-radius: 8px;
-}
-
-.scarcity-bar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-}
-
-.scarcity-label {
-    color: var(--text-secondary);
-    letter-spacing: 0.05em;
-}
-
-.scarcity-count {
-    color: var(--accent-spot);
-}
-
-.scarcity-count strong {
-    font-size: 1rem;
-    color: var(--accent-spot);
-}
-
-.scarcity-bar-track {
-    width: 100%;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.07);
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.scarcity-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent-call) 0%, var(--accent-spot) 100%);
-    border-radius: 3px;
-    transition: width 0.8s ease;
-}
-
-.scarcity-warning {
-    margin-top: 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--accent-spot);
-    letter-spacing: 0.06em;
-}
-
-/* Garanzia 30 giorni */
-.pricing-guarantee {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0.75rem 0 1rem;
-    font-size: 0.83rem;
-    color: var(--text-secondary);
-    padding: 0.6rem 0.75rem;
-    background: rgba(36, 230, 164, 0.04);
-    border-radius: 6px;
-    border: 1px solid rgba(36, 230, 164, 0.12);
-}
-
-.guarantee-icon {
-    font-size: 1rem;
-    flex-shrink: 0;
-}
-
-/* --------------------------------------------------------------------------
-   4B-NEW-3. STICKY CTA BAR
-   Appare dal basso dopo che l'utente ha scrollato oltre il 50%.
-   Rimane nascosta finché JS non aggiunge la classe .visible.
-   -------------------------------------------------------------------------- */
-
-.sticky-cta-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    background: rgba(10, 14, 22, 0.97);
-    border-top: 1px solid rgba(0, 212, 255, 0.25);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.5);
-    transform: translateY(100%);
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    pointer-events: none;
-}
-
-.sticky-cta-bar.visible {
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-.sticky-cta-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0.875rem clamp(1rem, 4vw, 3rem);
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.sticky-cta-text {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    flex: 1;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
-
-.sticky-cta-text strong {
-    color: var(--text-primary);
-}
-
-.sticky-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--accent-zerogamma);
-    box-shadow: 0 0 8px var(--accent-zerogamma);
-    flex-shrink: 0;
-    animation: pulse 2s ease-in-out infinite;
-}
-
-.sticky-cta-btn {
-    white-space: nowrap;
-    padding: 0.65rem 1.5rem;
-    font-size: 0.875rem;
-}
-
-.sticky-cta-close {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 1rem;
-    padding: 0.25rem 0.5rem;
-    line-height: 1;
-    flex-shrink: 0;
-    transition: color 0.15s;
-}
-
-.sticky-cta-close:hover {
-    color: var(--text-primary);
-}
-
-
-/* --------------------------------------------------------------------------
-   4C. VERIFIED NUMBERS STRIP
-   Pure static layout — no animation, no JS. Six hard numbers from real
-   sessions. Communicates depth of engineering without a single adjective.
-   -------------------------------------------------------------------------- */
-.verified-section {
-    width: 100%;
-    background: rgba(0, 212, 255, 0.03);
-    border-top: 1px solid rgba(0, 212, 255, 0.1);
-    border-bottom: 1px solid rgba(0, 212, 255, 0.1);
-    padding: 2.5rem 2rem;
-}
-
-.verified-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-}
-
-.verified-label {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.18em;
-    color: var(--accent-zerogamma);
-    text-align: center;
-    margin-bottom: 1.75rem;
-    opacity: 0.7;
-}
-
-.verified-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 1rem;
-    text-align: center;
-}
-
-.verified-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-}
-
-.verified-value {
-    font-family: var(--font-mono);
-    font-size: clamp(1.4rem, 2.5vw, 2rem);
-    font-weight: 700;
-    color: #ffffff;
-    letter-spacing: -0.02em;
-    /* Subtle gradient to match the hero title treatment */
-    background: linear-gradient(180deg, #ffffff 0%, #9fb4cf 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.verified-desc {
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    line-height: 1.4;
-}
-
-/* --------------------------------------------------------------------------
-   4D. TIMELINE SECTION — A DAY IN GEXPIT
-   Vertical timeline with a left connecting line. Pure CSS, no JS.
-   On mobile the layout collapses gracefully to a stacked list.
-   -------------------------------------------------------------------------- */
-.timeline-section {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
-}
-
-.timeline-list {
-    list-style: none;
-    position: relative;
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 0;
-}
-
-/* The vertical connecting line */
-.timeline-list::before {
-    content: '';
-    position: absolute;
-    left: 6.5rem;
-    top: 0.6rem;
-    bottom: 0.6rem;
-    width: 1px;
-    background: linear-gradient(to bottom,
-        transparent 0%,
-        rgba(0, 212, 255, 0.25) 8%,
-        rgba(0, 212, 255, 0.25) 92%,
-        transparent 100%
-    );
-}
-
-.timeline-item {
-    display: grid;
-    grid-template-columns: 6rem 1.2rem 1fr;
-    gap: 0 1.25rem;
-    align-items: start;
-    margin-bottom: 2.5rem;
-    position: relative;
-}
-
-.timeline-item:last-child {
-    margin-bottom: 0;
-}
-
-.timeline-time {
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--accent-zerogamma);
-    letter-spacing: 0.04em;
-    padding-top: 0.1rem;
-    text-align: right;
-}
-
-.timeline-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--accent-zerogamma);
-    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
-    margin-top: 0.3rem;
-    justify-self: center;
-    flex-shrink: 0;
-}
-
-.timeline-body {
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.65;
-    padding-bottom: 0.25rem;
-}
-
-.timeline-body strong {
-    color: var(--text-primary);
-    font-weight: 600;
-}
-
-/* --------------------------------------------------------------------------
-   5. ACCESS FORM & HONEYPOT ANTI-BOT SECURITY
-   -------------------------------------------------------------------------- */
-.hero-access-form {
-    width: 100%;
-    max-width: 620px;
-    margin: 0 auto;
-}
-
-/* Invisible Honeypot Trap Field (Accessible to Bots, Invisible to Users) */
-.hp-trap {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-    height: 0;
-    width: 0;
-    z-index: -1;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-}
-
-/* Form Controls Layout */
-.form-controls {
-    display: flex;
-    gap: 0.75rem;
-    align-items: stretch;
-    width: 100%;
-}
-
-.input-wrapper {
-    flex: 1;
-    position: relative;
-}
-
-.form-input {
-    width: 100%;
-    height: 100%;
-    min-height: 52px;
-    padding: 0.85rem 1.25rem;
-    background: rgba(10, 14, 22, 0.85);
-    border: 1px solid var(--border-glass);
-    border-radius: 8px;
-    font-family: var(--font-mono);
-    /* 16px is the iOS Safari threshold: any input font-size below that
-       makes Safari auto-zoom the whole page on focus, which then has to be
-       manually zoomed back out — a jarring, very common mobile web bug.
-       0.95rem (15.2px) was just under it. */
-    font-size: 1rem;
-    color: var(--text-primary);
-    outline: none;
-    transition: var(--transition-smooth);
-}
-
-.form-input::placeholder {
-    color: var(--text-muted);
-}
-
-.form-input:focus {
-    border-color: var(--accent-zerogamma);
-    background: rgba(14, 19, 30, 0.98);
-    box-shadow: 0 0 16px var(--border-glow);
-}
-
-/* Primary Action Submit Button */
-.btn-primary {
-    min-height: 52px;
-    padding: 0.85rem 1.75rem;
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.18) 0%, rgba(0, 212, 255, 0.06) 100%);
-    border: 1px solid var(--accent-zerogamma);
-    border-radius: 8px;
-    color: #ffffff;
-    font-size: 0.92rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-}
-
-.btn-primary:hover {
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.28) 0%, rgba(0, 212, 255, 0.12) 100%);
-    transform: translateY(-1px) scale(1.015);
-    box-shadow: 0 0 24px var(--border-glow);
-}
-
-/* See the .btn-header equivalent above for why this is gated: on touch
-   devices an infinite pulse would keep glowing after a tap with no mouse
-   ever "leaving" to stop it. */
-@media (hover: hover) and (pointer: fine) {
-    .btn-primary:hover {
-        /* Soft pulsing halo on the primary conversion action — makes the CTA
-           feel magnetic/irresistible without any layout-affecting property. */
-        animation: btn-glow-pulse-cyan 1.7s ease-in-out infinite;
-    }
-}
-
-.btn-primary:active {
-    transform: translateY(0) scale(1);
-    animation: none;
-    box-shadow: 0 0 24px var(--border-glow);
-}
-
-/* Shared CTA glow pulse (hardware accelerated: box-shadow only, no reflow) */
-@keyframes btn-glow-pulse-cyan {
-    0%, 100% {
-        box-shadow: 0 0 18px var(--border-glow);
-    }
-    50% {
-        box-shadow: 0 0 32px rgba(0, 212, 255, 0.5);
-    }
-}
-
-/* Form Meta Line */
-.form-meta {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin-top: 1.25rem;
-    letter-spacing: 0.02em;
-}
-
-.meta-separator {
-    color: var(--text-muted);
-    opacity: 0.4;
-}
-
-/* --------------------------------------------------------------------------
-   6. COMMON SECTION HEADINGS & STRUCTURE
-   -------------------------------------------------------------------------- */
-.section-container {
-    width: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 6rem 2rem;
-    padding-left: max(2rem, env(safe-area-inset-left));
-    padding-right: max(2rem, env(safe-area-inset-right));
-    position: relative;
-}
-
-/* Ambient Section Blobs
-   Large, very low opacity radial-gradient "light pools" seated behind each
-   section's content (negative z-index, so they never sit above or interfere
-   with text/cards/links). Each section carries a distinct accent mix so
-   scrolling reads as moving through different instrument panels rather than
-   one flat black scroll. Pure background-image on a decorative pseudo
-   element — no layout impact, no animation cost. */
-.section-container::before {
-    content: '';
-    position: absolute;
-    inset: -4rem 0;
-    pointer-events: none;
-    z-index: -1;
-}
-
-#features::before {
-    background: radial-gradient(circle at 15% 15%, rgba(0, 212, 255, 0.06) 0%, transparent 38%),
-                radial-gradient(circle at 88% 80%, rgba(255, 215, 0, 0.04) 0%, transparent 35%);
-}
-
-#showcase::before {
-    background: radial-gradient(circle at 50% 40%, rgba(0, 212, 255, 0.07) 0%, transparent 45%);
-}
-
-#comparison::before {
-    background: radial-gradient(circle at 85% 25%, rgba(0, 255, 136, 0.05) 0%, transparent 38%),
-                radial-gradient(circle at 10% 82%, rgba(0, 212, 255, 0.035) 0%, transparent 36%);
-}
-
-#pricing::before {
-    background: radial-gradient(circle at 50% 10%, rgba(0, 212, 255, 0.06) 0%, transparent 40%),
-                radial-gradient(circle at 88% 88%, rgba(255, 215, 0, 0.035) 0%, transparent 34%);
-}
-
-#faq::before {
-    background: radial-gradient(circle at 18% 25%, rgba(0, 212, 255, 0.04) 0%, transparent 36%),
-                radial-gradient(circle at 82% 78%, rgba(0, 255, 136, 0.03) 0%, transparent 34%);
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 3.5rem;
-}
-
-/* Small glowing accent bar under every section title — a recurring visual
-   signature that ties the whole page together and gives each heading a
-   defined "anchor point" instead of just floating text. */
-.section-header::after {
-    content: '';
-    display: block;
-    width: 64px;
-    height: 3px;
-    margin: 1.1rem auto 0 auto;
-    border-radius: 2px;
-    background: linear-gradient(90deg, transparent 0%, var(--accent-zerogamma) 50%, transparent 100%);
-    box-shadow: 0 0 16px rgba(0, 212, 255, 0.5);
-}
-
-.section-title {
-    font-family: var(--font-main);
-    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
-    color: #ffffff;
-    background: linear-gradient(180deg, #ffffff 0%, #e3ecf7 42%, #9fb4cf 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.1)) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
-}
-
-.footer-container {
-    width: 100%;
-    margin-top: auto;
-    border-top: 1px solid var(--border-glass);
-    padding: 3rem 2rem;
-    /* Clears the iPhone home indicator bar so the legal disclaimer text
-       never sits underneath it. No-op elsewhere. */
-    padding-bottom: max(3rem, env(safe-area-inset-bottom));
-    background: rgba(8, 11, 16, 0.95);
-    position: relative;
-}
-
-/* Same rim-highlight language used on the glass cockpit panels, echoed at
-   the very bottom of the page so the design system feels closed/complete
-   rather than just stopping. */
-.footer-container::before {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: 15%;
-    right: 15%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.35) 50%, transparent 100%);
-}
-
-/* --------------------------------------------------------------------------
-   7. SECTION 3: SPECS TICKER
-   -------------------------------------------------------------------------- */
-.specs-section {
-    width: 100%;
-    background-color: var(--bg-surface);
-    border-top: 1px solid var(--border-glass);
-    border-bottom: 1px solid var(--border-glass);
-    padding: 1.75rem 0;
-    position: relative;
-    overflow: hidden;
-    z-index: 5;
-}
-
-/* Static data-stream accent (previously an infinite background-position
-   sweep). A perpetual, non-compositor animation sitting in the very first
-   viewport was burning CPU/GPU for the entire time the tab stayed open —
-   removed in favor of a static tri-tone gradient that gives the same "live
-   feed" hint at zero ongoing cost. */
-.specs-section::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.05) 45%, rgba(0, 212, 255, 0.09) 50%, rgba(0, 212, 255, 0.05) 55%, transparent 100%);
-    pointer-events: none;
-}
-
-.specs-ticker {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    position: relative;
-    z-index: 1;
-}
-
-.spec-block {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    /* Entrance state: JS toggles .in-view on scroll into viewport (see
-       script.js). Falls back to fully visible if JS/observer is unavailable. */
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.spec-block.in-view {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.spec-block:nth-child(1) { transition-delay: 0s; }
-.spec-block:nth-child(2) { transition-delay: 0.08s; }
-.spec-block:nth-child(3) { transition-delay: 0.16s; }
-.spec-block:nth-child(4) { transition-delay: 0.24s; }
-
-/* No-JS / reduced-motion safety net so content is never stuck invisible */
-.no-js .spec-block,
-.reduced-motion .spec-block {
-    opacity: 1;
-    transform: none;
-}
-
-.spec-value {
-    font-family: var(--font-mono);
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--accent-spot);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-}
-
-.spec-label {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    letter-spacing: 0.02em;
-}
-
-/* --------------------------------------------------------------------------
-   8. SECTION 4: FEATURES GRID (2x2 GLASSMORPHISM)
-   -------------------------------------------------------------------------- */
-/* Alternating Feature Rows — replaces the compact card grid, which cropped
-   the native 16:9 desktop screenshots down to an unreadable sliver. Airy,
-   editorial rhythm: full section width per row, generous vertical gap,
-   text and screenshot given equal weight instead of being boxed together. */
-.features-rows {
-    display: flex;
-    flex-direction: column;
-    gap: 6rem;
-}
-
-.feature-row {
-    display: flex;
-    align-items: center;
-    gap: 4rem;
-}
-
-.feature-row > .feature-row-text,
-.feature-row > .feature-row-media {
-    flex: 1 1 50%;
-    min-width: 0; /* lets the wide screenshot shrink inside flex instead of overflowing */
-}
-
-/* Row 2 / 4 read Image-Left, Text-Right — alternating scan rhythm down the
-   section instead of a monotone left-aligned stack. */
-.feature-row-reverse {
-    flex-direction: row-reverse;
-}
-
-/* Row 6 (Local Database & Replay) has no dedicated screenshot by design —
-   text-only, centered as the section's closing statement instead of
-   leaving a forced/empty image slot beside it. */
-.feature-row-text-only {
-    justify-content: center;
-}
-
-.feature-row-text-only .feature-row-text {
-    flex: 0 1 720px;
-}
-
-.glass-card {
-    background-color: var(--bg-card);
-    background-image: var(--sheen-glass);
-    backdrop-filter: var(--blur-glass);
-    -webkit-backdrop-filter: var(--blur-glass);
-    border: 1px solid var(--border-glass);
-    border-radius: 14px;
-    padding: 2.25rem 2rem;
-    /* Inner rim (top) simulates the light catching the inside edge of thick glass */
-    box-shadow: inset 0 1px 0 0 var(--border-glass-inner), inset 0 0 0 1px rgba(255, 255, 255, 0.02);
-    transition: var(--transition-smooth);
-    display: flex;
-    flex-direction: column;
-    /* PERFORMANCE: will-change removed on purpose — this class is shared by
-       7 cards (4 feature + 3 pricing), each already running an expensive
-       backdrop-filter blur. Pre-promoting all 7 to permanent GPU layers at
-       all times (even scrolled off-screen) was a meaningful chunk of the
-       idle GPU load. The hover lift/glow still animates fine without it. */
-    position: relative;
-    overflow: hidden;
-}
-
-.glass-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(0, 212, 255, 0.3);
-    box-shadow: inset 0 1px 0 0 var(--border-glass-inner), inset 0 0 0 1px rgba(255, 255, 255, 0.02), 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 24px var(--border-glow);
-}
-
-/* Feature Row Accent Mapping
-   Ties each row to its matching signal color from the quantitative palette
-   already used across the ticker/status UI — GEXPIT Heatmap reads zero
-   gamma cyan, Monetary CVD reads call/volume green, Greeks Engine reads
-   spot gold, Big Trades reads put red. A left accent rule on the text
-   column carries the same "color coded instrument panel" identity the
-   card grid used to express via its top edge glow. */
-.feature-row-text {
-    position: relative;
-    padding-left: 1.5rem;
-}
-
-.feature-row-text::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.3rem;
-    bottom: 0.3rem;
-    width: 2px;
-    background: var(--accent-zerogamma);
-    box-shadow: 0 0 12px currentColor;
-    opacity: 0.75;
-    color: var(--accent-zerogamma);
-}
-
-.features-rows .feature-row:nth-of-type(2) .feature-row-text::before { background: var(--accent-call); color: var(--accent-call); }
-.features-rows .feature-row:nth-of-type(3) .feature-row-text::before { background: var(--accent-spot); color: var(--accent-spot); }
-.features-rows .feature-row:nth-of-type(4) .feature-row-text::before { background: var(--accent-put); color: var(--accent-put); }
-.features-rows .feature-row:nth-of-type(5) .feature-row-text::before { background: #ff9100; color: #ff9100; }
-.features-rows .feature-row:nth-of-type(6) .feature-row-text::before { background: #00e5ff; color: #00e5ff; }
-.features-rows .feature-row:nth-of-type(7) .feature-row-text::before { background: #a855f7; color: #a855f7; }
-.features-rows .feature-row:nth-of-type(8) .feature-row-text::before { background: #22d3ee; color: #22d3ee; }
-
-.features-rows .feature-row:nth-of-type(1) .card-list li::before { color: var(--accent-zerogamma); }
-.features-rows .feature-row:nth-of-type(2) .card-list li::before { color: var(--accent-call); }
-.features-rows .feature-row:nth-of-type(3) .card-list li::before { color: var(--accent-spot); }
-.features-rows .feature-row:nth-of-type(4) .card-list li::before { color: var(--accent-put); }
-.features-rows .feature-row:nth-of-type(5) .card-list li::before { color: #ff9100; }
-.features-rows .feature-row:nth-of-type(6) .card-list li::before { color: #00e5ff; }
-.features-rows .feature-row:nth-of-type(7) .card-list li::before { color: #a855f7; }
-.features-rows .feature-row:nth-of-type(8) .card-list li::before { color: #22d3ee; }
-
-/* Placeholder per screenshot mancanti (Tab 6 e 7): aspect-ratio corretto
-   mantenuto, colore uniforme al resto del sito. Quando carichi il file webp
-   corretto nella cartella assets/img con il nome esatto, si sostituisce
-   automaticamente senza modificare il CSS. */
-.feature-media-placeholder {
-    background-color: rgba(5, 7, 10, 0.95);
-    min-height: 200px;
-}
-
-/* Nasconde l'alt text broken-image icon quando il file non esiste ancora —
-   sostituisce con un box scuro pulito (nessun testo visibile al visitatore) */
-.feature-media-placeholder:not([src*=".webp"]),
-img.feature-media-placeholder[src=""],
-img.feature-media-placeholder {
-    /* L'img con src mancante mostra il box scuro dell'aspect-ratio container */
-    color: transparent;
-}
-
-.card-header {
-    margin-bottom: 1rem;
-}
-
-.card-title {
-    font-family: var(--font-mono);
-    /* Bumped from the old cramped-card size (1.15rem) now that each title
-       has half the section width to itself instead of a ~320px card. */
-    font-size: 1.45rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-}
-
-.card-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-    margin-bottom: 0;
-}
-
-.card-list li {
-    font-size: 0.98rem;
-    line-height: 1.5;
-    color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
-}
-
-.card-list li::before {
-    content: "▹";
-    color: var(--accent-zerogamma);
-    font-size: 0.9rem;
-    line-height: 1;
-    flex-shrink: 0;
-}
-
-/* Institutional floating terminal screen: the wrapper (not the image
-   itself) carries the multi level glass depth token, same as
-   .glass-container — border-glass-outer + shadow-glass-depth — so every
-   screenshot reads as suspended hardware. object-fit: contain on the
-   image guarantees the full 16:9 frame is always visible, never cropped. */
-.feature-row-media {
-    border-radius: 12px;
-    border: 1px solid var(--border-glass-outer);
-    box-shadow: var(--shadow-glass-depth);
-    background-color: #000000;
-    overflow: hidden;
-    transition: var(--transition-smooth);
-}
-
-.feature-row:hover .feature-row-media {
-    border-color: rgba(0, 212, 255, 0.4);
-}
-
-.feature-media {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    object-fit: contain;
-    display: block;
-}
-
-/* --------------------------------------------------------------------------
-   9. SECTION 5: SHOWCASE TERMINAL & MEDIA PLAYER
-   -------------------------------------------------------------------------- */
-.terminal-container {
-    max-width: 1180px;
-    margin: 0 auto;
-    background-color: #000000;
-    border: 1px solid var(--border-glass-outer);
-    border-radius: 12px;
-    overflow: hidden;
-    /* Outer case shadow + very faint cyan case-glow, as if the unit is
-       powered on and radiating heat/light like real trading hardware. */
-    box-shadow: var(--shadow-glass), 0 0 50px rgba(0, 212, 255, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
-}
-
-/* Native macOS/Linux dev-shell chrome: a faint vertical gradient (instead of
-   a flat fill) plus a 1px inner highlight is what separates a real title bar
-   from a flat colored div. */
-.terminal-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.75rem 1.25rem;
-    background: linear-gradient(180deg, rgba(26, 31, 43, 0.97) 0%, rgba(16, 20, 29, 0.97) 100%);
-    border-bottom: 1px solid var(--border-glass);
-    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
-    font-family: var(--font-mono);
-}
-
-.terminal-controls {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-}
-
-.terminal-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.dot-close {
-    background-color: #ff5f56;
-}
-
-.dot-minimize {
-    background-color: #ffbd2e;
-}
-
-.dot-expand {
-    background-color: #27c93f;
-}
-
-.terminal-title {
-    font-size: 0.78rem;
-    color: var(--text-secondary);
-    letter-spacing: 0.04em;
-}
-
-.terminal-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--accent-call);
-    letter-spacing: 0.06em;
-}
-
-/* Live recording indicator: reuses the same pulse motif as the header status
-   dot so the "system is live" language is visually consistent site-wide. */
-.terminal-status::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: var(--accent-call);
-    box-shadow: 0 0 8px var(--accent-call);
-    animation: pulse-green 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    will-change: transform, box-shadow, opacity;
-}
-
-.terminal-body {
-    background-color: #000000;
-    position: relative;
-    width: 100%;
-    /* Recessed screen depth: dark inset shadow around all four edges so the
-       video reads as sitting behind glass rather than flush with the frame. */
-    box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.85), inset 0 2px 6px rgba(0, 0, 0, 0.6);
-}
-
-/* Diagonal glass reflection sweep across the screen — the single detail that
-   sells "physical monitor" over "cropped screenshot". Fully decorative,
-   non-interactive, blended so it never washes out the footage. */
-.terminal-body::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(115deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 18%, rgba(255, 255, 255, 0) 32%, rgba(255, 255, 255, 0) 100%);
-    mix-blend-mode: screen;
-    pointer-events: none;
-}
-
-/* --------------------------------------------------------------------------
-   9B. REPLAY VIDEO WRAPPER & GPU ISOLATION (ZERO REFLOW HARDWARE LAYER)
-   -------------------------------------------------------------------------- */
-.replay-video-wrapper {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    background-color: #080b10;
-    border-radius: 0 0 12px 12px;
-    border: 1px solid var(--border-glass-outer);
-    box-shadow: var(--shadow-glass-depth);
-    /* Strict Zero Reflow: NO backdrop-filter, NO overflow: hidden to prevent Composite Storm */
-    transform: translateZ(0);
-    backface-visibility: hidden;
-}
-
-.hardware-accelerated {
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    border-radius: inherit;
-}
-
-.showcase-video {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    display: block;
-    background-color: #080b10;
-}
-
-/* --------------------------------------------------------------------------
-   10. SECTION 6: COMPARISON MATRIX
-   -------------------------------------------------------------------------- */
-.comparison-table-wrapper {
-    width: 100%;
-    max-width: 1040px;
-    margin: 0 auto;
-    overflow-x: auto;
-    border-radius: 12px;
-    border: 1px solid var(--border-glass);
-    background-color: var(--bg-card);
-    backdrop-filter: var(--blur-glass);
-    -webkit-backdrop-filter: var(--blur-glass);
-    box-shadow: var(--shadow-glass);
-}
-
-.comparison-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-    min-width: 620px;
-}
-
-.comparison-table th {
-    background-color: var(--bg-surface);
-    color: var(--accent-spot);
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    font-weight: 700;
-    padding: 1.25rem 1.75rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    border-bottom: 1px solid var(--border-glass);
-}
-
-.comparison-table th.col-gexpit {
-    color: var(--accent-zerogamma);
-    background-color: rgba(0, 212, 255, 0.045);
-}
-
-.comparison-table td {
-    padding: 1.25rem 1.75rem;
-    border-bottom: 1px solid var(--border-glass);
-    font-size: 0.92rem;
-    color: var(--text-secondary);
-    transition: var(--transition-fast);
-}
-
-.comparison-table tr:last-child td {
-    border-bottom: none;
-}
-
-.comparison-table tr:hover td {
-    background-color: rgba(255, 255, 255, 0.02);
-}
-
-.metric-name {
-    font-weight: 600;
-    color: var(--text-primary);
-    width: 30%;
-}
-
-.metric-retail {
-    color: var(--text-secondary);
-    width: 35%;
-}
-
-.metric-gexpit {
-    color: var(--accent-call);
-    font-family: var(--font-mono);
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    width: 35%;
-    background-color: rgba(0, 255, 136, 0.03);
-    text-shadow: 0 0 12px rgba(0, 255, 136, 0.2);
-}
-
-/* --------------------------------------------------------------------------
-   11. SECTION 7: ACCESS ROADMAP (PRICING GRID)
-   -------------------------------------------------------------------------- */
-.pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2.25rem;
-    align-items: stretch;
-    max-width: 860px;
-    margin: 0 auto;
-}
-
-.pricing-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    text-align: center;
-    position: relative;
-    padding: 2.75rem 2.25rem;
-    min-height: 420px;
-}
-
-.pricing-card.featured {
-    transform: scale(1.05);
-    border-color: var(--accent-zerogamma);
-    box-shadow: var(--shadow-glass), var(--shadow-cockpit-glow), 0 0 30px rgba(0, 212, 255, 0.12);
-    z-index: 2;
-    background: linear-gradient(180deg, rgba(18, 22, 32, 0.85) 0%, rgba(10, 14, 22, 0.95) 100%);
-}
-
-/* Slow ambient breathing glow, PERFORMANCE-SAFE VERSION: instead of
-   animating box-shadow (which forces the browser to recompute the blurred
-   shadow bitmap every frame), the blurred glow is drawn ONCE as a static
-   box-shadow on this separate pseudo layer and only its opacity is
-   animated. Opacity is compositor-only — the GPU just cross-fades two
-   already-rendered layers, no per-frame blur recalculation. Same visual
-   "breathing" effect, near-zero cost. */
-.pricing-card.featured::before {
-    content: '';
-    position: absolute;
-    inset: -14px;
-    border-radius: inherit;
-    box-shadow: 0 0 55px rgba(0, 212, 255, 0.3);
-    opacity: 0.55;
-    pointer-events: none;
-    z-index: -1;
-    animation: founder-ambient-glow 4.5s ease-in-out infinite;
-    will-change: opacity;
-}
-
-@keyframes founder-ambient-glow {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 0.9; }
-}
-
-.pricing-badge {
-    display: inline-block;
-    padding: 0.3rem 0.85rem;
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #080b10;
-    background-color: var(--accent-spot);
-    border-radius: 9999px;
-    margin: 0 auto 1.25rem auto;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.pricing-tier-name {
-    font-family: var(--font-mono);
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-}
-
-.pricing-price {
-    font-family: var(--font-mono);
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--accent-zerogamma);
-    letter-spacing: 0.04em;
-    margin-bottom: 2rem;
-}
-
-.pricing-features {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-    margin-bottom: 2.5rem;
-    text-align: left;
-    padding: 0 0.5rem;
-}
-
-.pricing-features li {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
-}
-
-.pricing-features li::before {
-    content: "✓";
-    color: var(--accent-call);
-    font-weight: 700;
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-}
-
-.pricing-action {
-    margin-top: auto;
-    width: 100%;
-}
-
-.btn-card {
-    width: 100%;
-    min-height: 48px;
-    padding: 0.75rem 1.5rem;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--border-glass);
-    border-radius: 8px;
-    color: var(--text-primary);
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.btn-card:hover {
-    color: #ffffff;
-    border-color: var(--accent-zerogamma);
-    background: rgba(0, 212, 255, 0.08);
-    box-shadow: 0 0 16px var(--border-glow);
-    transform: translateY(-1px);
-}
-
-.btn-featured {
-    width: 100%;
-    box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
-}
-
-.btn-disabled {
-    opacity: 0.4;
-    cursor: not-allowed !important;
-    pointer-events: none;
-    border-style: dashed;
-}
-
-/* --------------------------------------------------------------------------
-   12. SECTION 8: FAQ ACCORDION & BOTTOM CTA
-   -------------------------------------------------------------------------- */
-.faq-container {
-    max-width: 820px;
-    margin: 0 auto 5.5rem auto;
-}
-
-.faq-item {
-    border-bottom: 1px solid var(--border-glass);
-    padding: 1.35rem 0;
-    transition: var(--transition-smooth);
-}
-
-.faq-question {
-    cursor: pointer;
-    font-family: var(--font-main);
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    outline: none;
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    user-select: none;
-    transition: var(--transition-smooth);
-}
-
-.faq-question::-webkit-details-marker {
-    display: none;
-}
-
-.faq-question::after {
-    content: "+";
-    font-family: var(--font-mono);
-    font-size: 1.35rem;
-    color: var(--accent-zerogamma);
-    transition: transform var(--transition-fast);
-    line-height: 1;
-}
-
-details[open] .faq-question::after {
-    content: "−";
-    transform: rotate(180deg);
-}
-
-.faq-question:hover {
-    color: var(--accent-zerogamma);
-}
-
-.faq-answer {
-    padding-top: 1rem;
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.65;
-}
-
-/* Bottom Access Cockpit Layout */
-.bottom-cta-wrapper {
-    position: relative;
-    z-index: 10;
-    width: 100%;
-    max-width: 920px;
-    margin: 0 auto;
-}
-
-.bottom-cockpit {
     margin-top: 1rem;
 }
 
-.cta-title {
-    font-family: var(--font-main);
-    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
-    color: #ffffff;
-    background: linear-gradient(180deg, #ffffff 0%, #e3ecf7 42%, #9fb4cf 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.12)) drop-shadow(0 3px 10px rgba(0, 0, 0, 0.5));
-    margin-bottom: 1.25rem;
+.app-frame {
+    position: relative;
+    border-radius: 8px;
+    border: 1px solid #1f2937;
+    background: #000;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
 }
 
-.cta-subtitle {
-    font-size: 1.05rem;
-    line-height: 1.65;
-    color: var(--text-secondary);
-    max-width: 700px;
-    margin: 0 auto 2.5rem auto;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+.terminal-bar {
+    background: #111;
+    border-bottom: 1px solid #333;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
 }
 
-/* Same signature accent bar used under section titles, echoed here so the
-   bottom conversion cockpit still feels part of one continuous system. */
-.cta-title::after {
-    content: '';
-    display: block;
-    width: 64px;
-    height: 3px;
-    margin: -0.35rem auto 1.6rem auto;
-    border-radius: 2px;
-    background: linear-gradient(90deg, transparent 0%, var(--accent-zerogamma) 50%, transparent 100%);
-    box-shadow: 0 0 16px rgba(0, 212, 255, 0.5);
+.terminal-dots {
+    display: flex;
+    gap: 6px;
+    margin-right: 1rem;
 }
+.terminal-dots .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+.dot.close { background: #ff5f56; }
+.dot.min { background: #ffbd2e; }
+.dot.max { background: #27c93f; }
 
-/* --------------------------------------------------------------------------
-   13. FOOTER & LEGAL DISCLAIMER
-   -------------------------------------------------------------------------- */
-.footer-content {
-    max-width: 820px;
+.terminal-title {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: #888;
     margin: 0 auto;
-    text-align: center;
+    padding-right: 2rem; /* offset for centering */
 }
 
-.footer-copyright {
+/* ==========================================================================
+   LENSES & GRIDS
+   ========================================================================== */
+.five-lenses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-top: var(--space-xl);
+}
+
+.lens-card {
+    background: var(--bg-card-dark);
+    border: 1px solid var(--border-dark);
+    padding: 2rem;
+    border-radius: 8px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.lens-card:hover {
+    transform: translateY(-5px);
+    border-color: #333;
+}
+.lens-title {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--text-primary-dark);
+    margin-bottom: 1rem;
+    letter-spacing: 0.1em;
+}
+.lens-card p {
+    color: var(--text-secondary-dark);
+    font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   FEATURE SECTIONS (Alternating)
+   ========================================================================== */
+.feature-section {
+    background-color: var(--bg-oled);
+    border-top: 1px solid var(--border-dark);
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+}
+
+.feature-reverse .feature-grid {
+    direction: rtl;
+}
+.feature-reverse .feature-grid > * {
+    direction: ltr;
+}
+
+.feature-text {
+    max-width: 500px;
+}
+
+.feature-title {
+    font-size: 2rem;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.feature-desc {
+    font-size: 1.25rem;
+    color: var(--text-secondary-dark);
+    margin-bottom: 1.5rem;
+}
+
+.feature-detail {
+    color: var(--text-muted-dark);
+    margin-bottom: 2rem;
+}
+
+.sub-feature h4 {
     font-family: var(--font-mono);
     font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin-bottom: 0.6rem;
-    letter-spacing: 0.02em;
+    color: var(--text-primary-dark);
+    margin-bottom: 0.5rem;
+}
+.sub-feature p {
+    color: var(--text-secondary-dark);
+    font-size: 0.95rem;
 }
 
-.footer-disclaimer {
+.feature-visual {
+    background: var(--bg-card-dark);
+    border: 1px solid var(--border-dark);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.screenshot-header {
+    background: #111;
+    border-bottom: 1px solid var(--border-dark);
+    padding: 0.75rem 1rem;
+    font-family: var(--font-mono);
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: var(--text-muted-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.feature-visual img {
+    width: 100%;
+    display: block;
+}
+
+/* ==========================================================================
+   SPECIFIC COMPONENTS
+   ========================================================================== */
+.example-box {
+    background: #111;
+    border: 1px solid var(--border-dark);
+    border-radius: 6px;
+    padding: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    margin-top: 1.5rem;
+}
+.example-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    color: var(--text-secondary-dark);
+}
+.example-row:not(:last-child) {
+    border-bottom: 1px dashed #333;
+}
+
+/* FAQ Accordion */
+.faq-item {
+    margin-bottom: 1rem !important;
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    background: var(--bg-card-light);
+    overflow: hidden;
+}
+.faq-question {
+    padding: 1.25rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--text-primary-light);
+    cursor: pointer;
+    list-style: none;
+    position: relative;
+    user-select: none;
+}
+.faq-question::-webkit-details-marker {
+    display: none;
+}
+.faq-question::after {
+    content: '+';
+    position: absolute;
+    right: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    color: var(--accent-green);
+    transition: transform 0.3s ease;
+}
+details[open] .faq-question::after {
+    content: '−';
+    transform: translateY(-50%) rotate(180deg);
+}
+.faq-answer {
+    padding: 0 1.25rem 1.25rem;
+    color: var(--text-secondary-light);
+    font-size: 0.95rem;
     line-height: 1.6;
 }
 
-/* --------------------------------------------------------------------------
-   13B. MOTION ACCESSIBILITY OVERRIDE
-   Users who request reduced motion still get full content and the static
-   glow/border treatments (no infinite animations, no scroll-entrance delay).
-   -------------------------------------------------------------------------- */
-@media (prefers-reduced-motion: reduce) {
-    .status-dot,
-    .btn-header:hover,
-    .btn-primary:hover,
-    .pricing-card.featured::before,
-    .terminal-status::before {
-        animation: none !important;
-    }
-
-    .spec-block {
-        opacity: 1;
-        transform: none;
-        transition: none;
-    }
-
-    .glass-card,
-    .btn,
-    * {
-        scroll-behavior: auto;
-    }
+.walls-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.wall-card {
+    padding: 2rem;
+    border-bottom: 1px solid var(--border-dark);
+}
+.wall-card p {
+    color: var(--text-secondary-dark);
+    margin-top: 0.5rem;
 }
 
-/* --------------------------------------------------------------------------
-   14. RESPONSIVE BREAKPOINTS (OPTIMIZED LAYOUTS)
-   -------------------------------------------------------------------------- */
+.regime-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+.regime-card {
+    padding: 2rem 1.5rem;
+    border: 1px solid var(--border-dark);
+    border-radius: 8px;
+    background: var(--bg-card-dark);
+}
+.regime-card h4 {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+}
+.regime-card p {
+    font-size: 0.9rem;
+    color: var(--text-secondary-dark);
+}
+.regime-damping h4 { color: var(--accent-green); }
+.regime-expansion h4 { color: #eab308; }
+.regime-squeeze h4 { color: #f97316; }
+.regime-cascade h4 { color: #FF0000; }
 
-/* NAVIGATION BREAKPOINT — deliberately NOT the same 768px used for the rest
-   of the mobile layout below. Measured with a headless browser across the
-   768-1150px range: brand-group + all 6 nav-links + status badge + Request
-   Access button need ~1150px of minimum content width to sit in one row
-   without overlapping/overflowing past the viewport edge. Tablets in
-   landscape and small laptops (iPad landscape 1024px, common 900-1100px
-   laptop windows) fall squarely inside that gap, so the hamburger drawer
-   used on phones has to switch on earlier than the rest of the mobile
-   layout — 1180px, with a small safety margin over the measured 1150px. */
-@media (max-width: 1180px) {
-    /* Anchor for the dropdown drawer below (position: absolute; top: 100%)
-       so it always sits flush under the header regardless of the header's
-       actual rendered height on a given device/font — no guessed pixel
-       offsets that could drift on different devices. */
-    .nav-container {
-        position: relative;
-    }
-
-    .nav-toggle {
-        display: inline-flex;
-    }
-
-    /* MEASURED OVERFLOW FIX: logo + status text + "Request Access" + hamburger
-       do not fit in one row in this width range. The header CTA is hidden
-       here; an identical button lives inside the drawer (.nav-menu-cta)
-       instead, and the hero section already has its own prominent Request
-       Access form as the very first thing visible, so nothing is lost. */
-    .nav-actions .btn-header {
-        display: none;
-    }
-
-    /* Section links dropdown drawer. Previously this was display:none with
-       no toggle at all below 768px, making Specs/Features/Showcase/
-       Comparison/Pricing/FAQ completely unreachable on any phone or
-       tablet. Now #nav-toggle (script.js) adds/removes .is-open. */
-    .nav-menu {
-        display: block;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        max-height: 75vh;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        background: rgba(8, 11, 16, 0.97);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--border-glass);
-        box-shadow: var(--shadow-glass);
-        padding: 0.5rem 1.25rem 1rem 1.25rem;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-8px);
-        transition: opacity var(--transition-smooth), transform var(--transition-smooth), visibility 0s linear 0.25s;
-    }
-
-    .nav-menu.is-open {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-        transition: opacity var(--transition-smooth), transform var(--transition-smooth), visibility 0s linear 0s;
-    }
-
-    .nav-list {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0;
-        width: 100%;
-    }
-
-    .nav-item {
-        width: 100%;
-    }
-
-    .nav-link {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        padding: 0.9rem 0.25rem;
-        font-size: 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        /* Real touch target height, not just line-height */
-        min-height: 48px;
-        box-sizing: border-box;
-    }
-
-    .nav-item:last-child .nav-link {
-        border-bottom: none;
-    }
-
-    .nav-link::after {
-        display: none; /* underline hover affordance doesn't apply on touch */
-    }
-
-    /* The header's own Request Access button is hidden at this breakpoint
-       (see .nav-actions .btn-header above) — this is its replacement,
-       reachable via the hamburger. min-height 48px keeps it a proper touch
-       target; width:100% is set explicitly (not relied on from elsewhere)
-       so it's correct at any width in this range. Matching specificity to
-       the base rule above (.nav-menu prefix) on purpose. */
-    .nav-menu .nav-menu-cta {
-        display: flex;
-        width: 100%;
-        margin-top: 0.75rem;
-        min-height: 48px;
-    }
-
-    /* Prevents the page behind the open drawer from scrolling; toggled by
-       script.js alongside .nav-menu.is-open. */
-    body.nav-open {
-        overflow: hidden;
-    }
-
-    /* Alternating Feature Rows stack Text-above-Image below the same
-       breakpoint already used for the nav drawer — a 50/50 split reads as
-       too narrow per column under ~1180px for these ultra-wide desktop
-       screenshots (native ~1.9:1, framed at 16:9). */
-    .feature-row,
-    .feature-row-reverse {
-        flex-direction: column;
-        gap: 2rem;
-    }
-
-    .feature-row > .feature-row-text,
-    .feature-row > .feature-row-media {
-        flex: 1 1 auto;
-        width: 100%;
-    }
-
-    .feature-row-text-only .feature-row-text {
-        flex-basis: auto;
-    }
+.double-feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
 }
 
-@media (max-width: 992px) {
-    .glass-container,
-    .hero-cockpit {
-        padding: 2.75rem 2.25rem;
-    }
+/* Methodology */
+.clean-list {
+    list-style: none;
+}
+.method-item {
+    background: #111;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #222;
+}
 
-    .pricing-card.featured {
-        transform: scale(1);
-    }
+/* ==========================================================================
+   MOBILE RESPONSIVENESS
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .hero-title { font-size: 3rem; }
+    .feature-grid { gap: 3rem; }
 }
 
 @media (max-width: 768px) {
-    /* MOBILE LIGHTWEIGHT MODE — phones/tablets generally have weaker
-       GPUs and are more battery sensitive than desktop, so on top of the
-       responsive layout changes below we deliberately cut the heaviest
-       paint work: shallower blur radius everywhere, one fewer background
-       layer on body, and the ambient card glow disabled outright. */
-    :root {
-        --blur-glass: blur(8px);
-    }
-
-    body {
-        background-image:
-            radial-gradient(circle at 12% 8%, rgba(0, 212, 255, 0.07) 0%, transparent 32%),
-            radial-gradient(circle at 88% 5%, rgba(255, 215, 0, 0.045) 0%, transparent 28%),
-            radial-gradient(circle at 92% 55%, rgba(0, 255, 136, 0.035) 0%, transparent 30%),
-            radial-gradient(circle at 6% 68%, rgba(0, 212, 255, 0.05) 0%, transparent 30%),
-            radial-gradient(circle at 50% 100%, rgba(255, 77, 77, 0.025) 0%, transparent 35%);
-    }
-
-    .pricing-card.featured::before {
-        animation: none;
-        opacity: 0.55;
-    }
-
-    .nav-container {
-        padding-top: 0.75rem;
-        padding-bottom: 0.75rem;
-        padding-left: max(1.25rem, env(safe-area-inset-left));
-        padding-right: max(1.25rem, env(safe-area-inset-right));
-    }
-
-    /* Note: no .btn-header touch-target rule needed here — it's hidden
-       below 1180px already (see the nav breakpoint above) in favor of
-       .nav-menu-cta, which carries its own min-height: 48px. */
-
-    .hero-section {
-        /* Cinematic hero: no padding needed, video fills full width */
-        overflow: hidden;
-    }
-
-    /* On mobile the hero overlay text runs the full width with bottom padding
-       so the CTA sits above the safe area */
-    .hero-content {
-        padding: 2rem 1.25rem 2rem 1.25rem;
-        padding-bottom: max(2rem, env(safe-area-inset-bottom));
-    }
-
-    /* Framed Terminal: stack verticale su mobile */
-    .hero-split {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        padding: 3rem 1.25rem 2rem;
-        min-height: auto;
-    }
-
-    .hero-video-col {
-        order: -1; /* Video prima del testo su mobile */
-    }
-
-    /* Sticky CTA bar: testo accorciato su mobile */
-    .sticky-cta-text span:last-child {
-        font-size: 0.8rem;
-    }
-
-    .sticky-cta-btn {
-        padding: 0.55rem 1rem;
-        font-size: 0.8rem;
-    }
-
-    /* Verified grid: 3 columns on tablet, 2 on phone (handled in 480px) */
-    .verified-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.5rem 1rem;
-    }
-
-    /* Timeline: hide vertical line, simplify to stacked items */
-    .timeline-list::before {
-        display: none;
-    }
-
-    .timeline-item {
-        grid-template-columns: 4rem 1fr;
-        grid-template-rows: auto auto;
-        gap: 0.25rem 0.75rem;
-    }
-
-    .timeline-time {
-        text-align: left;
-        grid-row: 1;
-        grid-column: 1;
-    }
-
-    .timeline-dot {
-        display: none;
-    }
-
-    .timeline-body {
-        grid-row: 2;
-        grid-column: 1 / -1;
-        padding-left: 0.25rem;
-        padding-bottom: 1.25rem;
-        border-left: 2px solid rgba(0, 212, 255, 0.2);
-        padding-left: 0.75rem;
-    }
-
-    .glass-container,
-    .hero-cockpit {
-        padding: 2rem 1.5rem;
-        border-radius: 12px;
-    }
-
-    /* Tighter vertical rhythm so sections don't feel like empty scroll gaps
-       on small viewports, without compressing any text line-heights. */
-    .section-container {
-        padding-top: 4rem;
-        padding-bottom: 4rem;
-        padding-left: max(1.25rem, env(safe-area-inset-left));
-        padding-right: max(1.25rem, env(safe-area-inset-right));
-    }
-
-    .pricing-card {
-        padding: 2.25rem 1.75rem;
-        min-height: 0;
-    }
-
-    .cockpit-header {
-        flex-direction: column;
-        gap: 0.5rem;
-        text-align: center;
-    }
-
-    .form-controls {
-        flex-direction: column;
-    }
-
-    .btn-primary {
-        width: 100%;
-    }
-
-    .hero-ambient-text {
-        font-size: clamp(2.5rem, 7vw, 4.5rem);
-    }
-
-    .specs-ticker {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-        text-align: center;
-    }
-
-    /* Tighter vertical rhythm on phones, matching the .section-container
-       compression already applied at this breakpoint. */
-    .features-rows {
-        gap: 3.5rem;
-    }
-
-    .feature-row-text {
-        padding-left: 1.1rem;
-    }
-
-    .pricing-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .terminal-title {
-        display: none;
-    }
-
-    /* Near-full-width single tile swipe on phones/small tablets, matching
-       the same touch-scroll pattern already used on .comparison-table. */
-    .showcase-gallery {
-        grid-auto-columns: minmax(0, 90%);
-        gap: 1rem;
-        padding: 1rem;
-    }
-
-    .faq-container {
-        margin-bottom: 4rem;
-    }
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-title { font-size: 2.5rem; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .feature-reverse .feature-grid { direction: ltr; }
+    .walls-grid { grid-template-columns: 1fr; }
+    .regime-grid { grid-template-columns: 1fr 1fr; }
+    .double-feature-grid { grid-template-columns: 1fr; }
+    .main-nav { display: none; }
+    .hero-actions { flex-direction: column; }
+    .btn { text-align: center; justify-content: center; width: 100%; }
 }
 
 @media (max-width: 480px) {
-    .brand-logo-img {
-        height: 22px;
-    }
-
-    .status-badge {
-        padding: 0.4rem;
-    }
-
-    /* The full "SYSTEM: 0DTE LIVE ENGINE ACTIVE" label doesn't fit next to
-       the logo, Request Access button and hamburger toggle on a ~360-430px
-       phone without wrapping/overflowing the header. The pulsing dot alone
-       still reads as "live system" at a glance and takes almost no room. */
-    .status-text {
-        display: none;
-    }
-
-    .hero-title {
-        font-size: 1.75rem;
-    }
-
-    .hero-subtitle {
-        font-size: 0.95rem;
-    }
-
-    .form-meta {
-        flex-direction: column;
-        gap: 0.3rem;
-    }
-
-    .meta-separator {
-        display: none;
-    }
-
-    .specs-ticker {
-        grid-template-columns: 1fr;
-    }
-
-    .verified-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .comparison-table th,
-    .comparison-table td {
-        padding: 1rem;
-        font-size: 0.82rem;
-    }
-}
-
-/* --------------------------------------------------------------------------
-   15. SHORT LANDSCAPE VIEWPORTS (PHONE ROTATED SIDEWAYS)
-   A phone in landscape is wide but short (often 375-430px tall). The hero's
-   min-height: 100dvh plus its generous vertical padding was designed for
-   portrait and pushes the CTA form below the fold in landscape, forcing an
-   extra scroll just to reach it. This trims padding and font scale only
-   when height is actually tight, regardless of width.
-   -------------------------------------------------------------------------- */
-@media (max-height: 500px) and (orientation: landscape) {
-    .hero-section {
-        min-height: auto;
-        padding-top: 5.5rem;
-        padding-bottom: 1.5rem;
-    }
-
-    .hero-ambient-text {
-        display: none; /* purely decorative background type; not worth the vertical space here */
-    }
-
-    .cockpit-header {
-        margin-bottom: 1rem;
-        padding-bottom: 0.5rem;
-    }
-
-    .hero-title {
-        margin-bottom: 0.75rem;
-    }
-
-    .hero-subtitle {
-        margin-bottom: 1.25rem;
-    }
-}
-
-/* --------------------------------------------------------------------------
-   16. TOUCH SCROLL SMOOTHNESS (COMPARISON TABLE)
-   -------------------------------------------------------------------------- */
-.comparison-table-wrapper {
-    -webkit-overflow-scrolling: touch;
+    .regime-grid { grid-template-columns: 1fr; }
+    .stats-row { flex-direction: column; gap: 2rem !important; }
 }
