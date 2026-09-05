@@ -453,4 +453,52 @@ document.addEventListener("DOMContentLoaded", () => {
             stickyCta.classList.remove("visible");
         });
     }
+    // ------------------------------------------------------------------------
+    // 9. HIGH-RESOLUTION CHART LIGHTBOX (Pure Vanilla, Zero Dependencies)
+    // ------------------------------------------------------------------------
+    const lightboxModal = document.getElementById("lightbox-modal");
+    const lightboxImg = document.getElementById("lightbox-img");
+    const lightboxCaption = document.getElementById("lightbox-caption");
+    const lightboxClose = document.getElementById("lightbox-close");
+
+    if (lightboxModal && lightboxImg) {
+        const featureImages = document.querySelectorAll(".feature-visual img");
+
+        const openLightbox = (img) => {
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt || "GEXPIT High-Resolution Chart Detail";
+            const header = img.closest(".feature-visual")?.querySelector(".screenshot-header");
+            lightboxCaption.textContent = header ? header.textContent.trim() : (img.alt || "");
+            lightboxModal.classList.add("active");
+            lightboxModal.setAttribute("aria-hidden", "false");
+            document.body.style.overflow = "hidden";
+        };
+
+        const closeLightbox = () => {
+            lightboxModal.classList.remove("active");
+            lightboxModal.setAttribute("aria-hidden", "true");
+            lightboxImg.src = "";
+            document.body.style.overflow = "";
+        };
+
+        featureImages.forEach((img) => {
+            img.addEventListener("click", () => openLightbox(img));
+        });
+
+        if (lightboxClose) {
+            lightboxClose.addEventListener("click", closeLightbox);
+        }
+
+        lightboxModal.addEventListener("click", (e) => {
+            if (e.target === lightboxModal || e.target.classList.contains("lightbox-wrapper")) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && lightboxModal.classList.contains("active")) {
+                closeLightbox();
+            }
+        });
+    }
 });

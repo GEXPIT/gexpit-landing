@@ -26,15 +26,23 @@
             <a href="#hero" class="brand-logo" aria-label="GEXPIT Homepage">
                 <img src="assets/img/gexpit-logo-header.webp" alt="GEXPIT" width="175" height="32" style="display: block;">
             </a>
-            <nav class="main-nav">
-                <a href="#flow">Flow &amp; Heatmap</a>
-                <a href="#positioning">Dealer Positioning</a>
-                <a href="#pressure">CVD &amp; Pressure</a>
-                <a href="#replay">Replay Engine</a>
-                <a href="#methodology">Methodology</a>
-                <a href="#faq">FAQ</a>
-                <a href="#pricing" class="btn btn-nav">Request Access</a>
+            <nav class="main-nav" id="nav-menu">
+                <a href="#flow" class="nav-link">Flow &amp; Heatmap</a>
+                <a href="#positioning" class="nav-link">Dealer Positioning</a>
+                <a href="#pressure" class="nav-link">CVD &amp; Pressure</a>
+                <a href="#replay" class="nav-link">Replay Engine</a>
+                <a href="#methodology" class="nav-link">Methodology</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+                <a href="#pricing" class="btn btn-nav nav-menu-cta">Request Access</a>
             </nav>
+            <div class="header-actions" style="display: flex; align-items: center; gap: 0.75rem;">
+                <a href="#pricing" class="btn btn-nav btn-mobile-cta">Request Access</a>
+                <button class="nav-toggle" id="nav-toggle" aria-label="Toggle Navigation" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -52,9 +60,9 @@
                     <div class="hp-trap" aria-hidden="true" style="position: absolute; left: -9999px;">
                         <input type="text" name="b_name" tabindex="-1" autocomplete="off">
                     </div>
-                    <div class="form-group" style="display: flex; gap: 0.5rem; max-width: 450px;">
-                        <input type="email" placeholder="Enter your email address" required style="flex: 1; padding: 1rem; border-radius: 4px; border: 1px solid var(--border-dark); background: #111; color: #fff; font-family: var(--font-ui);">
-                        <button type="submit" class="btn btn-primary" style="white-space: nowrap;">REQUEST ACCESS</button>
+                    <div class="form-group hero-form-group">
+                        <input type="email" placeholder="Enter your email address" required class="form-input">
+                        <button type="submit" class="btn btn-primary form-submit">REQUEST ACCESS</button>
                     </div>
                 </form>
 
@@ -549,9 +557,20 @@
         <div class="container">
             <h2 class="section-heading text-center mb-xl">BUILT FOR REAL-TIME QUANTITATIVE PROCESSING.</h2>
             
-            <div class="tech-flow text-center mb-xl mono-text" style="color:var(--text-secondary-dark); font-size:0.9rem; letter-spacing:1px; line-height:2;">
-                MARKET DATA ↓ PYARROW / PARQUET ↓ INCREMENTAL DATA ENGINE ↓<br>
-                NUMPY / NUMBA ↓ GREEKS / FLOW / EXPOSURE ↓ PYQT / PYQTGRAPH ↓ LIVE + REPLAY
+            <div class="tech-flow-pipeline mono-text">
+                <span class="tech-step">MARKET DATA</span>
+                <span class="tech-arrow">&rarr;</span>
+                <span class="tech-step">PYARROW / PARQUET</span>
+                <span class="tech-arrow">&rarr;</span>
+                <span class="tech-step">INCREMENTAL DATA ENGINE</span>
+                <span class="tech-arrow">&rarr;</span>
+                <span class="tech-step">NUMPY / NUMBA</span>
+                <span class="tech-arrow">&rarr;</span>
+                <span class="tech-step">GREEKS / FLOW / EXPOSURE</span>
+                <span class="tech-arrow">&rarr;</span>
+                <span class="tech-step">PYQT / PYQTGRAPH</span>
+                <span class="tech-arrow">&rarr;</span>
+                <span class="tech-step tech-step-accent">LIVE + REPLAY</span>
             </div>
             
             <div class="benchmarks-grid mt-xl text-center">
@@ -619,9 +638,9 @@
                     <div class="hp-trap" aria-hidden="true" style="position: absolute; left: -9999px;">
                         <input type="text" name="b_name" tabindex="-1" autocomplete="off">
                     </div>
-                    <div class="form-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
-                        <input type="email" placeholder="Enter your email address" required style="padding: 1rem; border-radius: 4px; border: 1px solid var(--border-light); font-family: var(--font-ui); background: #0a0c10; color: #fff;">
-                        <button type="submit" class="btn btn-primary">REQUEST ACCESS</button>
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%;">
+                        <input type="email" placeholder="Enter your email address" required class="form-input">
+                        <button type="submit" class="btn btn-primary form-submit">REQUEST ACCESS</button>
                     </div>
                 </form>
                 
@@ -735,6 +754,15 @@
         </div>
     </footer>
     
+    <!-- 4K High-Resolution Chart Lightbox Modal -->
+    <div id="lightbox-modal" class="gexpit-lightbox" role="dialog" aria-hidden="true" aria-label="Chart Detail Fullscreen">
+        <button class="lightbox-close" id="lightbox-close" aria-label="Close Preview">&times;</button>
+        <div class="lightbox-wrapper">
+            <img id="lightbox-img" src="" alt="GEXPIT High-Resolution Chart Detail">
+            <div id="lightbox-caption" class="lightbox-caption"></div>
+        </div>
+    </div>
+
     <!-- Scripts Pipeline -->
     <script src="script.js"></script>
 </body>
