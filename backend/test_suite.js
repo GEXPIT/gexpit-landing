@@ -289,6 +289,27 @@ async function runTests() {
                                   scriptCode.includes('isProductionZone');
         recordTest('script.js Production Zone Resolution (/api/request-access)', hasZoneResolution, 'Client automatically resolves to same-origin /api/request-access on gexpit.com');
 
+        // 3i. Primary Button Base Emerald Green & Anti-White Hover Shield
+        const styleCssContent = fs.readFileSync(path.join(__dirname, '..', 'style.css'), 'utf8');
+        const hasGreenButton = styleCssContent.includes('background-color: var(--accent-green)') && 
+                              styleCssContent.includes('color: #05070a') && 
+                              styleCssContent.includes('.btn-primary:hover:not(:disabled)') && 
+                              styleCssContent.includes('background-color: #00ff88');
+        recordTest('style.css Base Emerald Green Buttons (No White Wash on Hover)', hasGreenButton, 'btn-primary configured with var(--accent-green), black text #05070a, and glowing hover');
+
+        // 3j. Registration Confirmation Pop-up Modal Markup
+        const hasConfirmationModalHtml = indexHtmlContent.includes('id="confirmation-modal"') && 
+                                         indexHtmlContent.includes('id="confirmation-email-display"') && 
+                                         indexHtmlContent.includes('id="confirmation-modal-confirm"') && 
+                                         indexHtmlContent.includes('REGISTRATION CONFIRMED');
+        recordTest('index.html Registration Confirmation Pop-up Modal (DOM Elements)', hasConfirmationModalHtml, 'Confirmation dialog with status pill, email display badge and actions verified');
+
+        // 3k. Client-Side Confirmation Modal Lifecycle & Trigger
+        const hasConfirmationModalJs = scriptCode.includes('openConfirmationModal(userEmail)') && 
+                                       scriptCode.includes('confirmationEmailDisplay.textContent') && 
+                                       scriptCode.includes('closeConfirmationModal');
+        recordTest('script.js Confirmation Modal Controller & Auto-Trigger', hasConfirmationModalJs, 'openConfirmationModal lifecycle invoked on successful submission with dynamic email binding');
+
     } catch (e) {
         recordTest('Client-Side Logic Verification', false, `Exception: ${e.message}`);
     }
