@@ -30,7 +30,7 @@ function getSecurityHeaders(request, env) {
     let originHeader = "*";
     if (request && request.headers) {
         const incomingOrigin = request.headers.get("origin") || request.headers.get("Origin") || "";
-        const defaultAllowed = ["https://gexpit.com", "https://www.gexpit.com"];
+        const defaultAllowed = ["https://gexpit.com", "https://www.gexpit.com", "https://pitball85.github.io"];
         const allowedList = (env && env.ALLOWED_ORIGIN)
             ? env.ALLOWED_ORIGIN.split(",").map(s => s.trim())
             : defaultAllowed;

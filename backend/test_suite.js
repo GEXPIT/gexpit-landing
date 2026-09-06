@@ -284,10 +284,10 @@ async function runTests() {
                                  indexHtmlContent.includes('cf-turnstile');
         recordTest('index.html Turnstile Integration (Hero & Bottom Form Widgets)', hasHtmlTurnstile, 'Turnstile API script and widget containers verified');
 
-        // 3h. Dynamic Endpoint Routing (Zone WAF Shield)
-        const hasZoneResolution = scriptCode.includes('/api/request-access') && 
-                                  scriptCode.includes('isProductionZone');
-        recordTest('script.js Production Zone Resolution (/api/request-access)', hasZoneResolution, 'Client automatically resolves to same-origin /api/request-access on gexpit.com');
+        // 3h. Edge Gateway Resolution (Direct Worker Shield vs GitHub Pages 405)
+        const hasWorkerEndpoint = scriptCode.includes('https://gexpitnuovosito.pitball85.workers.dev') && 
+                                  scriptCode.includes('WORKER_ENDPOINT');
+        recordTest('script.js Edge Gateway Resolution (Direct Cloudflare Worker Shield)', hasWorkerEndpoint, 'Client resolves directly to edge gateway worker eliminating GitHub Pages 405');
 
         // 3i. Primary Button Base Emerald Green & Anti-White Hover Shield
         const styleCssContent = fs.readFileSync(path.join(__dirname, '..', 'style.css'), 'utf8');
@@ -309,6 +309,24 @@ async function runTests() {
                                        scriptCode.includes('confirmationEmailDisplay.textContent') && 
                                        scriptCode.includes('closeConfirmationModal');
         recordTest('script.js Confirmation Modal Controller & Auto-Trigger', hasConfirmationModalJs, 'openConfirmationModal lifecycle invoked on successful submission with dynamic email binding');
+
+        // 3l. Client-Side Turnstile Readiness Pre-Flight Guard
+        const hasTurnstileGuard = scriptCode.includes('VERIFYING CLOUDFLARE') && 
+                                 scriptCode.includes('CHECK \'NOT A ROBOT\'') && 
+                                 scriptCode.includes('pollStart');
+        recordTest('script.js Turnstile Readiness Guard (Zero 403 Abort Shield)', hasTurnstileGuard, 'Pre-flight poll ensures token presence and prevents premature network failure');
+
+        // 3m. Client Rate Limit Telemetry Decoupling
+        const hasRateLimitDecoupling = scriptCode.includes('recordRateLimitAttempt()') && 
+                                       scriptCode.includes('active.length < MAX_REQUESTS');
+        recordTest('script.js Rate Limit Decoupling (Success-Only Consumption)', hasRateLimitDecoupling, 'Rate limit attempts are strictly recorded on response.ok, leaving failed attempts unpenalized');
+
+        // 3n. Turnstile Synchronous Callback & Visual Pulse Glow
+        const hasTurnstileCallbackAndGlow = scriptCode.includes('onGexpitTurnstileSuccess') && 
+                                           indexHtmlContent.includes('data-size="normal"') && 
+                                           indexHtmlContent.includes('data-callback="onGexpitTurnstileSuccess"') && 
+                                           styleCssContent.includes('.cf-turnstile-wrapper.highlight-turnstile');
+        recordTest('Turnstile Immediate Callback & Visual Guidance Glow', hasTurnstileCallbackAndGlow, 'Turnstile configured with standard size, success callback, and animated pulse focus');
 
     } catch (e) {
         recordTest('Client-Side Logic Verification', false, `Exception: ${e.message}`);
