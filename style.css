@@ -885,12 +885,13 @@ details[open] .faq-question::after {
 
 /* ==========================================================================
    PRIVACY & COMPLIANCE STYLING (GDPR / Institutional Data Governance)
-/* Cloudflare Turnstile Anti-Bot Widget */
 .cf-turnstile-wrapper {
     margin-top: 0.75rem;
     display: flex;
     justify-content: flex-start;
-    min-height: 48px;
+    min-height: 65px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
 }
 
 #bottom-form .cf-turnstile-wrapper {
@@ -899,6 +900,21 @@ details[open] .faq-question::after {
 
 .cf-turnstile {
     max-width: 100%;
+}
+
+.cf-turnstile-wrapper.highlight-turnstile {
+    box-shadow: 0 0 16px rgba(0, 230, 118, 0.45);
+    outline: 1px solid var(--accent-green);
+    animation: turnstilePulse 1.5s infinite alternate;
+}
+
+@keyframes turnstilePulse {
+    0% {
+        box-shadow: 0 0 8px rgba(0, 230, 118, 0.3);
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(0, 230, 118, 0.6);
+    }
 }
 
 .form-privacy-micro {

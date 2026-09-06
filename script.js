@@ -21,9 +21,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const WORKER_ENDPOINT = (typeof window !== "undefined" && window.GEXPIT_API_ENDPOINT)
         ? window.GEXPIT_API_ENDPOINT
         : (isProductionZone ? "/api/request-access" : "https://gexpitnuovosito.pitball85.workers.dev");
-    const MAX_REQUESTS = 2;
+    const MAX_REQUESTS = 5;
     const COOLDOWN_MS = 60000; // 60 seconds rolling window
     const STORAGE_KEY = "gexpit_telemetry_ts";
+
+    // Self-healing: clear stale or expired rate limits on page initialization
+    try {
+        const rawStorage = localStorage.getItem(STORAGE_KEY);
+        if (rawStorage) {
+            const initNow = Date.now();
+            const parsed = JSON.parse(rawStorage);
+            if (Array.isArray(parsed)) {
+                const active = parsed.filter(ts => typeof ts === "number" && initNow - ts < COOLDOWN_MS);
+                if (active.length === 0 || (active.length > 0 && initNow - Math.max(...active) > 20000)) {
+                    localStorage.removeItem(STORAGE_KEY);
+                } else {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(active));
+                }
+            }
+        }
+    } catch (_) {}
 
     // Form DOM References
     const heroForm = document.getElementById("hero-form");
@@ -46,36 +63,44 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /**
-     * Client-side rolling window throttling via localStorage telemetry.
-     * Restricts submissions to a maximum of 2 requests per 60-second window.
+     * Read-only client-side rolling window throttling check via localStorage telemetry.
+     * Restricts submissions to a maximum of 5 requests per 60-second window.
+     * Does NOT mutate localStorage or consume attempts on validation or network errors.
      * @returns {boolean} True if within rate limit, false if exceeded.
      */
     function checkRateLimit() {
         try {
             const now = Date.now();
             const rawStorage = localStorage.getItem(STORAGE_KEY);
-            let timestamps = [];
-
-            if (rawStorage) {
-                const parsed = JSON.parse(rawStorage);
-                if (Array.isArray(parsed)) {
-                    // Prune timestamps older than the cooldown duration
-                    timestamps = parsed.filter(ts => typeof ts === "number" && now - ts < COOLDOWN_MS);
-                }
-            }
-
-            if (timestamps.length >= MAX_REQUESTS) {
-                return false;
-            }
-
-            timestamps.push(now);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(timestamps));
-            return true;
+            if (!rawStorage) return true;
+            const parsed = JSON.parse(rawStorage);
+            if (!Array.isArray(parsed)) return true;
+            const active = parsed.filter(ts => typeof ts === "number" && now - ts < COOLDOWN_MS);
+            return active.length < MAX_REQUESTS;
         } catch (storageError) {
-            // Graceful fallback if localStorage is restricted or disabled
             console.warn("[GEXPIT SECURITY] Local telemetry unavailable. Proceeding with in-memory execution.");
             return true;
         }
+    }
+
+    /**
+     * Records an authorized submission attempt in localStorage telemetry.
+     * Executed strictly on successful HTTP 200 response or authorized local preview.
+     */
+    function recordRateLimitAttempt() {
+        try {
+            const now = Date.now();
+            const rawStorage = localStorage.getItem(STORAGE_KEY);
+            let timestamps = [];
+            if (rawStorage) {
+                const parsed = JSON.parse(rawStorage);
+                if (Array.isArray(parsed)) {
+                    timestamps = parsed.filter(ts => typeof ts === "number" && now - ts < COOLDOWN_MS);
+                }
+            }
+            timestamps.push(now);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(timestamps));
+        } catch (_) {}
     }
 
     /**
@@ -196,8 +221,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Step 3b: Local Offline Preview Mode (enables instant testing when opening directly from disk)
-        if (typeof window !== "undefined" && window.location && window.location.protocol === "file:") {
+        const isLocalPreview = typeof window !== "undefined" && window.location && window.location.protocol === "file:";
+        if (isLocalPreview) {
             setTimeout(() => {
+                recordRateLimitAttempt();
                 submitBtn.innerHTML = "<span>✓ ACCESS CONFIRMED</span>";
                 submitBtn.style.backgroundColor = "var(--accent-green)";
                 submitBtn.style.color = "#05070a";
@@ -211,12 +238,60 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Step 4: Dispatch Async Fetch Request to Edge Gateway with Cloudflare Turnstile & Micro-PoW
+        // Step 4: Cloudflare Turnstile Readiness Pre-Flight Guard
+        const turnstileWrapper = form.querySelector(".cf-turnstile-wrapper");
+        const turnstileWidget = form.querySelector(".cf-turnstile");
+        let turnstileInput = form.querySelector('[name="cf-turnstile-response"]');
+        let turnstileToken = turnstileInput ? turnstileInput.value.trim() : "";
+
+        // If Turnstile widget is active in this form, ensure token is ready before network dispatch
+        if (turnstileWidget && !turnstileToken) {
+            submitBtn.innerHTML = "<span>VERIFYING CLOUDFLARE...</span>";
+            if (turnstileWrapper) {
+                turnstileWrapper.classList.add("highlight-turnstile");
+            }
+
+            // Non-blocking poll for up to 2.5 seconds to allow managed challenge completion
+            const pollStart = Date.now();
+            while (!turnstileToken && (Date.now() - pollStart < 2500)) {
+                await new Promise(r => setTimeout(r, 150));
+                turnstileInput = form.querySelector('[name="cf-turnstile-response"]');
+                turnstileToken = turnstileInput ? turnstileInput.value.trim() : "";
+            }
+
+            if (turnstileWrapper) {
+                turnstileWrapper.classList.remove("highlight-turnstile");
+            }
+
+            // If challenge still pending or waiting for user checkbox ("Non sono un robot")
+            if (!turnstileToken) {
+                submitBtn.innerHTML = "<span>CHECK 'NOT A ROBOT' ↗</span>";
+                submitBtn.style.borderColor = "var(--accent-spot)";
+                submitBtn.style.color = "var(--accent-spot)";
+                if (turnstileWrapper) {
+                    turnstileWrapper.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                    turnstileWrapper.classList.add("highlight-turnstile");
+                }
+
+                // Restore button after 2.5s without burning quota or dispatching invalid payload
+                setTimeout(() => {
+                    if (turnstileWrapper) {
+                        turnstileWrapper.classList.remove("highlight-turnstile");
+                    }
+                    submitBtn.innerHTML = originalBtnHTML;
+                    submitBtn.style.borderColor = "";
+                    submitBtn.style.color = "";
+                    submitBtn.disabled = false;
+                }, 2500);
+                return;
+            }
+        }
+
+        // Step 5: Dispatch Async Fetch Request to Edge Gateway with Cloudflare Turnstile & Micro-PoW
         try {
+            submitBtn.innerHTML = "<span>PROCESSING...</span>";
             const trapInput = form.querySelector(".hp-trap input");
             const trapValue = trapInput ? trapInput.value.trim() : "";
-            const turnstileInput = form.querySelector('[name="cf-turnstile-response"]');
-            const turnstileToken = turnstileInput ? turnstileInput.value.trim() : "";
             const powTs = Date.now();
             const powNonce = await solveProofOfWork(userEmail, powTs);
 
@@ -238,7 +313,10 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (response.ok) {
-                // UI Mutation: State -> Success (Emerald Green with dark black text)
+                // Record rate limit attempt strictly upon successful registration
+                recordRateLimitAttempt();
+
+                // UI Mutation: State -> Success (Base Emerald Green #00E676 with dark black text)
                 submitBtn.innerHTML = "<span>✓ ACCESS CONFIRMED</span>";
                 submitBtn.style.backgroundColor = "var(--accent-green)";
                 submitBtn.style.color = "#05070a";
@@ -267,7 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
 
-            // UI Mutation: State -> Error & Retry
+            // UI Mutation: State -> Error & Retry (Zero rate-limit penalty for failed request)
             submitBtn.innerHTML = "<span>ERROR - RETRY</span>";
             submitBtn.style.borderColor = "var(--accent-put)";
             submitBtn.style.color = "var(--accent-put)";
@@ -280,6 +358,27 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 3000);
         }
     }
+
+    /**
+     * Global callback triggered when Cloudflare Turnstile successfully verifies human visitor.
+     * Instantly reactivates submit button if user was previously prompted.
+     * @param {string} token
+     */
+    window.onGexpitTurnstileSuccess = function(token) {
+        document.querySelectorAll(".access-form").forEach(form => {
+            const btn = form.querySelector('button[type="submit"]');
+            if (btn && btn.innerHTML.includes("NOT A ROBOT")) {
+                btn.innerHTML = "<span>REQUEST ACCESS</span>";
+                btn.style.borderColor = "";
+                btn.style.color = "";
+                btn.disabled = false;
+            }
+            const wrapper = form.querySelector(".cf-turnstile-wrapper");
+            if (wrapper) {
+                wrapper.classList.remove("highlight-turnstile");
+            }
+        });
+    };
 
     // ------------------------------------------------------------------------
     // 4. ATTACH LISTENERS & INITIALIZE DISPATCHERS
