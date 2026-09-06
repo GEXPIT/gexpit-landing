@@ -204,11 +204,29 @@ section {
 }
 
 .btn-primary {
-    background-color: var(--text-primary-dark);
-    color: var(--bg-oled);
+    background-color: var(--accent-green);
+    color: #05070a;
+    border: 1px solid var(--accent-green);
+    font-weight: 700;
+    box-shadow: 0 0 16px rgba(0, 230, 118, 0.2);
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
-.btn-primary:hover {
-    background-color: var(--text-secondary-dark);
+
+.btn-primary:hover:not(:disabled) {
+    background-color: #00ff88;
+    color: #05070a;
+    border-color: #00ff88;
+    box-shadow: 0 0 25px rgba(0, 230, 118, 0.45);
+    transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+    background-color: var(--accent-green);
+    color: #05070a;
+    border-color: var(--accent-green);
+    cursor: default;
+    opacity: 0.95;
+    box-shadow: 0 0 20px rgba(0, 230, 118, 0.3);
 }
 
 .btn-secondary {
@@ -1124,6 +1142,133 @@ details[open] .faq-question::after {
 .gexpit-modal-close:hover {
     color: #fff;
     transform: scale(1.1);
+}
+
+/* Registration Confirmation Pop-up Modal (Institutional Glassmorphism) */
+.confirmation-modal-content {
+    max-width: 560px;
+    border-color: rgba(0, 230, 118, 0.35);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 50px rgba(0, 230, 118, 0.15);
+}
+
+.confirmation-modal-hero {
+    padding: 2.25rem 2rem 1.25rem;
+    background: linear-gradient(180deg, rgba(0, 230, 118, 0.09) 0%, rgba(8, 11, 16, 0.98) 100%);
+    border-bottom: 1px solid var(--border-dark);
+    text-align: center;
+    position: relative;
+}
+
+.confirmation-icon-ring {
+    width: 62px;
+    height: 62px;
+    margin: 0 auto 1.1rem;
+    border-radius: 50%;
+    background: rgba(0, 230, 118, 0.12);
+    border: 2px solid var(--accent-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-green);
+    box-shadow: 0 0 30px rgba(0, 230, 118, 0.4);
+    animation: confirmationPulse 2.5s infinite ease-in-out;
+}
+
+@keyframes confirmationPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(0, 230, 118, 0.3);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 40px rgba(0, 230, 118, 0.55);
+    }
+}
+
+.confirmation-status-pill {
+    display: inline-block;
+    padding: 0.25rem 0.8rem;
+    border-radius: 9999px;
+    background: rgba(0, 230, 118, 0.15);
+    border: 1px solid var(--accent-green);
+    color: var(--accent-green);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.65rem;
+}
+
+.confirmation-modal-body {
+    padding: 1.5rem 2rem;
+    font-size: 0.92rem;
+}
+
+.confirmation-email-card {
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(0, 230, 118, 0.25);
+    border-radius: 6px;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.confirmation-email-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.confirmation-email-value {
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    color: var(--accent-green);
+    font-weight: 600;
+    word-break: break-all;
+}
+
+.confirmation-notice p {
+    margin-bottom: 0.85rem;
+    line-height: 1.65;
+    color: var(--text-secondary-dark);
+}
+
+.confirmation-notice p strong {
+    color: var(--text-primary-dark);
+}
+
+.confirmation-notice p:last-child {
+    margin-bottom: 0;
+}
+
+.confirmation-modal-footer {
+    padding: 1.1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.confirmation-btn-video {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.82rem;
+    padding: 0.6rem 1.1rem;
+}
+
+@media (max-width: 640px) {
+    .confirmation-modal-footer {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    .confirmation-modal-footer .btn {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 /* ==========================================================================

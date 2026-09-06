@@ -182,14 +182,32 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isBot(form)) {
             // Emulate artificial network round-trip to deceive automated scraping tools
             setTimeout(() => {
-                submitBtn.innerHTML = "<span>ACCESS REQUESTED</span>";
-                submitBtn.style.borderColor = "var(--accent-call)";
-                submitBtn.style.color = "var(--accent-call)";
-                submitBtn.style.boxShadow = "0 0 20px rgba(0, 255, 136, 0.25)";
+                submitBtn.innerHTML = "<span>✓ ACCESS CONFIRMED</span>";
+                submitBtn.style.backgroundColor = "var(--accent-green)";
+                submitBtn.style.color = "#05070a";
+                submitBtn.style.borderColor = "var(--accent-green)";
+                submitBtn.style.boxShadow = "0 0 25px rgba(0, 230, 118, 0.4)";
                 submitBtn.disabled = true;
                 emailInput.disabled = true;
-                emailInput.style.borderColor = "rgba(0, 255, 136, 0.3)";
+                emailInput.style.borderColor = "var(--accent-green)";
+                openConfirmationModal(userEmail);
             }, 800);
+            return;
+        }
+
+        // Step 3b: Local Offline Preview Mode (enables instant testing when opening directly from disk)
+        if (typeof window !== "undefined" && window.location && window.location.protocol === "file:") {
+            setTimeout(() => {
+                submitBtn.innerHTML = "<span>✓ ACCESS CONFIRMED</span>";
+                submitBtn.style.backgroundColor = "var(--accent-green)";
+                submitBtn.style.color = "#05070a";
+                submitBtn.style.borderColor = "var(--accent-green)";
+                submitBtn.style.boxShadow = "0 0 25px rgba(0, 230, 118, 0.45)";
+                submitBtn.disabled = true;
+                emailInput.disabled = true;
+                emailInput.style.borderColor = "var(--accent-green)";
+                openConfirmationModal(userEmail);
+            }, 250);
             return;
         }
 
@@ -220,15 +238,21 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (response.ok) {
-                // UI Mutation: State -> Success
-                submitBtn.innerHTML = "<span>ACCESS REQUESTED</span>";
-                submitBtn.style.borderColor = "var(--accent-call)";
-                submitBtn.style.color = "var(--accent-call)";
-                submitBtn.style.boxShadow = "0 0 20px rgba(0, 255, 136, 0.25)";
+                // UI Mutation: State -> Success (Emerald Green with dark black text)
+                submitBtn.innerHTML = "<span>✓ ACCESS CONFIRMED</span>";
+                submitBtn.style.backgroundColor = "var(--accent-green)";
+                submitBtn.style.color = "#05070a";
+                submitBtn.style.borderColor = "var(--accent-green)";
+                submitBtn.style.boxShadow = "0 0 25px rgba(0, 230, 118, 0.45)";
                 submitBtn.disabled = true;
 
                 emailInput.disabled = true;
-                emailInput.style.borderColor = "rgba(0, 255, 136, 0.3)";
+                emailInput.style.borderColor = "var(--accent-green)";
+
+                // Trigger institutional confirmation pop-up modal
+                setTimeout(() => {
+                    openConfirmationModal(userEmail);
+                }, 200);
             } else {
                 throw new Error(`[GEXPIT GATEWAY] Server responded with status: ${response.status}`);
             }
@@ -564,6 +588,53 @@ document.addEventListener("DOMContentLoaded", () => {
         document.addEventListener("keydown", (e) => {
             if (e.key === "Escape" && privacyModal.classList.contains("active")) {
                 closePrivacyModal();
+            }
+        });
+    }
+
+    // ------------------------------------------------------------------------
+    // 11. REGISTRATION CONFIRMATION POP-UP MODAL
+    // ------------------------------------------------------------------------
+    const confirmationModal = document.getElementById("confirmation-modal");
+    const confirmationClose = document.getElementById("confirmation-modal-close");
+    const confirmationBackdrop = document.getElementById("confirmation-modal-backdrop");
+    const confirmationConfirm = document.getElementById("confirmation-modal-confirm");
+    const confirmationEmailDisplay = document.getElementById("confirmation-email-display");
+
+    function openConfirmationModal(email) {
+        if (!confirmationModal) return;
+        if (confirmationEmailDisplay && email) {
+            confirmationEmailDisplay.textContent = email;
+        }
+        confirmationModal.classList.add("active");
+        confirmationModal.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+        if (confirmationConfirm) {
+            confirmationConfirm.focus();
+        }
+    }
+
+    function closeConfirmationModal() {
+        if (!confirmationModal) return;
+        confirmationModal.classList.remove("active");
+        confirmationModal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+    }
+
+    if (confirmationModal) {
+        if (confirmationClose) {
+            confirmationClose.addEventListener("click", closeConfirmationModal);
+        }
+        if (confirmationBackdrop) {
+            confirmationBackdrop.addEventListener("click", closeConfirmationModal);
+        }
+        if (confirmationConfirm) {
+            confirmationConfirm.addEventListener("click", closeConfirmationModal);
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && confirmationModal.classList.contains("active")) {
+                closeConfirmationModal();
             }
         });
     }
