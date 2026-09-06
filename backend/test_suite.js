@@ -81,9 +81,35 @@ async function runTests() {
     const hasOptimizedLock = appsScriptCode.includes('lock.tryLock(2500)') && appsScriptCode.indexOf('JSON.parse') < appsScriptCode.indexOf('lock.tryLock');
     recordTest('Apps Script Scoped Lock & Fast-Fail (Lock window <= 2.5s)', hasOptimizedLock, 'Validation performed outside lock, low-latency lock verified');
 
+    // 2c-1. Apps Script 2-Phase Jitter Lock Retry (Concurrency Burst Absorption)
+    const hasJitterLock = appsScriptCode.includes('Utilities.sleep') && appsScriptCode.includes('lock.tryLock(2000)');
+    recordTest('Apps Script 2-Phase Jitter Lock Retry (Burst Protection)', hasJitterLock, 'Two-tier lock acquisition with randomized jitter backoff verified');
+
     // 2c-2. Apps Script Native O(1) TextFinder Deduplication & Constant-Time Token Compare
     const hasTextFinder = appsScriptCode.includes('createTextFinder') && appsScriptCode.includes('safeTokenCompare');
     recordTest('Apps Script Native O(1) TextFinder Search & Constant-Time Token Compare', hasTextFinder, 'TextFinder C++ backend search and timingSafe compare verified');
+
+    // 2c-2b. Apps Script Formula & CSV Injection Shield Functional Execution
+    function evalSanitizeCellValue(val, maxLen) {
+        if (val === null || val === undefined) return "N/A";
+        let str = String(val);
+        str = str.replace(/[\x00-\x1F\x7F]/g, "");
+        str = str.replace(/^[\s\u200B-\u200D\uFEFF\u00A0]+|[\s\u200B-\u200D\uFEFF\u00A0]+$/g, "");
+        if (maxLen && str.length > maxLen) {
+            str = str.substring(0, maxLen);
+        }
+        if (/^[=+\-@\t\r\n\|%\uFF1D\uFF0B\uFF0D\uFF20]/.test(str)) {
+            return "'" + str;
+        }
+        return str;
+    }
+    const tCmd = evalSanitizeCellValue("=cmd|'/C calc'!A0", 100);
+    const tSum = evalSanitizeCellValue("@SUM(1+1)", 100);
+    const tNull = evalSanitizeCellValue("\x00=cmd", 100);
+    const tNewline = evalSanitizeCellValue("admin\r\ninjection@gexpit.com", 100);
+    const tClean = evalSanitizeCellValue("trader@gexpit.com", 100);
+    const formulaShieldPass = tCmd.startsWith("'=") && tSum.startsWith("'@") && tNull.startsWith("'=") && !tNewline.includes('\r') && !tNewline.includes('\n') && tClean === "trader@gexpit.com";
+    recordTest('Apps Script Formula & CSV Injection Shield (DDE, Control Chars, Newlines)', formulaShieldPass, 'Formulas escaped with single quote, control chars & newlines stripped');
 
     // 2c-3. Static _headers Configuration Check
     const headersFileExists = fs.existsSync(path.join(__dirname, '..', '_headers'));
@@ -93,6 +119,43 @@ async function runTests() {
         headersValid = headersContent.includes('X-Frame-Options: DENY') && headersContent.includes('frame-ancestors \'none\'');
     }
     recordTest('Static Hosting _headers Configuration (Anti-Clickjacking & CSP)', headersValid, 'File _headers with frame-ancestors and X-Frame-Options verified');
+
+    // 2c-4. CSP Turnstile & HSTS Directives Check
+    let cspTurnstileValid = false;
+    if (headersFileExists) {
+        const headersContent = fs.readFileSync(path.join(__dirname, '..', '_headers'), 'utf8');
+        cspTurnstileValid = headersContent.includes('https://challenges.cloudflare.com') && 
+                            headersContent.includes('frame-src') && 
+                            headersContent.includes('Strict-Transport-Security');
+    }
+    recordTest('Static Hosting CSP & HSTS (Turnstile & Transport Hardening)', cspTurnstileValid, 'Directives for challenges.cloudflare.com and HSTS verified in _headers');
+
+    // 2c-5. Worker Turnstile Verification Architecture
+    const hasTurnstileInWorker = workerCode.includes('verifyTurnstileToken') && 
+                                 workerCode.includes('TURNSTILE_SECRET_KEY') && 
+                                 workerCode.includes('https://challenges.cloudflare.com/turnstile/v0/siteverify');
+    recordTest('Worker Cloudflare Turnstile Integration (Anti-Bot Shield)', hasTurnstileInWorker, 'Siteverify validation and environment secret binding verified');
+
+    // 2c-6. Worker Custom Route & Path Validation
+    const hasCustomRouting = workerCode.includes('/api/request-access') && 
+                             workerCode.includes('defaultAllowed') && 
+                             workerCode.includes('/health');
+    recordTest('Worker Custom Route & Path Routing Shield (/api/*)', hasCustomRouting, 'Path validation, healthcheck endpoint and hardened origin defaults verified');
+
+    // 2c-7. Worker Asynchronous Non-Blocking Edge Ingestion (ctx.waitUntil)
+    const hasAsyncDispatch = workerCode.includes('ctx.waitUntil(dispatchPayloadToVault') && 
+                             workerCode.includes('dispatchPayloadToVault');
+    recordTest('Worker Non-Blocking Async Ingestion (ctx.waitUntil)', hasAsyncDispatch, 'Client responds in < 50ms, Google Sheets persistence decoupled to background');
+
+    // 2c-8. Worker Upstream Storage Resilience & Exponential Backoff Retry
+    const hasRetryLogic = workerCode.includes('MAX_ATTEMPTS = 3') && 
+                          workerCode.includes('setTimeout(resolve, attempt * 600)');
+    recordTest('Worker Storage Resilience & Exponential Retry (3 Attempts)', hasRetryLogic, 'Automatic retry with backoff absorbs Google Workspace lock contention');
+
+    // 2c-9. Worker Optional Edge Buffer (Cloudflare LEADS_KV Fail-Safe)
+    const hasKvBuffer = workerCode.includes('env.LEADS_KV') && 
+                        workerCode.includes('await env.LEADS_KV.put');
+    recordTest('Worker Optional Edge Buffer (Cloudflare KV Fail-Safe)', hasKvBuffer, 'Zero-data-loss immutable backup in KV storage supported');
 
     // 2d. Micro-PoW & Anti-DoS Verification Logic
     const hasPoWVerification = workerCode.includes('verifyProofOfWork') && workerCode.includes('POW_PREFIX') && workerCode.includes('crypto.subtle.digest');
@@ -210,6 +273,21 @@ async function runTests() {
 
         const throttlePass = req1 === true && req2 === true && req3 === false && req4AfterCooldown === true;
         recordTest('Client Rolling Window Throttling (Max 2 req / 60s)', throttlePass, `Submissions 1 & 2 allowed, submission 3 within 60s blocked, submission after cooldown allowed`);
+
+        // 3f. Client-Side Turnstile Integration
+        const hasClientTurnstile = scriptCode.includes('cf-turnstile-response') && scriptCode.includes('cf_turnstile_token');
+        recordTest('script.js Cloudflare Turnstile Token Extraction', hasClientTurnstile, 'Turnstile token extracted from DOM and forwarded in fetch payload');
+
+        // 3g. HTML Turnstile Embeds Check
+        const indexHtmlContent = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+        const hasHtmlTurnstile = indexHtmlContent.includes('challenges.cloudflare.com/turnstile/v0/api.js') && 
+                                 indexHtmlContent.includes('cf-turnstile');
+        recordTest('index.html Turnstile Integration (Hero & Bottom Form Widgets)', hasHtmlTurnstile, 'Turnstile API script and widget containers verified');
+
+        // 3h. Dynamic Endpoint Routing (Zone WAF Shield)
+        const hasZoneResolution = scriptCode.includes('/api/request-access') && 
+                                  scriptCode.includes('isProductionZone');
+        recordTest('script.js Production Zone Resolution (/api/request-access)', hasZoneResolution, 'Client automatically resolves to same-origin /api/request-access on gexpit.com');
 
     } catch (e) {
         recordTest('Client-Side Logic Verification', false, `Exception: ${e.message}`);

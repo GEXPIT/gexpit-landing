@@ -1,10 +1,13 @@
 /**
  * ============================================================================
  * GEXPIT INSTITUTIONAL PLATFORM — GOOGLE APPS SCRIPT (STORAGE VAULT)
- * Version: 2.0.0 (Hardened Vault Blueprint)
+ * Version: 2.1.0 (Hardened Vault Blueprint + CSV Injection Armor + Jitter Lock Retry)
  * Deployment: Web App (Execute as: Me, Who has access: Anyone)
  * ============================================================================
  */
+
+// RFC 5322 Compliant Email Regex Validator (Secondary Defense-in-Depth)
+var EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
 
 /**
  * Constant-time string comparison to neutralize timing attack side-channels.
@@ -26,8 +29,8 @@ function safeTokenCompare(a, b) {
 }
 
 /**
- * Sanitizes input cells to neutralize Formula / CSV Injection (DDE & Hyperlinks).
- * Strips all invisible zero-width Unicode characters before validating formula triggers.
+ * Sanitizes input cells to neutralize Formula / CSV Injection (DDE, Hyperlinks, Control Chars).
+ * Strips all ASCII control characters, newlines, tabs, and invisible zero-width Unicode characters.
  * Ensures untrusted text starting with formula triggers is escaped with a single quote.
  * @param {*} val Raw input value.
  * @param {number} maxLen Maximum permissible character length.
@@ -36,6 +39,8 @@ function safeTokenCompare(a, b) {
 function sanitizeCellValue(val, maxLen) {
   if (val === null || val === undefined) return "N/A";
   var str = String(val);
+  // Strip all ASCII control characters (\x00-\x1F, \x7F) including \r and \n to prevent CSV line splitting
+  str = str.replace(/[\x00-\x1F\x7F]/g, "");
   // Strip all leading and trailing ASCII/Unicode whitespace and invisible zero-width characters (e.g. \u200B, \u200C, \u200D, \uFEFF, \u00A0)
   str = str.replace(/^[\s\u200B-\u200D\uFEFF\u00A0]+|[\s\u200B-\u200D\uFEFF\u00A0]+$/g, "");
   if (maxLen && str.length > maxLen) {
@@ -99,6 +104,12 @@ function doPost(e) {
 
   // 4. Extract and Sanitize Telemetry Data (Outside lock)
   var email = sanitizeCellValue(data.email, 254);
+  if (!EMAIL_REGEX.test(email)) {
+    return ContentService.createTextOutput(JSON.stringify({
+      "status": "error",
+      "message": "Malformed email address. RFC 5322 validation failed."
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
   var source = sanitizeCellValue(data.source || "web_edge_cockpit", 100);
   var timestamp = sanitizeCellValue(data.timestamp || new Date().toISOString(), 50);
   var clientIp = sanitizeCellValue(data.clientIp || "N/A", 50);
@@ -110,6 +121,11 @@ function doPost(e) {
   try {
     // Wait up to 2500ms for lock (prevents massive request backlog/concurrency queuing)
     lockAcquired = lock.tryLock(2500);
+    if (!lockAcquired) {
+      // Jitter backoff retry to absorb concurrency peaks across concurrent executions
+      Utilities.sleep(100 + Math.floor(Math.random() * 200));
+      lockAcquired = lock.tryLock(2000);
+    }
   } catch (lockErr) {
     lockAcquired = false;
   }

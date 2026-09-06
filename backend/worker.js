@@ -1,7 +1,7 @@
 /**
  * ============================================================================
  * GEXPIT INSTITUTIONAL PLATFORM — CLOUDFLARE WORKER (EDGE GATEWAY)
- * Version: 2.1.0 (Hardened Edge Shield + Multi-Isolate Cache Rate Limiting + PoW Anti-DoS)
+ * Version: 2.3.0 (Hardened Edge Shield + Non-Blocking Async Ingestion + KV Buffer)
  * Stack: Cloudflare Workers ES Module (Zero External Dependencies)
  * ============================================================================
  */
@@ -30,15 +30,21 @@ function getSecurityHeaders(request, env) {
     let originHeader = "*";
     if (request && request.headers) {
         const incomingOrigin = request.headers.get("origin") || request.headers.get("Origin") || "";
-        if (env && env.ALLOWED_ORIGIN) {
-            const allowedList = env.ALLOWED_ORIGIN.split(",").map(s => s.trim());
-            if (allowedList.includes(incomingOrigin) || allowedList.includes("*")) {
-                originHeader = incomingOrigin || allowedList[0];
-            } else {
-                originHeader = allowedList[0];
-            }
-        } else if (incomingOrigin) {
+        const defaultAllowed = ["https://gexpit.com", "https://www.gexpit.com"];
+        const allowedList = (env && env.ALLOWED_ORIGIN)
+            ? env.ALLOWED_ORIGIN.split(",").map(s => s.trim())
+            : defaultAllowed;
+
+        const isDevOrTest = (env && (env.ENVIRONMENT === "development" || env.ENVIRONMENT === "test" || env.ALLOW_DEV_IP_FALLBACK === "true"));
+
+        if (!incomingOrigin) {
+            originHeader = "*";
+        } else if (allowedList.includes(incomingOrigin) || allowedList.includes("*")) {
             originHeader = incomingOrigin;
+        } else if (isDevOrTest && (incomingOrigin.startsWith("http://localhost") || incomingOrigin.startsWith("http://127.0.0.1"))) {
+            originHeader = incomingOrigin;
+        } else {
+            originHeader = allowedList[0];
         }
     }
     return {
@@ -128,6 +134,53 @@ async function verifyProofOfWork(email, powTs, powNonce) {
 }
 
 /**
+ * Validates Cloudflare Turnstile cryptographic token via siteverify API
+ * @param {string} token Turnstile response token from client
+ * @param {string} clientIP Client IP address
+ * @param {object} env Worker environment variables
+ * @returns {Promise<{success: boolean, error?: string}>}
+ */
+async function verifyTurnstileToken(token, clientIP, env) {
+    const turnstileSecret = env && env.TURNSTILE_SECRET_KEY;
+    if (!turnstileSecret) {
+        // Fallback mode if Turnstile secret is not yet configured in Worker environment
+        return { success: true, bypassed: true };
+    }
+
+    if (!token || typeof token !== "string" || token.trim().length === 0) {
+        return { success: false, error: "Missing Turnstile verification token." };
+    }
+
+    try {
+        const formData = new FormData();
+        formData.append("secret", turnstileSecret.trim());
+        formData.append("response", token.trim());
+        if (clientIP && !clientIP.startsWith("anon_")) {
+            formData.append("remoteip", clientIP);
+        }
+
+        const verifyRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+            method: "POST",
+            body: formData
+        });
+
+        if (!verifyRes.ok) {
+            console.error(`[TURNSTILE VERIFY] HTTP error from Cloudflare siteverify: ${verifyRes.status}`);
+            return { success: false, error: "Turnstile verification service error." };
+        }
+
+        const outcome = await verifyRes.json();
+        return {
+            success: Boolean(outcome && outcome.success),
+            error: outcome && outcome["error-codes"] ? outcome["error-codes"].join(", ") : undefined
+        };
+    } catch (err) {
+        console.error("[TURNSTILE VERIFY EXCEPTION]", err);
+        return { success: false, error: "Turnstile challenge validation exception." };
+    }
+}
+
+/**
  * Checks and records rate limit using Cloudflare Cache API with fallback to memory map
  * @param {string} clientIP
  * @returns {Promise<boolean>} True if allowed, False if rate limited
@@ -201,6 +254,86 @@ async function checkAndRecordRateLimit(clientIP) {
     return true;
 }
 
+/**
+ * Asynchronously dispatches sanitized lead payload to upstream storage
+ * (Google Apps Script & optional Cloudflare KV Edge Buffer) with automatic retry and exponential backoff.
+ * @param {object} leadData Sanitized lead telemetry data
+ * @param {object} env Worker environment bindings
+ * @returns {Promise<{success: boolean, message?: string}>}
+ */
+async function dispatchPayloadToVault(leadData, env) {
+    const targetGoogleScriptUrl = env && env.GOOGLE_SCRIPT_URL;
+    const vaultSecretToken = env && env.VAULT_SECRET_TOKEN;
+
+    // 1. Edge Buffer Backup in Cloudflare KV (if bound) — Zero Data Loss Guarantee
+    if (env && env.LEADS_KV && typeof env.LEADS_KV.put === "function") {
+        try {
+            const kvKey = `lead:${Date.now()}:${encodeURIComponent(leadData.email)}`;
+            await env.LEADS_KV.put(kvKey, JSON.stringify(leadData), {
+                expirationTtl: 2592000 // 30 days retention
+            });
+        } catch (kvErr) {
+            console.error("[GEXPIT KV BUFFER ERROR]", kvErr);
+        }
+    }
+
+    if (!targetGoogleScriptUrl || !vaultSecretToken) {
+        console.error("[GEXPIT DISPATCH ERROR] Missing GOOGLE_SCRIPT_URL or VAULT_SECRET_TOKEN");
+        return { success: false, message: "Storage vault credentials missing." };
+    }
+
+    // 2. Resilient Ingestion with Exponential Backoff (Up to 3 attempts)
+    const MAX_ATTEMPTS = 3;
+    let lastError = null;
+
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+        const abortCtrl = new AbortController();
+        const timeoutId = setTimeout(() => abortCtrl.abort(), 8000);
+
+        try {
+            const vaultResponse = await fetch(targetGoogleScriptUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: leadData.email,
+                    source: leadData.source,
+                    timestamp: leadData.timestamp,
+                    clientIp: leadData.clientIp,
+                    vaultToken: vaultSecretToken
+                }),
+                redirect: "follow",
+                signal: abortCtrl.signal
+            });
+
+            clearTimeout(timeoutId);
+
+            if (vaultResponse.ok) {
+                const vaultData = await vaultResponse.json().catch(() => null);
+                if (vaultData && vaultData.status === "success") {
+                    return { success: true };
+                }
+                console.warn(`[GEXPIT DISPATCH] Attempt ${attempt} returned non-success:`, vaultData ? vaultData.message : "Invalid payload");
+            } else {
+                console.warn(`[GEXPIT DISPATCH] Attempt ${attempt} HTTP error: ${vaultResponse.status}`);
+            }
+        } catch (err) {
+            clearTimeout(timeoutId);
+            lastError = err;
+            console.warn(`[GEXPIT DISPATCH] Attempt ${attempt} exception: ${err.message || err}`);
+        }
+
+        if (attempt < MAX_ATTEMPTS) {
+            // Exponential backoff delay (e.g. 600ms, 1200ms) to absorb lock contention
+            await new Promise(resolve => setTimeout(resolve, attempt * 600));
+        }
+    }
+
+    console.error("[GEXPIT DISPATCH FAILED] Exhausted all retry attempts to Google Apps Script.", lastError);
+    return { success: false, message: "Exhausted retry attempts." };
+}
+
 export default {
     /**
      * Main fetch event dispatcher for Cloudflare Workers
@@ -210,6 +343,15 @@ export default {
      * @returns {Promise<Response>}
      */
     async fetch(request, env, ctx) {
+        const url = new URL(request.url);
+
+        // --------------------------------------------------------------------
+        // 0. HEALTHCHECK / ROUTING
+        // --------------------------------------------------------------------
+        if (request.method === "GET" && (url.pathname === "/health" || url.pathname === "/api/health")) {
+            return jsonResponse({ status: "active", version: "2.3.0" }, 200, request, env);
+        }
+
         // --------------------------------------------------------------------
         // 1. CORS PREFLIGHT (OPTIONS)
         // --------------------------------------------------------------------
@@ -221,13 +363,23 @@ export default {
         }
 
         // --------------------------------------------------------------------
-        // 2. HTTP METHOD VALIDATION
+        // 2. HTTP METHOD & PATH VALIDATION
         // --------------------------------------------------------------------
         if (request.method !== "POST") {
             return jsonResponse({
                 status: "error",
                 message: "Method not allowed. Only POST is accepted."
             }, 405, request, env);
+        }
+
+        // Acceptable paths for registration on root or /api/*
+        const validPathPrefixes = ["/", "/api", "/api/request-access", "/api/waitlist", "/request-access"];
+        const isPathValid = validPathPrefixes.some(p => url.pathname === p || url.pathname.startsWith("/api/"));
+        if (!isPathValid) {
+            return jsonResponse({
+                status: "error",
+                message: "Not found: Endpoint does not exist."
+            }, 404, request, env);
         }
 
         // --------------------------------------------------------------------
@@ -274,14 +426,26 @@ export default {
             }
 
             // ----------------------------------------------------------------
-            // 5. MICRO-POW CRYPTOGRAPHIC VERIFICATION (VULN-02 ANTI-DOS SHIELD)
+            // 5. CLOUDFLARE TURNSTILE & MICRO-POW ANTI-DOS SHIELD
             // ----------------------------------------------------------------
-            const isPowValid = await verifyProofOfWork(rawEmail, payload.pow_ts, payload.pow_nonce);
-            if (!isPowValid) {
-                return jsonResponse({
-                    status: "error",
-                    message: "Forbidden: Cryptographic challenge validation failed."
-                }, 403, request, env);
+            if (env && env.TURNSTILE_SECRET_KEY) {
+                const turnstileCheck = await verifyTurnstileToken(payload.cf_turnstile_token, clientIP, env);
+                if (!turnstileCheck.success) {
+                    console.error("[GEXPIT WORKER] Turnstile validation rejected:", turnstileCheck.error);
+                    return jsonResponse({
+                        status: "error",
+                        message: "Forbidden: Cloudflare Turnstile human verification challenge failed."
+                    }, 403, request, env);
+                }
+            } else {
+                // Interim / Offline fallback: Micro-PoW validation
+                const isPowValid = await verifyProofOfWork(rawEmail, payload.pow_ts, payload.pow_nonce);
+                if (!isPowValid) {
+                    return jsonResponse({
+                        status: "error",
+                        message: "Forbidden: Cryptographic challenge validation failed."
+                    }, 403, request, env);
+                }
             }
 
             // ----------------------------------------------------------------
@@ -321,66 +485,32 @@ export default {
                 }, 503, request, env);
             }
 
-            // Forward sanitized payload to Google Apps Script Web App with AbortController timeout (8s)
-            const abortCtrl = new AbortController();
-            const timeoutId = setTimeout(() => abortCtrl.abort(), 8000);
+            const leadData = {
+                email: rawEmail,
+                source: sanitizedSource,
+                timestamp: sanitizedTimestamp,
+                clientIp: clientIP
+            };
 
-            let vaultResponse;
-            try {
-                vaultResponse = await fetch(targetGoogleScriptUrl, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        email: rawEmail,
-                        source: sanitizedSource,
-                        timestamp: sanitizedTimestamp,
-                        clientIp: clientIP,
-                        vaultToken: vaultSecretToken
-                    }),
-                    redirect: "follow",
-                    signal: abortCtrl.signal
-                });
-            } catch (fetchErr) {
-                if (fetchErr.name === "AbortError") {
-                    console.error("[GEXPIT WORKER] Upstream storage vault request timed out after 8000ms");
+            // Check if synchronous mode is requested or if running in test environment without ctx.waitUntil
+            const isSync = url.searchParams.get("sync") === "true" || !ctx || typeof ctx.waitUntil !== "function";
+
+            if (isSync) {
+                const dispatchResult = await dispatchPayloadToVault(leadData, env);
+                if (!dispatchResult.success) {
                     return jsonResponse({
                         status: "error",
-                        message: "Storage vault response timed out. Please retry later."
-                    }, 504, request, env);
+                        message: "Storage vault was unable to record request. Please retry later."
+                    }, 502, request, env);
                 }
-                throw fetchErr;
-            } finally {
-                clearTimeout(timeoutId);
+                return jsonResponse({
+                    status: "success",
+                    message: "Access request successfully registered."
+                }, 200, request, env);
             }
 
-            if (!vaultResponse.ok) {
-                console.error(`[GEXPIT WORKER] Vault upstream HTTP error: ${vaultResponse.status}`);
-                return jsonResponse({
-                    status: "error",
-                    message: "Upstream processing error. Please retry later."
-                }, 502, request, env);
-            }
-
-            let vaultData = null;
-            try {
-                vaultData = await vaultResponse.json();
-            } catch (parseErr) {
-                console.error("[GEXPIT WORKER] Failed to parse upstream vault JSON response:", parseErr);
-                return jsonResponse({
-                    status: "error",
-                    message: "Upstream response parsing failed. Please retry later."
-                }, 502, request, env);
-            }
-
-            if (!vaultData || vaultData.status !== "success") {
-                console.error("[GEXPIT WORKER] Upstream storage vault returned error payload:", vaultData ? vaultData.message : "Unknown error");
-                return jsonResponse({
-                    status: "error",
-                    message: "Storage vault was unable to record request. Please retry later."
-                }, 502, request, env);
-            }
+            // Production High-Performance Asynchronous Non-Blocking Edge Ingestion (ctx.waitUntil)
+            ctx.waitUntil(dispatchPayloadToVault(leadData, env));
 
             return jsonResponse({
                 status: "success",
