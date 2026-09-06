@@ -866,6 +866,267 @@ details[open] .faq-question::after {
 }
 
 /* ==========================================================================
+   PRIVACY & COMPLIANCE STYLING (GDPR / Institutional Data Governance)
+/* Cloudflare Turnstile Anti-Bot Widget */
+.cf-turnstile-wrapper {
+    margin-top: 0.75rem;
+    display: flex;
+    justify-content: flex-start;
+    min-height: 48px;
+}
+
+#bottom-form .cf-turnstile-wrapper {
+    justify-content: center;
+}
+
+.cf-turnstile {
+    max-width: 100%;
+}
+
+.form-privacy-micro {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted-dark);
+    margin-top: 0.65rem;
+    line-height: 1.4;
+}
+
+#bottom-form .form-privacy-micro {
+    justify-content: center;
+}
+
+.privacy-lock-icon {
+    display: inline-block;
+    flex-shrink: 0;
+    color: var(--accent-green);
+    vertical-align: middle;
+}
+
+.form-privacy-micro a,
+.form-privacy-micro .privacy-modal-trigger {
+    color: var(--text-secondary-dark);
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.form-privacy-micro a:hover,
+.form-privacy-micro .privacy-modal-trigger:hover {
+    color: var(--accent-green);
+}
+
+/* Footer Privacy Box */
+.footer-privacy-box {
+    max-width: 840px;
+    margin: 3rem auto 1.75rem;
+    padding: 1.5rem 1.75rem;
+    background: #090c12;
+    border: 1px solid var(--border-dark);
+    border-radius: 8px;
+    text-align: left;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    position: relative;
+}
+
+.footer-privacy-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0.85rem;
+}
+
+.privacy-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--accent-green);
+    font-weight: 600;
+}
+
+.privacy-gdpr-tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--text-muted-dark);
+    padding: 0.2rem 0.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+}
+
+.footer-privacy-desc {
+    font-size: 0.84rem;
+    line-height: 1.65;
+    color: var(--text-secondary-dark);
+    margin-bottom: 1.1rem;
+}
+
+.footer-privacy-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.btn-privacy-link {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent-green);
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: opacity 0.2s ease;
+}
+
+.btn-privacy-link:hover {
+    opacity: 0.8;
+}
+
+/* Institutional Privacy Modal (Pure Vanilla, High-Speed) */
+.gexpit-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 11000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.gexpit-modal.active {
+    display: flex;
+}
+
+.gexpit-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(8px);
+}
+
+.gexpit-modal-content {
+    position: relative;
+    z-index: 1;
+    background: #0d1117;
+    border: 1px solid var(--border-dark);
+    border-radius: 10px;
+    max-width: 740px;
+    width: 100%;
+    max-height: 86vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 230, 118, 0.05);
+    overflow: hidden;
+}
+
+.gexpit-modal-header {
+    padding: 1.5rem 1.75rem 1.25rem;
+    border-bottom: 1px solid var(--border-dark);
+    background: #080b10;
+    position: relative;
+}
+
+.gexpit-modal-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary-dark);
+    margin-top: 0.4rem;
+    letter-spacing: 0.02em;
+}
+
+.modal-subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted-dark);
+    margin-top: 0.25rem;
+}
+
+.gexpit-modal-body {
+    padding: 1.5rem 1.75rem;
+    overflow-y: auto;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--text-secondary-dark);
+}
+
+.privacy-section:not(:last-child) {
+    margin-bottom: 1.35rem;
+    padding-bottom: 1.15rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.privacy-section h4 {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-primary-dark);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.45rem;
+}
+
+.privacy-section p {
+    margin-bottom: 0.5rem;
+}
+
+.privacy-section ul {
+    padding-left: 1.25rem;
+    margin-top: 0.35rem;
+}
+
+.privacy-section li {
+    margin-bottom: 0.35rem;
+}
+
+.privacy-section code {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent-green);
+    background: rgba(0, 230, 118, 0.08);
+    padding: 0.15rem 0.35rem;
+    border-radius: 3px;
+}
+
+.gexpit-modal-footer {
+    padding: 1rem 1.75rem;
+    border-top: 1px solid var(--border-dark);
+    background: #080b10;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.gexpit-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    background: transparent;
+    border: none;
+    color: var(--text-muted-dark);
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.gexpit-modal-close:hover {
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* ==========================================================================
    RESPONSIVE DESIGN (Universal Device Support)
    ========================================================================== */
 

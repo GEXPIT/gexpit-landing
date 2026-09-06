@@ -12,7 +12,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // ------------------------------------------------------------------------
     // 1. QUANTITATIVE CONFIGURATION & EDGE GATEWAY ENDPOINTS
     // ------------------------------------------------------------------------
-    const WORKER_ENDPOINT = "https://gexpitnuovosito.pitball85.workers.dev";
+    // Production Zone WAF Shield:
+    // 1. Custom override: window.GEXPIT_API_ENDPOINT
+    // 2. Production same-origin: /api/request-access (zone WAF inheritance, hides workers.dev)
+    // 3. Fallback: direct edge gateway for local testing / development
+    const isProductionZone = typeof window !== "undefined" && window.location &&
+        (window.location.hostname === "gexpit.com" || window.location.hostname === "www.gexpit.com");
+    const WORKER_ENDPOINT = (typeof window !== "undefined" && window.GEXPIT_API_ENDPOINT)
+        ? window.GEXPIT_API_ENDPOINT
+        : (isProductionZone ? "/api/request-access" : "https://gexpitnuovosito.pitball85.workers.dev");
     const MAX_REQUESTS = 2;
     const COOLDOWN_MS = 60000; // 60 seconds rolling window
     const STORAGE_KEY = "gexpit_telemetry_ts";
@@ -185,10 +193,12 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Step 4: Dispatch Async Fetch Request to Edge Gateway with Micro-PoW
+        // Step 4: Dispatch Async Fetch Request to Edge Gateway with Cloudflare Turnstile & Micro-PoW
         try {
             const trapInput = form.querySelector(".hp-trap input");
             const trapValue = trapInput ? trapInput.value.trim() : "";
+            const turnstileInput = form.querySelector('[name="cf-turnstile-response"]');
+            const turnstileToken = turnstileInput ? turnstileInput.value.trim() : "";
             const powTs = Date.now();
             const powNonce = await solveProofOfWork(userEmail, powTs);
 
@@ -204,7 +214,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     source: form.id || "unknown_cockpit",
                     hp_code: trapValue,
                     pow_ts: powTs,
-                    pow_nonce: powNonce
+                    pow_nonce: powNonce,
+                    cf_turnstile_token: turnstileToken
                 })
             });
 
@@ -223,6 +234,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         } catch (networkError) {
             console.error("[GEXPIT GATEWAY ERROR]", networkError);
+
+            // Reset Cloudflare Turnstile widget if active
+            if (window.turnstile) {
+                const widgetEl = form.querySelector(".cf-turnstile");
+                if (widgetEl) {
+                    try { window.turnstile.reset(widgetEl); } catch (_) {}
+                }
+            }
 
             // UI Mutation: State -> Error & Retry
             submitBtn.innerHTML = "<span>ERROR - RETRY</span>";
@@ -498,6 +517,53 @@ document.addEventListener("DOMContentLoaded", () => {
         document.addEventListener("keydown", (e) => {
             if (e.key === "Escape" && lightboxModal.classList.contains("active")) {
                 closeLightbox();
+            }
+        });
+    }
+
+    // ------------------------------------------------------------------------
+    // 10. INSTITUTIONAL PRIVACY MODAL (GDPR & Data Rights Governance)
+    // ------------------------------------------------------------------------
+    const privacyModal = document.getElementById("privacy-modal");
+    const privacyClose = document.getElementById("privacy-modal-close");
+    const privacyBackdrop = document.getElementById("privacy-modal-backdrop");
+    const privacyConfirm = document.getElementById("privacy-modal-confirm");
+    const privacyTriggers = document.querySelectorAll(".privacy-modal-trigger");
+
+    if (privacyModal) {
+        const openPrivacyModal = (e) => {
+            if (e) e.preventDefault();
+            privacyModal.classList.add("active");
+            privacyModal.setAttribute("aria-hidden", "false");
+            document.body.style.overflow = "hidden";
+            if (privacyClose) privacyClose.focus();
+        };
+
+        const closePrivacyModal = () => {
+            privacyModal.classList.remove("active");
+            privacyModal.setAttribute("aria-hidden", "true");
+            document.body.style.overflow = "";
+        };
+
+        privacyTriggers.forEach((trigger) => {
+            trigger.addEventListener("click", openPrivacyModal);
+        });
+
+        if (privacyClose) {
+            privacyClose.addEventListener("click", closePrivacyModal);
+        }
+
+        if (privacyBackdrop) {
+            privacyBackdrop.addEventListener("click", closePrivacyModal);
+        }
+
+        if (privacyConfirm) {
+            privacyConfirm.addEventListener("click", closePrivacyModal);
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && privacyModal.classList.contains("active")) {
+                closePrivacyModal();
             }
         });
     }

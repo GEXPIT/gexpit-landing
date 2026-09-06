@@ -19,6 +19,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Cloudflare Turnstile Anti-Bot Security Shield -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
     <header class="site-header">
@@ -63,6 +66,14 @@
                     <div class="form-group hero-form-group">
                         <input type="email" placeholder="Enter your email address" required class="form-input">
                         <button type="submit" class="btn btn-primary form-submit">REQUEST ACCESS</button>
+                    </div>
+                    <!-- Cloudflare Turnstile Human Verification -->
+                    <div class="cf-turnstile-wrapper">
+                        <div class="cf-turnstile" data-sitekey="0x4AAAAAAENRCesW99Pvc_t5" data-theme="dark" data-size="flexible"></div>
+                    </div>
+                    <div class="form-privacy-micro">
+                        <svg class="privacy-lock-icon" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                        <span>Institutional confidential. Zero spam. <a href="#privacy-modal" class="privacy-modal-trigger">Privacy &amp; GDPR Terms</a></span>
                     </div>
                 </form>
 
@@ -642,6 +653,14 @@
                         <input type="email" placeholder="Enter your email address" required class="form-input">
                         <button type="submit" class="btn btn-primary form-submit">REQUEST ACCESS</button>
                     </div>
+                    <!-- Cloudflare Turnstile Human Verification -->
+                    <div class="cf-turnstile-wrapper">
+                        <div class="cf-turnstile" data-sitekey="0x4AAAAAAENRCesW99Pvc_t5" data-theme="dark" data-size="flexible"></div>
+                    </div>
+                    <div class="form-privacy-micro">
+                        <svg class="privacy-lock-icon" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                        <span>Strictly confidential. Zero third-party trackers. <a href="#privacy-modal" class="privacy-modal-trigger">Privacy Policy</a></span>
+                    </div>
                 </form>
                 
                 <div class="mt-l">
@@ -748,12 +767,89 @@
                 <a href="#methodology" style="color: #888; text-decoration: none;">Methodology</a>
                 <a href="#faq" style="color: #888; text-decoration: none;">FAQ</a>
                 <a href="#pricing" style="color: #888; text-decoration: none;">Request Access</a>
+                <a href="#privacy-modal" class="privacy-modal-trigger" style="color: #888; text-decoration: none;">Privacy Policy</a>
                 <a href="https://www.youtube.com/@gexpit" target="_blank" rel="noopener noreferrer" style="color: #888; text-decoration: none;">YouTube Channel</a>
             </div>
+
+            <!-- Institutional Privacy & Compliance Disclaimer -->
+            <div class="footer-privacy-box">
+                <div class="footer-privacy-header">
+                    <span class="privacy-badge">
+                        <svg class="privacy-lock-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+                        DATA PRIVACY &amp; TELEMETRY GOVERNANCE
+                    </span>
+                    <span class="privacy-gdpr-tag">REGULATION (EU) 2016/679 (GDPR)</span>
+                </div>
+                <p class="footer-privacy-desc">
+                    GEXPIT collects and processes institutional email addresses and essential network telemetry strictly for the purpose of granting private beta access, authenticating edge gateway requests, and preventing automated infrastructure abuse. We enforce a zero-commercial-tracking policy: no marketing cookies, no behavioural profiling, and no third-party data broker transfers. All data is encrypted in transit and in storage vaults. In accordance with EU Regulation 2016/679 (GDPR), you maintain full rights to inspect, rectify, or request permanent erasure of your records at any time.
+                </p>
+                <div class="footer-privacy-actions">
+                    <button type="button" class="btn-privacy-link privacy-modal-trigger" aria-haspopup="dialog">Read Complete Privacy &amp; Data Rights Disclosure &rarr;</button>
+                </div>
+            </div>
+
             <div class="mt-l" style="color:#444; font-size:0.8rem;">&copy; 2026 GEXPIT. All rights reserved.</div>
         </div>
     </footer>
     
+    <!-- Institutional Privacy Policy & Data Governance Modal -->
+    <div id="privacy-modal" class="gexpit-modal" role="dialog" aria-hidden="true" aria-labelledby="privacy-modal-title">
+        <div class="gexpit-modal-backdrop" id="privacy-modal-backdrop"></div>
+        <div class="gexpit-modal-content">
+            <button class="gexpit-modal-close" id="privacy-modal-close" aria-label="Close Privacy Policy">&times;</button>
+            <div class="gexpit-modal-header">
+                <span class="privacy-badge">
+                    <svg class="privacy-lock-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+                    INSTITUTIONAL GOVERNANCE
+                </span>
+                <h3 id="privacy-modal-title" class="gexpit-modal-title">Privacy Policy &amp; Data Processing Disclosure</h3>
+                <div class="modal-subtitle">Regulation (EU) 2016/679 (General Data Protection Regulation &mdash; GDPR)</div>
+            </div>
+            <div class="gexpit-modal-body">
+                <section class="privacy-section">
+                    <h4>1. Data Controller &amp; Scope</h4>
+                    <p>This disclosure describes how <strong>GEXPIT</strong> (<code>gexpit.com</code>) collects, manages, and safeguards personal data submitted by institutional and professional users requesting access to the GEXPIT market structure platform and private beta evaluation program.</p>
+                </section>
+                <section class="privacy-section">
+                    <h4>2. Categories of Personal Data Processed</h4>
+                    <ul>
+                        <li><strong>Voluntary Contact Information:</strong> Professional/institutional email address provided directly by the user via the access request forms.</li>
+                        <li><strong>Automated Edge Telemetry:</strong> Request timestamp, source form identifier, and client IP hash processed at the edge gateway strictly for rate-limiting enforcement, bot challenge verification, and abuse mitigation.</li>
+                    </ul>
+                </section>
+                <section class="privacy-section">
+                    <h4>3. Purpose &amp; Legal Basis (Art. 6 GDPR)</h4>
+                    <p>Data processing is conducted strictly under the following legal bases:</p>
+                    <ul>
+                        <li><strong>Consent (Art. 6(1)(a) GDPR):</strong> Explicitly granted upon submitting your email to receive beta invitations and platform onboarding credentials.</li>
+                        <li><strong>Legitimate Interest (Art. 6(1)(f) GDPR):</strong> Protecting edge infrastructure integrity, preventing volumetric denial-of-service (DoS) attacks, and maintaining database concurrency locks.</li>
+                    </ul>
+                </section>
+                <section class="privacy-section">
+                    <h4>4. Zero Third-Party Monetization Policy</h4>
+                    <p>GEXPIT operates a strict zero-monetization policy: we never sell, lease, or commercialize telemetry or contact records. We employ zero third-party advertising scripts, zero tracking pixels, and zero profiling beacons. Telemetry is routed through hardened edge proxies (Cloudflare Workers) and stored exclusively in private access-restricted storage vaults.</p>
+                </section>
+                <section class="privacy-section">
+                    <h4>5. Retention &amp; Permanent Erasure (Art. 17 GDPR)</h4>
+                    <p>Access request records are retained strictly for the duration of the private beta evaluation phase. Under GDPR, you have the right to request:</p>
+                    <ul>
+                        <li>Confirmation and inspection of personal data held.</li>
+                        <li>Immediate and permanent erasure of your email and telemetry from all storage vaults (Right to be Forgotten).</li>
+                        <li>Revocation of consent at any time without penalty.</li>
+                    </ul>
+                    <p>To exercise your rights, submit a purge request through any official GEXPIT communication channel.</p>
+                </section>
+                <section class="privacy-section">
+                    <h4>6. Local Storage &amp; Cookies</h4>
+                    <p>This website employs zero tracking cookies. Browser <code>localStorage</code> is used exclusively for client-side rolling rate limiting (limiting rapid duplicate form submissions within 60 seconds) to ensure optimal server availability. No tracking identifier is stored or shared.</p>
+                </section>
+            </div>
+            <div class="gexpit-modal-footer">
+                <button type="button" class="btn btn-primary" id="privacy-modal-confirm">ACKNOWLEDGE &amp; CLOSE</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 4K High-Resolution Chart Lightbox Modal -->
     <div id="lightbox-modal" class="gexpit-lightbox" role="dialog" aria-hidden="true" aria-label="Chart Detail Fullscreen">
         <button class="lightbox-close" id="lightbox-close" aria-label="Close Preview">&times;</button>
