@@ -12,15 +12,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // ------------------------------------------------------------------------
     // 1. QUANTITATIVE CONFIGURATION & EDGE GATEWAY ENDPOINTS
     // ------------------------------------------------------------------------
-    // Production Zone WAF Shield:
-    // 1. Custom override: window.GEXPIT_API_ENDPOINT
-    // 2. Production same-origin: /api/request-access (zone WAF inheritance, hides workers.dev)
-    // 3. Fallback: direct edge gateway for local testing / development
-    const isProductionZone = typeof window !== "undefined" && window.location &&
-        (window.location.hostname === "gexpit.com" || window.location.hostname === "www.gexpit.com");
+    // Edge Gateway Resolution:
+    // 1. Explicit override: window.GEXPIT_API_ENDPOINT
+    // 2. Official Cloudflare Worker Edge Gateway: https://gexpitnuovosito.pitball85.workers.dev
+    // Note: GitHub Pages hosts static assets and responds with 405 Method Not Allowed to POST requests.
+    // Telemetry and lead ingestion are therefore dispatched directly to the Cloudflare Worker edge gateway.
+    const DIRECT_WORKER_ENDPOINT = "https://gexpitnuovosito.pitball85.workers.dev";
     const WORKER_ENDPOINT = (typeof window !== "undefined" && window.GEXPIT_API_ENDPOINT)
         ? window.GEXPIT_API_ENDPOINT
-        : (isProductionZone ? "/api/request-access" : "https://gexpitnuovosito.pitball85.workers.dev");
+        : DIRECT_WORKER_ENDPOINT;
     const MAX_REQUESTS = 5;
     const COOLDOWN_MS = 60000; // 60 seconds rolling window
     const STORAGE_KEY = "gexpit_telemetry_ts";
@@ -243,6 +243,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const turnstileWidget = form.querySelector(".cf-turnstile");
         let turnstileInput = form.querySelector('[name="cf-turnstile-response"]');
         let turnstileToken = turnstileInput ? turnstileInput.value.trim() : "";
+        if (!turnstileToken && typeof window !== "undefined" && window.turnstile && typeof window.turnstile.getResponse === "function") {
+            try { turnstileToken = window.turnstile.getResponse() || ""; } catch (_) {}
+        }
 
         // If Turnstile widget is active in this form, ensure token is ready before network dispatch
         if (turnstileWidget && !turnstileToken) {
@@ -257,6 +260,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 await new Promise(r => setTimeout(r, 150));
                 turnstileInput = form.querySelector('[name="cf-turnstile-response"]');
                 turnstileToken = turnstileInput ? turnstileInput.value.trim() : "";
+                if (!turnstileToken && typeof window !== "undefined" && window.turnstile && typeof window.turnstile.getResponse === "function") {
+                    try { turnstileToken = window.turnstile.getResponse() || ""; } catch (_) {}
+                }
             }
 
             if (turnstileWrapper) {
@@ -332,7 +338,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     openConfirmationModal(userEmail);
                 }, 200);
             } else {
-                throw new Error(`[GEXPIT GATEWAY] Server responded with status: ${response.status}`);
+                let errDetail = "";
+                try {
+                    const errData = await response.json();
+                    if (errData && errData.message) {
+                        errDetail = ` - ${errData.message}`;
+                    }
+                } catch (_) {}
+                throw new Error(`[GEXPIT GATEWAY] Server responded with status: ${response.status}${errDetail}`);
             }
         } catch (networkError) {
             console.error("[GEXPIT GATEWAY ERROR]", networkError);
