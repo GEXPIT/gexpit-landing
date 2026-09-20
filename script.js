@@ -485,22 +485,47 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ------------------------------------------------------------------------
-    // 7. OFFSCREEN VIDEO PAUSE (Hero & Terminal Showcase Videos)
+    // 7. SHOWCASE VIDEO AUTOPLAY & OFFSCREEN PAUSE (Hero & Terminal Videos)
     // ------------------------------------------------------------------------
-    // Videos are user-started. Pause offscreen without restarting a manually
-    // paused video or autoplaying when the visitor scrolls back into view.
+    // Continuous loop autoplay when visible in viewport; pause offscreen to save resources.
+    const showcaseVideos = document.querySelectorAll(".hero-showcase-video, .terminal-video");
+
     if ("IntersectionObserver" in window) {
         const videoObserver = new IntersectionObserver((entries) => {
             entries.forEach(({ target, isIntersecting }) => {
-                if (!isIntersecting) target.pause();
+                if (isIntersecting) {
+                    target.play().catch(() => {
+                        /* Autoplay can be delayed by browser policy; non-fatal. */
+                    });
+                } else {
+                    target.pause();
+                }
             });
         }, { threshold: 0.15 });
-        document.querySelectorAll(".hero-showcase-video, .terminal-video").forEach((video) => {
+
+        showcaseVideos.forEach((video) => {
             videoObserver.observe(video);
+            // Autoplay immediately on load if video is already inside the viewport
+            const rect = video.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                video.play().catch(() => {});
+            }
         });
+    } else {
+        showcaseVideos.forEach((video) => video.play().catch(() => {}));
     }
+
     document.addEventListener("visibilitychange", () => {
-        if (document.hidden) document.querySelectorAll("video").forEach((video) => video.pause());
+        if (document.hidden) {
+            showcaseVideos.forEach((video) => video.pause());
+        } else {
+            showcaseVideos.forEach((video) => {
+                const rect = video.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    video.play().catch(() => {});
+                }
+            });
+        }
     });
 
     // ------------------------------------------------------------------------
