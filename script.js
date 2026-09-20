@@ -490,6 +490,22 @@ document.addEventListener("DOMContentLoaded", () => {
     // Continuous loop autoplay when visible in viewport; pause offscreen to save resources.
     const showcaseVideos = document.querySelectorAll(".hero-showcase-video, .terminal-video");
 
+    showcaseVideos.forEach((video) => {
+        // Guarantee WebKit / iOS Safari inline autoplay compliance
+        video.muted = true;
+        video.defaultMuted = true;
+        video.playsInline = true;
+        video.setAttribute("muted", "");
+        video.setAttribute("playsinline", "");
+        video.setAttribute("webkit-playsinline", "");
+
+        // Robust seamless loop failsafe for mobile browsers
+        video.addEventListener("ended", () => {
+            video.currentTime = 0;
+            video.play().catch(() => {});
+        });
+    });
+
     if ("IntersectionObserver" in window) {
         const videoObserver = new IntersectionObserver((entries) => {
             entries.forEach(({ target, isIntersecting }) => {
@@ -514,6 +530,23 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         showcaseVideos.forEach((video) => video.play().catch(() => {}));
     }
+
+    // Low Power Mode / iOS battery saver fallback: trigger playback on first user gesture
+    const resumeVideosOnFirstTouch = () => {
+        showcaseVideos.forEach((video) => {
+            const rect = video.getBoundingClientRect();
+            if (video.paused && rect.top < window.innerHeight && rect.bottom > 0) {
+                video.play().catch(() => {});
+            }
+        });
+        window.removeEventListener("touchstart", resumeVideosOnFirstTouch, { passive: true });
+        window.removeEventListener("pointerdown", resumeVideosOnFirstTouch, { passive: true });
+        window.removeEventListener("scroll", resumeVideosOnFirstTouch, { passive: true });
+    };
+
+    window.addEventListener("touchstart", resumeVideosOnFirstTouch, { passive: true, once: true });
+    window.addEventListener("pointerdown", resumeVideosOnFirstTouch, { passive: true, once: true });
+    window.addEventListener("scroll", resumeVideosOnFirstTouch, { passive: true, once: true });
 
     document.addEventListener("visibilitychange", () => {
         if (document.hidden) {
@@ -856,4 +889,27 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    // ------------------------------------------------------------------------
+    // 12. SMOOTH CENTERED SCROLL FOR APPLICATION FORM (Mobile & Desktop)
+    // ------------------------------------------------------------------------
+    const bottomFormLinks = document.querySelectorAll('a[href="#bottom-form"], a[href="#bottom-form-email"]');
+    bottomFormLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+            const emailInput = document.getElementById("bottom-form-email");
+            if (emailInput) {
+                e.preventDefault();
+                emailInput.scrollIntoView({ behavior: "smooth", block: "center" });
+                if (window.history && window.history.pushState) {
+                    window.history.pushState(null, "", "#bottom-form");
+                }
+                emailInput.classList.remove("input-highlight-pulse");
+                void emailInput.offsetWidth;
+                emailInput.classList.add("input-highlight-pulse");
+                setTimeout(() => {
+                    emailInput.classList.remove("input-highlight-pulse");
+                }, 1800);
+            }
+        });
+    });
 });
