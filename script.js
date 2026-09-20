@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isBot(form)) {
             // Emulate artificial network round-trip to deceive automated scraping tools
             setTimeout(() => {
-                submitBtn.innerHTML = "<span>✓ ACCESS CONFIRMED</span>";
+                submitBtn.innerHTML = "<span>✓ APPLICATION RECEIVED</span>";
                 submitBtn.style.backgroundColor = "var(--accent-green)";
                 submitBtn.style.color = "#05070a";
                 submitBtn.style.borderColor = "var(--accent-green)";
@@ -216,6 +216,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 emailInput.disabled = true;
                 emailInput.style.borderColor = "var(--accent-green)";
                 openConfirmationModal(userEmail);
+                form.tabIndex = -1;
+                dialogOpeners.set(confirmationModal, form);
             }, 800);
             return;
         }
@@ -225,7 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isLocalPreview) {
             setTimeout(() => {
                 recordRateLimitAttempt();
-                submitBtn.innerHTML = "<span>✓ ACCESS CONFIRMED</span>";
+                submitBtn.innerHTML = "<span>✓ APPLICATION RECEIVED</span>";
                 submitBtn.style.backgroundColor = "var(--accent-green)";
                 submitBtn.style.color = "#05070a";
                 submitBtn.style.borderColor = "var(--accent-green)";
@@ -234,6 +236,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 emailInput.disabled = true;
                 emailInput.style.borderColor = "var(--accent-green)";
                 openConfirmationModal(userEmail);
+                form.tabIndex = -1;
+                dialogOpeners.set(confirmationModal, form);
             }, 250);
             return;
         }
@@ -323,7 +327,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 recordRateLimitAttempt();
 
                 // UI Mutation: State -> Success (Base Emerald Green #00E676 with dark black text)
-                submitBtn.innerHTML = "<span>✓ ACCESS CONFIRMED</span>";
+                submitBtn.innerHTML = "<span>✓ APPLICATION RECEIVED</span>";
                 submitBtn.style.backgroundColor = "var(--accent-green)";
                 submitBtn.style.color = "#05070a";
                 submitBtn.style.borderColor = "var(--accent-green)";
@@ -336,6 +340,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Trigger institutional confirmation pop-up modal
                 setTimeout(() => {
                     openConfirmationModal(userEmail);
+                    form.tabIndex = -1;
+                    dialogOpeners.set(confirmationModal, form);
                 }, 200);
             } else {
                 let errDetail = "";
@@ -381,7 +387,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll(".access-form").forEach(form => {
             const btn = form.querySelector('button[type="submit"]');
             if (btn && btn.innerHTML.includes("NOT A ROBOT")) {
-                btn.innerHTML = "<span>REQUEST ACCESS</span>";
+                btn.innerHTML = "<span>APPLY FOR EARLY ACCESS</span>";
                 btn.style.borderColor = "";
                 btn.style.color = "";
                 btn.disabled = false;
@@ -481,35 +487,21 @@ document.addEventListener("DOMContentLoaded", () => {
     // ------------------------------------------------------------------------
     // 7. OFFSCREEN VIDEO PAUSE (Hero & Terminal Showcase Videos)
     // ------------------------------------------------------------------------
-    // Marketing rationale for keeping it at all: the looping replay demo is
-    // the single best proof of "zero lag" the page has. Marketing rationale
-    // for THIS block: a decoding, looping video costs real CPU/GPU for as
-    // long as it is running, even scrolled far out of view. Pausing it when
-    // it leaves the viewport (and resuming on return) keeps that cost paid
-    // only while a visitor is actually looking at it.
+    // Videos are user-started. Pause offscreen without restarting a manually
+    // paused video or autoplaying when the visitor scrolls back into view.
     if ("IntersectionObserver" in window) {
-        const showcaseVideos = document.querySelectorAll(".hero-showcase-video, .terminal-video");
-
-        if (showcaseVideos.length > 0) {
-            const videoObserver = new IntersectionObserver(
-                (entries) => {
-                    entries.forEach((entry) => {
-                        const vid = entry.target;
-                        if (entry.isIntersecting) {
-                            vid.play().catch(() => {
-                                /* Autoplay can be blocked by the browser; non-fatal. */
-                            });
-                        } else {
-                            vid.pause();
-                        }
-                    });
-                },
-                { threshold: 0.15 }
-            );
-
-            showcaseVideos.forEach((vid) => videoObserver.observe(vid));
-        }
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(({ target, isIntersecting }) => {
+                if (!isIntersecting) target.pause();
+            });
+        }, { threshold: 0.15 });
+        document.querySelectorAll(".hero-showcase-video, .terminal-video").forEach((video) => {
+            videoObserver.observe(video);
+        });
     }
+    document.addEventListener("visibilitychange", () => {
+        if (document.hidden) document.querySelectorAll("video").forEach((video) => video.pause());
+    });
 
     // ------------------------------------------------------------------------
     // 8. MOBILE NAVIGATION DRAWER
@@ -608,7 +600,102 @@ document.addEventListener("DOMContentLoaded", () => {
             stickyCta.classList.remove("visible");
         });
     }
+    const dialogOpeners = new WeakMap();
+    function activateDialog(modal, firstControl) {
+        dialogOpeners.set(modal, document.activeElement);
+        modal.classList.add("active");
+        modal.setAttribute("aria-hidden", "false");
+        document.querySelectorAll("header, main, footer").forEach((region) => { region.inert = true; });
+        document.body.style.overflow = "hidden";
+        if (firstControl) firstControl.focus();
+    }
+    function deactivateDialog(modal) {
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
+        document.querySelectorAll("header, main, footer").forEach((region) => { region.inert = false; });
+        document.body.style.overflow = "";
+        const opener = dialogOpeners.get(modal);
+        if (opener && opener.isConnected) {
+            // A successful submission disables its button; return to its email
+            // form heading instead of dropping keyboard focus into the page.
+            if (opener.disabled) {
+                const form = opener.closest("form");
+                if (form) { form.tabIndex = -1; form.focus(); }
+            } else opener.focus();
+        }
+    }
+    document.addEventListener("keydown", (event) => {
+        if (event.key !== "Tab") return;
+        const modal = document.querySelector('[role="dialog"].active');
+        if (!modal) return;
+        const controls = [...modal.querySelectorAll('button:not(:disabled), a[href], [tabindex="0"]')]
+            .filter((control) => control.getClientRects().length);
+        if (!controls.length) return;
+        const first = controls[0], last = controls[controls.length - 1];
+        if (event.shiftKey && (document.activeElement === first || !modal.contains(document.activeElement))) {
+            event.preventDefault(); last.focus();
+        } else if (!event.shiftKey && (document.activeElement === last || !modal.contains(document.activeElement))) {
+            event.preventDefault(); first.focus();
+        }
+    });
+
     // ------------------------------------------------------------------------
+    // Manual screenshot galleries. Without JavaScript all descriptions remain visible.
+    document.querySelectorAll("[data-gallery]").forEach((gallery) => {
+        const slides = [...gallery.querySelectorAll("[data-slide]")];
+        if (slides.length < 2) return;
+        const choices = document.createElement("div");
+        choices.className = "gallery-choices";
+        choices.setAttribute("role", "group");
+        choices.setAttribute("aria-label", "Choose a platform view");
+        const controls = document.createElement("div");
+        controls.className = "gallery-controls";
+        const previous = document.createElement("button");
+        const next = document.createElement("button");
+        const status = document.createElement("span");
+        previous.type = next.type = "button";
+        previous.textContent = "← Previous";
+        next.textContent = "Next →";
+        status.className = "gallery-status";
+        status.setAttribute("aria-live", "polite");
+        status.setAttribute("aria-atomic", "true");
+        let current = 0;
+        const buttons = slides.map((slide, index) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.textContent = slide.dataset.label;
+            button.setAttribute("aria-controls", slide.id);
+            button.addEventListener("click", () => select(index));
+            button.addEventListener("keydown", (event) => {
+                let target;
+                if (event.key === "ArrowRight") target = (index + 1) % slides.length;
+                if (event.key === "ArrowLeft") target = (index - 1 + slides.length) % slides.length;
+                if (event.key === "Home") target = 0;
+                if (event.key === "End") target = slides.length - 1;
+                if (target === undefined) return;
+                event.preventDefault();
+                select(target);
+                buttons[target].focus();
+            });
+            choices.append(button);
+            return button;
+        });
+        function select(index) {
+            current = (index + slides.length) % slides.length;
+            slides.forEach((slide, i) => {
+                slide.hidden = i !== current;
+                buttons[i].setAttribute("aria-pressed", String(i === current));
+            });
+            status.textContent = `${current + 1} / ${slides.length} · ${slides[current].dataset.label}`;
+        }
+        previous.addEventListener("click", () => select(current - 1));
+        next.addEventListener("click", () => select(current + 1));
+        controls.append(previous, status, next);
+        gallery.querySelector(".gallery-intro").after(choices, controls);
+        gallery.classList.add("gallery-ready");
+        select(0);
+    });
+
     // 9. HIGH-RESOLUTION CHART LIGHTBOX (Pure Vanilla, Zero Dependencies)
     // ------------------------------------------------------------------------
     const lightboxModal = document.getElementById("lightbox-modal");
@@ -624,20 +711,26 @@ document.addEventListener("DOMContentLoaded", () => {
             lightboxImg.alt = img.alt || "GEXPIT High-Resolution Chart Detail";
             const header = img.closest(".feature-visual")?.querySelector(".screenshot-header");
             lightboxCaption.textContent = header ? header.textContent.trim() : (img.alt || "");
-            lightboxModal.classList.add("active");
-            lightboxModal.setAttribute("aria-hidden", "false");
-            document.body.style.overflow = "hidden";
+            activateDialog(lightboxModal, lightboxClose);
         };
 
         const closeLightbox = () => {
-            lightboxModal.classList.remove("active");
-            lightboxModal.setAttribute("aria-hidden", "true");
-            lightboxImg.src = "";
-            document.body.style.overflow = "";
+            deactivateDialog(lightboxModal);
+            lightboxImg.removeAttribute("src");
         };
 
         featureImages.forEach((img) => {
-            img.addEventListener("click", () => openLightbox(img));
+            img.tabIndex = 0;
+            img.setAttribute("role", "button");
+            img.setAttribute("aria-label", `Enlarge: ${img.alt}`);
+            img.setAttribute("aria-haspopup", "dialog");
+            img.addEventListener("click", () => { img.focus(); openLightbox(img); });
+            img.addEventListener("keydown", (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    openLightbox(img);
+                }
+            });
         });
 
         if (lightboxClose) {
@@ -669,16 +762,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (privacyModal) {
         const openPrivacyModal = (e) => {
             if (e) e.preventDefault();
-            privacyModal.classList.add("active");
-            privacyModal.setAttribute("aria-hidden", "false");
-            document.body.style.overflow = "hidden";
-            if (privacyClose) privacyClose.focus();
+            activateDialog(privacyModal, privacyClose);
         };
 
         const closePrivacyModal = () => {
-            privacyModal.classList.remove("active");
-            privacyModal.setAttribute("aria-hidden", "true");
-            document.body.style.overflow = "";
+            deactivateDialog(privacyModal);
         };
 
         privacyTriggers.forEach((trigger) => {
@@ -718,19 +806,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (confirmationEmailDisplay && email) {
             confirmationEmailDisplay.textContent = email;
         }
-        confirmationModal.classList.add("active");
-        confirmationModal.setAttribute("aria-hidden", "false");
-        document.body.style.overflow = "hidden";
-        if (confirmationConfirm) {
-            confirmationConfirm.focus();
-        }
+        activateDialog(confirmationModal, confirmationConfirm);
     }
 
     function closeConfirmationModal() {
         if (!confirmationModal) return;
-        confirmationModal.classList.remove("active");
-        confirmationModal.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = "";
+        deactivateDialog(confirmationModal);
     }
 
     if (confirmationModal) {

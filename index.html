@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="GEXPIT is a quantitative SPX 0DTE market-structure platform for real-time options flow, Dynamic GEX, CVD, volatility regime analysis and historical replay.">
+    <meta name="description" content="Read SPX 0DTE options flow, Dynamic GEX and rolling volume with GEXPIT. Build context for SPX options and ES futures trading. Apply for 21 days of early access.">
     <meta name="theme-color" content="#000000">
-    <title>GEXPIT — Real-Time SPX 0DTE Market Structure</title>
+    <title>GEXPIT — SPX 0DTE Flow, GEX &amp; Replay</title>
 
     <meta property="og:type" content="website">
-    <meta property="og:title" content="REAL-TIME SPX 0DTE MARKET STRUCTURE">
-    <meta property="og:description" content="Flow · GEX · CVD · Volatility · Replay">
+    <meta property="og:title" content="GEXPIT — Read the Options Activity">
+    <meta property="og:description" content="SPX 0DTE flow, Dynamic GEX, rolling volume and replay. Apply for 21 days of early access.">
     <meta property="og:image" content="assets/img/gexpit-og-image.jpg">
 
     <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
@@ -24,48 +24,43 @@
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
         <div class="container header-container">
-            <a href="#hero" class="brand-logo" aria-label="GEXPIT Homepage">
-                <img src="assets/img/gexpit-logo-header.webp" alt="GEXPIT" width="175" height="32" style="display: block;">
-            </a>
-            <nav class="main-nav" id="nav-menu">
-                <a href="#flow" class="nav-link">Flow &amp; Heatmap</a>
-                <a href="#positioning" class="nav-link">Dealer Positioning</a>
-                <a href="#pressure" class="nav-link">CVD &amp; Pressure</a>
-                <a href="#replay" class="nav-link">Replay Engine</a>
-                <a href="#methodology" class="nav-link">Methodology</a>
+            <a href="#hero" class="brand-logo" aria-label="GEXPIT homepage"><img src="assets/img/gexpit-logo-header.webp" alt="GEXPIT" width="175" height="32"></a>
+            <nav class="main-nav" id="nav-menu" aria-label="Main navigation">
+                <a href="#platform" class="nav-link">Platform</a>
+                <a href="#how-it-works" class="nav-link">How It Works</a>
+                <a href="#pricing" class="nav-link">Early Access</a>
                 <a href="#faq" class="nav-link">FAQ</a>
-                <a href="#pricing" class="btn btn-nav nav-menu-cta">Request Access</a>
+                <a href="#pricing" class="btn btn-nav nav-menu-cta">Apply for Early Access</a>
             </nav>
-            <div class="header-actions" style="display: flex; align-items: center; gap: 0.75rem;">
-                <a href="#pricing" class="btn btn-nav btn-mobile-cta">Request Access</a>
-                <button class="nav-toggle" id="nav-toggle" aria-label="Toggle Navigation" aria-expanded="false">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+            <div class="header-actions">
+                <a href="#pricing" class="btn btn-nav btn-mobile-cta">Early Access</a>
+                <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-controls="nav-menu" aria-expanded="false"><span></span><span></span><span></span></button>
             </div>
         </div>
     </header>
-
-    <!-- 01 HERO -->
+    <main id="main-content">
     <section class="hero-section" id="hero">
         <div class="container hero-grid">
             <div class="hero-content">
-                <span class="eyebrow">FLOW · DYNAMIC GEX · MONETARY CVD · REPLAY</span>
-                <h1 class="hero-title">REAL TIME 0DTE DEALER POSITIONING</h1>
-                <p class="hero-subtitle">Analyze institutional options flow, dynamic gamma walls, and monetary CVD tick-by-tick.</p>
-                <p class="hero-supporting">Stop guessing the market direction and start seeing the actual market structure. Built for live analysis and high-throughput historical replay using your local IBKR data feed.</p>
-                
+                <span class="eyebrow">SPX 0DTE · OPTIONS FLOW · DYNAMIC GEX · REPLAY</span>
+                <h1 class="hero-title">Read the options activity behind your market decisions.</h1>
+                <p class="hero-subtitle">Track Call and Put flow, explore GEX heatmaps, and see where recent volume is building.</p>
+                <p class="hero-supporting">Built by a trader for SPX options and ES futures traders who want to put price in context.</p>
+            </div>
+            <div class="hero-conversion">
+                <div class="access-badge">INVITE ONLY <span>21 days free · Product feedback required</span></div>
                 <form id="hero-form" class="access-form mt-m">
                     <!-- Anti-spam Honeypot -->
                     <div class="hp-trap" aria-hidden="true" style="position: absolute; left: -9999px;">
                         <input type="text" name="b_name" tabindex="-1" autocomplete="off">
                     </div>
                     <div class="form-group hero-form-group">
-                        <input type="email" placeholder="Enter your email address" required class="form-input">
-                        <button type="submit" class="btn btn-primary form-submit">REQUEST ACCESS</button>
+                        <label class="form-label" for="hero-form-email">Email address</label>
+                        <input id="hero-form-email" name="email" autocomplete="email" aria-describedby="hero-form-note" type="email" placeholder="Enter your email address" required class="form-input">
+                        <button aria-live="polite" type="submit" class="btn btn-primary form-submit">APPLY FOR EARLY ACCESS</button>
                     </div>
                     <!-- Cloudflare Turnstile Human Verification -->
                     <div class="cf-turnstile-wrapper">
@@ -73,585 +68,87 @@
                     </div>
                     <div class="form-privacy-micro">
                         <svg class="privacy-lock-icon" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                        <span>Institutional confidential. Zero spam. <a href="#privacy-modal" class="privacy-modal-trigger">Privacy &amp; GDPR Terms</a></span>
+                        <span>Your email is used for access updates. <a href="#privacy-modal" class="privacy-modal-trigger">Privacy Policy</a></span>
                     </div>
+                <p class="form-note" id="hero-form-note">Applying does not activate a license. If selected, you will receive an invitation by email. <a href="#access-terms">Read the access terms</a>.</p>
                 </form>
-
-                <div class="hero-actions">
-                    <a href="https://www.youtube.com/@gexpit" target="_blank" rel="noopener noreferrer" class="btn btn-youtube">
-                        <img src="assets/img/gexpit-logo-header.webp" alt="GEXPIT Profile" class="yt-profile-icon">
-                        WATCH DAILY LIVE STREAM
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                            <path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
-                            <path fill="#FFFFFF" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                        </svg>
-                    </a>
-                </div>
+                <div class="hero-actions"><a class="link-action" href="#demo">Watch GEXPIT in action &darr;</a><a class="text-link" href="https://www.youtube.com/@gexpit" target="_blank" rel="noopener noreferrer">Live sessions &amp; videos on YouTube &nearr;</a></div>
             </div>
-            
-            <div class="hero-visual">
+            <div class="hero-visual" id="demo">
                 <div class="app-frame terminal-frame">
-                    <div class="terminal-bar">
-                        <div class="terminal-dots">
-                            <span class="dot close"></span><span class="dot min"></span><span class="dot max"></span>
-                        </div>
-                        <div class="terminal-title">GEXPIT — LIVE STREAM</div>
-                    </div>
-                    <video class="hero-showcase-video" autoplay loop muted playsinline disablePictureInPicture preload="auto" style="width: 100%; display: block;">
-                        <source src="assets/video/gexpit-montato-web.mp4" type="video/mp4">
-                    </video>
+                    <div class="terminal-bar"><div class="terminal-dots" aria-hidden="true"><span class="dot close"></span><span class="dot min"></span><span class="dot max"></span></div><div class="terminal-title">GEXPIT IN ACTION</div></div>
+                    <video class="hero-showcase-video" controls loop muted playsinline preload="metadata" aria-label="Recorded GEXPIT platform demonstration" poster="assets/img/gexpit-tab1-heatmap-flows.webp"><source src="assets/video/gexpit-montato-web.mp4" type="video/mp4">Your browser cannot play this video. <a href="assets/video/gexpit-montato-web.mp4">Open the demonstration</a>.</video>
                 </div>
+                <p class="media-caption">Recorded platform demonstration. Explore the tools below, then watch complete sessions on YouTube.</p>
             </div>
         </div>
     </section>
-
-    <!-- 02 THE PROBLEM / WHAT IT IS NOT -->
-    <section class="section-dark" id="what-is">
-        <div class="container text-center">
-            <h2 class="section-heading mb-m" style="font-size: 2rem;">INSTITUTIONAL MARKET STRUCTURE. ZERO GUESSWORK.</h2>
-            <p class="section-desc max-w-center mb-l">Most retail traders enter blind on lagging chart indicators. GEXPIT exposes the actual mechanical forces moving SPX—dealer inventory, dynamic gamma walls, and signed monetary flow in real time.</p>
-            
-            <div class="five-lenses-grid mt-xl text-left">
-                <div class="lens-card">
-                    <h3 class="lens-title">1. FLOW</h3>
-                    <p style="color: var(--text-primary-dark); font-weight: 500;">Where is institutional money committing right now?</p>
-                    <p class="mt-s" style="font-size: 0.9rem; color: var(--text-secondary-dark);">Isolate multi-million dollar sweeps, distinguish Call vs. Put aggressive buying, and follow true directional volume instead of lagging candles.</p>
-                </div>
-                <div class="lens-card">
-                    <h3 class="lens-title">2. POSITIONING</h3>
-                    <p style="color: var(--text-primary-dark); font-weight: 500;">Where are market makers heavily concentrated?</p>
-                    <p class="mt-s" style="font-size: 0.9rem; color: var(--text-secondary-dark);">Map the complete 5-Greek chain (GEX, VEX, DEX, CEX) across every strike to identify concrete support and resistance levels.</p>
-                </div>
-                <div class="lens-card">
-                    <h3 class="lens-title">3. HEDGING</h3>
-                    <p style="color: var(--text-primary-dark); font-weight: 500;">How will dealers react if the market moves 10 points?</p>
-                    <p class="mt-s" style="font-size: 0.9rem; color: var(--text-secondary-dark);">Watch Dynamic Gamma walls recalculate in real time as Spot moves, anticipating forced dealer buying or selling before it hits the tape.</p>
-                </div>
-                <div class="lens-card">
-                    <h3 class="lens-title">4. REGIME</h3>
-                    <p style="color: var(--text-primary-dark); font-weight: 500;">Should I fade the range or follow the breakout?</p>
-                    <p class="mt-s" style="font-size: 0.9rem; color: var(--text-secondary-dark);">Know immediately if you are in a range-damping cushion or a high-velocity volatility cascade based on Spot vs. Zero Gamma and Vol Trigger.</p>
-                </div>
-                <div class="lens-card">
-                    <h3 class="lens-title">5. REPLAY</h3>
-                    <p style="color: var(--text-primary-dark); font-weight: 500;">How can I master market structure without risking real capital?</p>
-                    <p class="mt-s" style="font-size: 0.9rem; color: var(--text-secondary-dark);">Replay past sessions tick-by-tick up to 300x speed, or rewind intraday during live trading to analyze morning setups with zero hindsight bias.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- MACRO 1: SEE THE FLOW -->
-    <section class="section-dark" id="flow" style="padding: 4rem 0; text-align: center; border-bottom: none;">
+    <section class="section-dark" id="platform">
         <div class="container">
-            <h2 class="section-heading mb-m" style="font-size: 2rem;">1. SEE THE FLOW</h2>
-            <p class="section-desc max-w-center">What is actually trading? Visualize the concentration of options volume and isolate the large institutional sweeps moving the market.</p>
-        </div>
-    </section>
-
-    <!-- TAB 1 (Normal) -->
-    <section class="feature-section" style="border-top: none;">
-        <!-- TAB 1 - ROW 1: GEX Logarithmic Overview -->
-        <div class="container feature-grid">
-            <div class="feature-text">
-                <h3 class="feature-title">SEE WHERE 0DTE FLOW IS CONCENTRATING.</h3>
-                <p class="feature-desc">Visualize SPX 0DTE gamma concentration, options volume and directional flow across strike and time.</p>
-                <p class="feature-detail">Select from <strong>10 distinct visualization modes</strong> categorized into two official families: <strong>Gamma (GEX)</strong> (Linear, Logarithmic, 30m Rolling) for structural dealer risk, and <strong>Order Flow &amp; Volumes</strong> for direct volume pressure. Rendered natively on pure OLED black at 60 FPS.</p>
-                
-                <div class="sub-feature mt-m">
-                    <h4>MULTI-TIMEFRAME PROFILES &amp; CALL/PUT FLOWS</h4>
-                    <p>Track liquidity across three lateral volume profiles: <strong>Daily Volume Profile</strong> (all-day session volume), <strong>Rolling Volume Profile</strong> (customizable across 7 timeframes: 1m, 5m, 10m, 15m, 30m, 60m, 120m), and <strong>Total Volume</strong> with 3-level HVN/LVN liquidity grading. Slices include dedicated <strong>Call Flow &amp; Put Flow</strong> time-series with multi-metric toggles (Contracts, Dollar Notional $, Delta Flow) and Moneyness filters (ALL, OTM, NTM ±5pt, ITM).</p>
-                </div>
-            </div>
-            <div class="feature-visual">
-                <div class="screenshot-header">TAB 1 — GEX Logarithmic Overview</div>
-                <img loading="lazy" src="assets/img/gexpit-tab1-heatmap-flows.webp" alt="GEXPIT Tab 1: Heatmap GEX Logarithmic with lateral volume profiles and market regime">
-            </div>
-        </div>
-
-        <!-- TAB 1 - ROW 2: Smooth Flow & Dual Panels -->
-        <div class="container feature-grid">
-            <div class="feature-text">
-                <span class="eyebrow" style="margin-bottom: 0.75rem;">ORDER FLOW &amp; VOLUMES</span>
-                <h3 class="feature-title" style="font-size: 1.75rem;">SMOOTH FLOW &amp; DUAL PANELS</h3>
-                <p class="feature-desc" style="font-size: 1.1rem;">Continuous interpolated flow showing real-time directional order flow pressure without discrete step artifacts.</p>
-                <p class="feature-detail"><em>Smooth Flow</em> maps continuous Call and Put volume distribution along the strike axis as price trades through it, revealing whether market participants are actively reinforcing liquidity or withdrawing bids.</p>
-                
-                <div class="sub-feature mt-m">
-                    <h4>DUAL PANELS &amp; DOMINANCE MODES</h4>
-                    <p>Eliminate visual clutter with <em>Dual Panels</em>—splitting the terminal into synchronized Call (top, emerald green) and Put (bottom, crimson red) screens. Switch to <em>Dominance</em> to eliminate ATM blackouts: strikes glow with the real gross volume while displaying the dominant faction's pure color without algebraic cancellation.</p>
-                </div>
-            </div>
-            <div class="feature-visual">
-                <div class="screenshot-header">TAB 1 — Smooth Order Flow</div>
-                <img loading="lazy" src="assets/img/gexpit-tab1-smooth-flow.webp" alt="GEXPIT Tab 1: Smooth Flow mode showing interpolated call and put flow">
-            </div>
-        </div>
-
-        <!-- TAB 1 - ROW 3: Delta Dominance -->
-        <div class="container feature-grid">
-            <div class="feature-text">
-                <span class="eyebrow" style="margin-bottom: 0.75rem;">DEALER HEDGING EXPOSURE</span>
-                <h3 class="feature-title" style="font-size: 1.75rem;">DELTA DOMINANCE: REAL DEALER HEDGING PRESSURE</h3>
-                <p class="feature-desc" style="font-size: 1.1rem;">Weight traded options volume by directional sensitivity rather than just gross contract counts.</p>
-                <p class="feature-detail">The <em>Delta Dominance</em> mode weights traded volume by absolute Delta (|<span style="font-family:serif;">Δ</span>| × Volume), revealing where Market Makers face genuine delta-hedging risk across out-of-the-money strikes rather than just premium spent.</p>
-
-                <div class="sub-feature mt-m">
-                    <h4>ISOLATE MM SHADOW ACCUMULATION</h4>
-                    <p>When high-volume strikes trade far from Spot with low delta, conventional volume heatmaps display deceptive bright zones. Delta Dominance filters out low-delta noise, highlighting exactly where dealers must dynamically rebalance SPX shares or futures on underlying price shifts.</p>
-                </div>
-            </div>
-            <div class="feature-visual">
-                <div class="screenshot-header">TAB 1 — Delta Dominance Pressure</div>
-                <img loading="lazy" src="assets/img/gexpit-tab1-delta-dominance.webp" alt="GEXPIT Tab 1: Delta Dominance mode weighting volume by absolute delta">
+            <div class="section-intro text-center"><span class="eyebrow">FOUR WAYS TO EXAMINE THE SESSION</span><h2 class="section-heading">Follow the activity. Compare the context.</h2><p class="section-desc">Start with a question. Open the view that helps you examine it. Go deeper when you need the detail.</p><p class="media-caption">Explore 26 screenshots from the updated platform. Each view explains a different part of the session. The two demonstration videos show an earlier interface.</p></div>
+            <div class="pillar-grid">
+                <a class="pillar-card" href="#flow"><span class="eyebrow">01 / FLOW</span><h3>Where is activity building?</h3><p>Separate Call and Put volume across strike and time.</p><span class="card-link">Explore flow &rarr;</span></a>
+                <a class="pillar-card" href="#rolling"><span class="eyebrow">02 / RECENT VOLUME</span><h3>What has changed recently?</h3><p>Compare a rolling window with the full session.</p><span class="card-link">Compare volume &rarr;</span></a>
+                <a class="pillar-card" href="#positioning"><span class="eyebrow">03 / DYNAMIC GEX</span><h3>How is the profile changing?</h3><p>Track modeled exposure as spot and time evolve.</p><span class="card-link">Examine GEX &rarr;</span></a>
+                <a class="pillar-card" href="#replay"><span class="eyebrow">04 / REPLAY</span><h3>What happened at that moment?</h3><p>Revisit a recorded sequence and examine each step.</p><span class="card-link">See replay &rarr;</span></a>
             </div>
         </div>
     </section>
-
-    <!-- TAB 5 (Reverse) -->
-    <section class="feature-section feature-reverse">
-        <!-- TAB 5 - ROW 1: Full Chain Institutional Sweeps -->
+    <section class="feature-section" id="flow">
         <div class="container feature-grid">
-            <div class="feature-text">
-                <h3 class="feature-title">FIND HIGH-NOTIONAL OPTIONS ACTIVITY.</h3>
-                <p class="feature-desc">Filter high-notional options trades and assess potential dealer-hedging sensitivity across the entire SPX chain.</p>
-                <p class="feature-detail">Isolate institutional block trades and aggressive sweeps from retail noise. View executions plotted directly against the Spot line as distinct visual markers—green squares for Calls, red squares for Puts—with square size strictly scaled to contract volume.</p>
-
-                <div class="sub-feature mt-m">
-                    <h4>INDEPENDENT DUAL-METRIC THRESHOLD FILTERS</h4>
-                    <p>Filter institutional flow with precision: switch between <strong>Dollar Notional Value ($)</strong> (from $100K up to multi-million dollar sweeps) and <strong>Contract Volume</strong> (from 50 to 10,000+ contracts) using responsive stepping controls.</p>
-                </div>
-
-                <div class="sub-feature mt-m">
-                    <h4>SYNCHRONIZED TIME-SERIES FLOWS</h4>
-                    <p>Directly beneath the Spot chart, dedicated Call Flow and Put Flow timelines remain time-linked to the same millisecond axis, confirming whether an isolated block trade triggers sustained directional momentum or immediate absorption.</p>
-                </div>
-            </div>
-            <div class="feature-visual">
-                <div class="screenshot-header">TAB 5 — Institutional Sweeps (Full Chain)</div>
-                <img loading="lazy" src="assets/img/gexpit-tab5-big-trades.webp" alt="GEXPIT Tab 5: Big Trades vs Spot across the SPX chain">
-            </div>
+            <div class="feature-text"><span class="eyebrow">01 / CALL &amp; PUT FLOW</span><h2 class="feature-title">See where volume concentrates. Separate Call and Put activity.</h2><p class="feature-desc">Read activity across strike and time while keeping spot in view.</p><p>Start with Combined Volume: bubbles place Call and Put activity at each strike and time, alongside spot. Then switch views to compare dominance, overlapping activity or modeled Gamma.</p><details class="feature-details"><summary>Metrics, filters &amp; display modes</summary><div class="details-body"><p>Choose from 16 heatmap modes. Gamma views include GEX Linear, GEX Rolling, Wall Activity, GEX Velocity, GEX Absolute, Wall Absorption (GEX/Vol) and Charm Pressure (0DTE Pin). Volume views include Combined Volume, Volume Flow, Smooth Flow, Dominance, Delta Dominance, Duel, Call Only, Put Only and Dual Panels.</p><p>Dedicated Call and Put flow views offer contract, premium-notional and Delta-weighted metrics, plus moneyness filters. Different modes answer different questions: volume and modeled exposure are not the same measure.</p></div></details></div>
+            <figure class="feature-visual"><figcaption class="screenshot-header">Combined Volume</figcaption><img loading="lazy" decoding="async" width="3839" height="2040" src="assets/img/flow-combined.webp" alt="GEXPIT Combined Volume: See the activity at each strike."></figure>
         </div>
-
-        <!-- TAB 5 - ROW 2: Proximity Filter Distance <= 15pt -->
+        <div class="container feature-more"><section class="screenshot-gallery" data-gallery aria-labelledby="flow-gallery-title"><div class="gallery-intro"><span class="eyebrow">08 VIEWS TO EXPLORE</span><h3 id="flow-gallery-title">One session. Different ways to read the flow.</h3><p>Compare dominance, overlap and separate Call / Put activity while keeping the same market context.</p><p class="gallery-hint">Select a view. Click or tap the image to enlarge it.</p></div><article class="gallery-slide" id="flow-gallery-slide-1" data-slide data-label="Volume Flow"><div class="gallery-copy"><h4>Locate the active strikes.</h4><p>Read Call and Put volume as a continuous heatmap across the selected rolling window. Brightness is relative to activity in that window.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Volume Flow</figcaption><img loading="lazy" decoding="async" width="3813" height="2040" src="assets/img/flow-volume.webp" alt="GEXPIT Volume Flow: Locate the active strikes."></figure></article><article class="gallery-slide" id="flow-gallery-slide-2" data-slide data-label="Smooth Flow"><div class="gallery-copy"><h4>Follow the shape of the flow.</h4><p>A smoothed view makes the distribution easier to follow across strikes and time. Smoothing changes the display, not the underlying observations.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Smooth Flow</figcaption><img loading="lazy" decoding="async" width="3836" height="2050" src="assets/img/flow-smooth.webp" alt="GEXPIT Smooth Flow: Follow the shape of the flow."></figure></article><article class="gallery-slide" id="flow-gallery-slide-3" data-slide data-label="Dominance"><div class="gallery-copy"><h4>See which side carries more volume.</h4><p>Compare Call and Put activity in the same map: green marks Call dominance and red marks Put dominance. This is a volume comparison, not a buy or sell instruction.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Dominance</figcaption><img loading="lazy" decoding="async" width="3839" height="2052" src="assets/img/flow-dominance.webp" alt="GEXPIT Dominance: See which side carries more volume."></figure></article><article class="gallery-slide" id="flow-gallery-slide-4" data-slide data-label="Delta Dominance"><div class="gallery-copy"><h4>Add Delta to the volume comparison.</h4><p>Weight option volume by absolute Delta to compare activity on a different basis. Read it alongside unweighted Dominance to see how the picture changes.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Delta Dominance</figcaption><img loading="lazy" decoding="async" width="3833" height="2050" src="assets/img/flow-delta.webp" alt="GEXPIT Delta Dominance: Add Delta to the volume comparison."></figure></article><article class="gallery-slide" id="flow-gallery-slide-5" data-slide data-label="Duel"><div class="gallery-copy"><h4>Find strikes where both sides are active.</h4><p>Duel highlights overlapping Call and Put volume using the smaller of the two. A bright area means both are active; green here does not mean Call dominance.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Duel</figcaption><img loading="lazy" decoding="async" width="3830" height="2063" src="assets/img/flow-duel.webp" alt="GEXPIT Duel: Find strikes where both sides are active."></figure></article><article class="gallery-slide" id="flow-gallery-slide-6" data-slide data-label="Call Only"><div class="gallery-copy"><h4>Isolate the Call side.</h4><p>Remove the Put layer and inspect where Call volume concentrates. Keep price, the daily profile and the rolling profile in view.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Call Only</figcaption><img loading="lazy" decoding="async" width="3838" height="2048" src="assets/img/flow-call.webp" alt="GEXPIT Call Only: Isolate the Call side."></figure></article><article class="gallery-slide" id="flow-gallery-slide-7" data-slide data-label="Put Only"><div class="gallery-copy"><h4>Isolate the Put side.</h4><p>Examine Put activity on its own to locate concentrations that can be harder to read in a combined view.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Put Only</figcaption><img loading="lazy" decoding="async" width="3832" height="2050" src="assets/img/flow-put.webp" alt="GEXPIT Put Only: Isolate the Put side."></figure></article><article class="gallery-slide" id="flow-gallery-slide-8" data-slide data-label="Dual Panels"><div class="gallery-copy"><h4>Compare Call and Put without overlap.</h4><p>Two synchronized heatmaps separate the sides while keeping a shared color reference. Compare their intensity at the same strike and time.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Dual Panels</figcaption><img loading="lazy" decoding="async" width="3832" height="2069" src="assets/img/flow-dual.webp" alt="GEXPIT Dual Panels: Compare Call and Put without overlap."></figure></article></section></div><div class="container feature-more"><details class="feature-details"><summary>Explore all 7 Gamma heatmaps · structure, activity &amp; time</summary><div class="details-body"><section class="screenshot-gallery" data-gallery aria-labelledby="gamma-gallery-title"><div class="gallery-intro"><span class="eyebrow">07 VIEWS TO EXPLORE</span><h3 id="gamma-gallery-title">A large level and an active level are different questions.</h3><p>Choose the Gamma view that matches your question: relative structure, recent contributions, fixed scale or time-weighted exposure.</p><p class="gallery-hint">Select a view. Click or tap the image to enlarge it.</p></div><article class="gallery-slide" id="gamma-gallery-slide-1" data-slide data-label="GEX Linear"><div class="gallery-copy"><h4>Map the session structure.</h4><p>Read the cumulative net Gamma distribution by strike. The relative color scale emphasizes the structure within the view; it is not a fixed measure across sessions.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">GEX Linear</figcaption><img loading="lazy" decoding="async" width="3836" height="2040" src="assets/img/gamma-linear.webp" alt="GEXPIT GEX Linear: Map the session structure."></figure></article><article class="gallery-slide" id="gamma-gallery-slide-2" data-slide data-label="GEX Rolling"><div class="gallery-copy"><h4>Bring the recent reference into focus.</h4><p>Normalize the GEX display against a rolling reference from 1 to 120 minutes. Call and Put use separate scales, helping the smaller side remain visible.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">GEX Rolling</figcaption><img loading="lazy" decoding="async" width="3831" height="2041" src="assets/img/gamma-rolling.webp" alt="GEXPIT GEX Rolling: Bring the recent reference into focus."></figure></article><article class="gallery-slide" id="gamma-gallery-slide-3" data-slide data-label="Wall Activity"><div class="gallery-copy"><h4>Distinguish size from recent activity.</h4><p>Combine the cumulative GEX structure with recent traded volume. Compare prominent levels with the activity still taking place there.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Wall Activity</figcaption><img loading="lazy" decoding="async" width="3835" height="2048" src="assets/img/gamma-activity.webp" alt="GEXPIT Wall Activity: Distinguish size from recent activity."></figure></article><article class="gallery-slide" id="gamma-gallery-slide-4" data-slide data-label="GEX Velocity"><div class="gallery-copy"><h4>See where new Gamma contributions arrive.</h4><p>Focus on Gamma entering during the selected window. Green represents Call contributions and red Put contributions; red does not mean existing Gamma has been removed.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">GEX Velocity</figcaption><img loading="lazy" decoding="async" width="3833" height="2044" src="assets/img/gamma-velocity.webp" alt="GEXPIT GEX Velocity: See where new Gamma contributions arrive."></figure></article><article class="gallery-slide" id="gamma-gallery-slide-5" data-slide data-label="GEX Absolute"><div class="gallery-copy"><h4>Keep the color scale consistent.</h4><p>Use a fixed logarithmic scale for GEX magnitude. Compare values across time or sessions without each view rescaling to its own brightest cell.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">GEX Absolute</figcaption><img loading="lazy" decoding="async" width="3833" height="2050" src="assets/img/gamma-absolute.webp" alt="GEXPIT GEX Absolute: Keep the color scale consistent."></figure></article><article class="gallery-slide" id="gamma-gallery-slide-6" data-slide data-label="Wall Absorption"><div class="gallery-copy"><h4>Put Gamma concentration beside trading activity.</h4><p>Weight relative GEX by the logarithm of recent volume at each strike. The view highlights the combination of exposure and activity; it does not directly observe dealer hedging.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Wall Absorption</figcaption><img loading="lazy" decoding="async" width="3832" height="2046" src="assets/img/gamma-absorption.webp" alt="GEXPIT Wall Absorption: Put Gamma concentration beside trading activity."></figure></article><article class="gallery-slide" id="gamma-gallery-slide-7" data-slide data-label="Charm Pressure"><div class="gallery-copy"><h4>Add time to the exposure picture.</h4><p>View cumulative Charm weighted by time remaining to the close. Use it as an additional model-based reference, not a guarantee that price will pin to a strike.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Charm Pressure</figcaption><img loading="lazy" decoding="async" width="3834" height="2049" src="assets/img/gamma-charm.webp" alt="GEXPIT Charm Pressure: Add time to the exposure picture."></figure></article></section></div></details></div><div class="container feature-more"><details class="feature-details"><summary>Inspect Big Trades · all strikes or near the money</summary><div class="details-body"><section class="screenshot-gallery" data-gallery aria-labelledby="trades-gallery-title"><div class="gallery-intro"><span class="eyebrow">02 VIEWS TO EXPLORE</span><h3 id="trades-gallery-title">Filter the activity. Keep the context.</h3><p>Start with the chain, then focus on the strikes relevant to your analysis.</p><p class="gallery-hint">Select a view. Click or tap the image to enlarge it.</p></div><article class="gallery-slide" id="trades-gallery-slide-1" data-slide data-label="Big Trades · ALL"><div class="gallery-copy"><h4>See larger activity across the chain.</h4><p>Filter activity by contract volume or premium notional, then compare its location with spot. Separate Call and Put flow panels retain the broader context.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Big Trades · ALL</figcaption><img loading="lazy" decoding="async" width="3831" height="2027" src="assets/img/trades-all.webp" alt="GEXPIT Big Trades · ALL: See larger activity across the chain."></figure></article><article class="gallery-slide" id="trades-gallery-slide-2" data-slide data-label="Big Trades · NTM"><div class="gallery-copy"><h4>Focus on activity near the money.</h4><p>The NTM filter keeps strikes within ±5 points of spot. Switch between ALL, NTM, OTM and ITM to examine a different part of the chain. Size alone does not identify a participant or a multi-leg position.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Big Trades · NTM</figcaption><img loading="lazy" decoding="async" width="3826" height="2036" src="assets/img/trades-ntm.webp" alt="GEXPIT Big Trades · NTM: Focus on activity near the money."></figure></article></section></div></details></div></section>
+<section class="feature-section feature-reverse" id="rolling">
         <div class="container feature-grid">
-            <div class="feature-text">
-                <span class="eyebrow" style="margin-bottom: 0.75rem;">HIGH-CONVICTION ATM FOCUS</span>
-                <h3 class="feature-title" style="font-size: 1.75rem;">STRIKE PROXIMITY &amp; X-RAY HUD TOOLTIP</h3>
-                <p class="feature-desc" style="font-size: 1.1rem;">Eliminate far-OTM lottery tickets and isolate trades that force immediate dealer hedging.</p>
-                <p class="feature-detail">Toggle the <strong>Distance &le; 15pt</strong> filter with one click to isolate blocks traded right at the money—eliminating far-OTM speculative noise. Hover over any institutional block for instant X-Ray details: exact second, strike, option premium, underlying Spot price at fill, volume, and total dollar notional.</p>
-
-                <div class="sub-feature mt-m">
-                    <h4>IMMEDIATE IMPACT VS SPECULATIVE TAILS</h4>
-                    <p>Trades executed near Spot carry the highest gamma and dollar delta impact. By applying the 15-point proximity clamp alongside the 200+ volume threshold, the chart filters out 90% of chain noise, highlighting the exact strikes where market makers must aggressively react.</p>
-                </div>
-            </div>
-            <div class="feature-visual">
-                <div class="screenshot-header">TAB 5 — Proximity Filter (Distance &le; 15pt ATM)</div>
-                <img loading="lazy" src="assets/img/gexpit-tab5-filtered-proximity.webp" alt="GEXPIT Tab 5: Big Trades filtered with Distance <= 15pt proximity filter">
-            </div>
+            <div class="feature-text"><span class="eyebrow">02 / ROLLING VOLUME &amp; CVD</span><h2 class="feature-title">The session total can hide the latest shift.</h2><p class="feature-desc">Compare recent volume with the full session. See whether activity stays on the same strikes or moves with price.</p><p>Keep rolling volume peaks, separate Call and Put CVD, and CVD Momentum beside spot. The view below uses contract volume; switch to premium notional for Monetary CVD.</p><details class="feature-details"><summary>Time windows &amp; Monetary CVD</summary><div class="details-body"><p>The Rolling Volume Profile offers windows from 1 minute to 120 minutes. Rolling volume peaks on spot can be compared over intervals from 1 minute to the full session.</p><p>Switch between contract volume, premium notional and Delta Flow, with separate Call/Put or net CVD views. Monetary CVD weights classified flow by option premium notional; classification is an estimate, not a record of participant intent.</p></div></details></div>
+            <figure class="feature-visual"><figcaption class="screenshot-header">Rolling Volume &amp; Call / Put CVD</figcaption><img loading="lazy" decoding="async" width="3830" height="2042" src="assets/img/volume-cvd-split.webp" alt="GEXPIT Rolling Volume &amp; Call / Put CVD: Keep the two sides visible."></figure>
         </div>
-    </section>
-
-    <!-- MACRO 2: SEE THE DEALER POSITIONING -->
-    <section class="section-dark" id="positioning" style="padding: 4rem 0; text-align: center; border-bottom: none;">
+        <div class="container feature-more"><details class="feature-details"><summary>Compare volume alerts &amp; Net CVD</summary><div class="details-body"><div class="gallery-copy"><h3>Watch the change, then inspect the context.</h3><p>Enable volume alerts on spot and switch to Net CVD for a combined reading. CVD Momentum adds the recent change alongside the cumulative curve. Flow classification is an estimate, not a record of participant intent.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Volume Alerts &amp; Net CVD</figcaption><img loading="lazy" decoding="async" width="3830" height="2035" src="assets/img/volume-cvd-net.webp" alt="GEXPIT Volume Alerts &amp; Net CVD: Watch the change, then inspect the context."></figure></div></details></div></section>
+<section class="feature-section" id="positioning">
+        <div class="container feature-grid">
+            <div class="feature-text"><span class="eyebrow">03 / DYNAMIC GEX</span><h2 class="feature-title">Spot moves. Time passes. Follow the changing GEX profile.</h2><p class="feature-desc">Compare the current profile with earlier readings instead of relying on a single snapshot.</p><p>Explore Dynamic GEX, Net GEX and separate Call/Put profiles. Historical markers help you see how the readings have changed.</p><details class="feature-details"><summary>Calculation context &amp; reference levels</summary><div class="details-body"><p>Dynamic GEX revalues the full session volume at each strike with current model Gamma, using spot and the ATM Expected Move. It uses a flat ATM volatility assumption across strikes. Classic Net GEX instead accumulates flow contributions using Gamma at the time each contribution was recorded.</p><p>Net GEX and Dynamic GEX offer lookback markers at 1, 5, 15 and 30 minutes when that history is available. Split Total GEX does not use these markers. Dynamic GEX always uses the full session volume. Plotted references include Zero Gamma, Call Wall, Put Wall and Vol Trigger.</p><p>These are model-based references. They do not directly reveal dealer inventory or establish that a price level must hold.</p></div></details></div>
+            <figure class="feature-visual"><figcaption class="screenshot-header">Dynamic GEX</figcaption><img loading="lazy" decoding="async" width="3817" height="2020" src="assets/img/gex-dynamic.webp" alt="GEXPIT Dynamic GEX: Revalue the session at the current spot."></figure>
+        </div>
+        <div class="container feature-more"><section class="screenshot-gallery" data-gallery aria-labelledby="profiles-gallery-title"><div class="gallery-intro"><span class="eyebrow">03 VIEWS TO EXPLORE</span><h3 id="profiles-gallery-title">A net number is only one view of the chain.</h3><p>Switch from the net profile to separate Call / Put contributions, then compare the broader Greek exposures.</p><p class="gallery-hint">Select a view. Click or tap the image to enlarge it.</p></div><article class="gallery-slide" id="profiles-gallery-slide-1" data-slide data-label="Net GEX"><div class="gallery-copy"><h4>Read the accumulated Gamma contributions.</h4><p>Compare the net profile with spot and the plotted reference levels. Classic Net GEX retains Gamma at the time each flow contribution was recorded.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Net GEX</figcaption><img loading="lazy" decoding="async" width="3828" height="2019" src="assets/img/gex-net.webp" alt="GEXPIT Net GEX: Read the accumulated Gamma contributions."></figure></article><article class="gallery-slide" id="profiles-gallery-slide-2" data-slide data-label="Split Total GEX"><div class="gallery-copy"><h4>See what a net reading can hide.</h4><p>Keep Call and Put contributions separate. Two large opposing components can cancel in a net profile; the split view lets you inspect both.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Split Total GEX</figcaption><img loading="lazy" decoding="async" width="3819" height="2031" src="assets/img/gex-split.webp" alt="GEXPIT Split Total GEX: See what a net reading can hide."></figure></article><article class="gallery-slide" id="profiles-gallery-slide-3" data-slide data-label="Volume &amp; Greek Profiles"><div class="gallery-copy"><h4>Compare five measures at the same strike.</h4><p>Read Volume, GEX, VEX, DEX and CEX in synchronized profiles. Change the time window to compare recent activity with the session; use stacked or split centered display modes.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Volume &amp; Greek Profiles</figcaption><img loading="lazy" decoding="async" width="3816" height="1964" src="assets/img/exposure-profiles.webp" alt="GEXPIT Volume &amp; Greek Profiles: Compare five measures at the same strike."></figure></article></section></div><div class="container feature-more" id="pressure"><section class="screenshot-gallery" data-gallery aria-labelledby="volatility-gallery-title"><div class="gallery-intro"><span class="eyebrow">02 VIEWS TO EXPLORE</span><h3 id="volatility-gallery-title">Volume tells you where. Volatility adds another dimension.</h3><p>Put activity alongside the priced range, straddle decay and changes in ATM implied volatility.</p><p class="gallery-hint">Select a view. Click or tap the image to enlarge it.</p></div><article class="gallery-slide" id="volatility-gallery-slide-1" data-slide data-label="Expected Move &amp; Straddle Decay"><div class="gallery-copy"><h4>Separate the range reference from the option price.</h4><p>Compare opening Expected Move and straddle bands, an intraday straddle corridor, and observed ATM straddle against theoretical decay. Expected Move and straddle price remain distinct measures.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Expected Move &amp; Straddle Decay</figcaption><img loading="lazy" decoding="async" width="3814" height="2032" src="assets/img/volatility-decay.webp" alt="GEXPIT Expected Move &amp; Straddle Decay: Separate the range reference from the option price."></figure></article><article class="gallery-slide" id="volatility-gallery-slide-2" data-slide data-label="Z Score &amp; VWAP"><div class="gallery-copy"><h4>Read volatility alongside volume and price.</h4><p>Compare 30-minute ATM IV Z-scores, including separate Call and Put readings, with minute-level volume. Optional OI-VWAP, C-GAMMA, C-VOL and C-DELTA overlays add options-derived reference lines. OI-VWAP is synthetic: it is neither an ES futures VWAP nor a measurement of open interest.</p></div><figure class="feature-visual"><figcaption class="screenshot-header">Z Score &amp; VWAP</figcaption><img loading="lazy" decoding="async" width="3831" height="2033" src="assets/img/volatility-zscore.webp" alt="GEXPIT Z Score &amp; VWAP: Read volatility alongside volume and price."></figure></article></section></div></section>
+    <section class="section-dark" id="replay">
         <div class="container">
-            <h2 class="section-heading mb-m" style="font-size: 2rem;">2. SEE THE DEALER POSITIONING</h2>
-            <p class="section-desc max-w-center">Where is the gamma concentrated? Map the full profile of dealer exposure and watch the walls shift in real time as the underlying moves.</p>
+            <div class="section-intro text-center"><span class="eyebrow">04 / LIVE ANALYSIS &amp; REPLAY</span><h2 class="section-heading">The session ends. Your analysis continues.</h2><p class="section-desc">Return to a moment in your recorded session. Pause, slow down and compare price, flow and exposure using the same analytical workspace.</p></div>
+            <div class="app-frame terminal-frame replay-frame">
+                <div class="terminal-bar"><div class="terminal-dots" aria-hidden="true"><span class="dot close"></span><span class="dot min"></span><span class="dot max"></span></div><div class="terminal-title">GEXPIT REPLAY DEMONSTRATION</div></div>
+                <video class="terminal-video" controls loop muted playsinline preload="metadata" aria-label="Recorded demonstration of the GEXPIT replay engine" poster="assets/img/gexpit-tab4-gexpit-cockpit.webp"><source src="assets/video/registrazione-2x-web.mp4" type="video/mp4">Your browser cannot play this video. <a href="assets/video/registrazione-2x-web.mp4">Open the replay demonstration</a>.</video>
+            </div>
+            <p class="media-caption text-center">Recorded replay demonstration. Pause or expand the video to inspect the interface.</p>
+            <details class="feature-details"><summary>Data collection, playback &amp; intraday rewind</summary><div class="details-body"><p>The GEXPIT Extractor collects IBKR data and writes the local session files. The desktop cockpit reads those files for live analysis and historical replay. Replay at selectable speeds, pause at a point of interest, or revisit an earlier part of the live session. Re-enable LIVE to return to incoming data.</p><p>Replay helps you review what was recorded. It is not, by itself, a backtest or proof that a trading strategy is profitable.</p></div></details>
+            <div class="youtube-panel"><div><span class="eyebrow">WATCH THE FULL SESSION</span><h3>See GEXPIT used on real market recordings.</h3><p>Explore live streams, session recordings and platform videos on the GEXPIT YouTube channel.</p></div><a href="https://www.youtube.com/@gexpit" target="_blank" rel="noopener noreferrer" class="btn btn-youtube">Watch on YouTube &nearr;</a></div>
         </div>
     </section>
-
-    <!-- TAB 3 (Normal) -->
-    <section class="feature-section" style="border-top: none;">
-        <!-- TAB 3 - ROW 1: Stacked Bar Mode -->
-        <div class="container feature-grid">
-            <div class="feature-text">
-                <h3 class="feature-title">FIVE EXPOSURE VIEWS. ONE STRIKE MAP.</h3>
-                <p class="feature-desc">Map the full Greeks profile simultaneously across the SPX chain.</p>
-                <p class="feature-detail">Analyze <strong>Total Volume, GEX (Gamma), VEX (Vanna), DEX (Dollar Delta), and CEX (Charm)</strong> side-by-side on five time-synchronized strike panels. All profiles are calculated instantly via a Numba JIT-compiled BSM engine, featuring 3-level density color grading to isolate High-Volume Nodes (HVN) and friction zones from thin liquidity (LVN).</p>
-
-                <div class="sub-feature mt-m">
-                    <h4>MULTI-TIMEFRAME ROLLING WINDOWS</h4>
-                    <p>Filter dealer exposures across <strong>7 rolling intervals</strong> (<em>1m, 5m, 10m, 30m, 60m, 120m, All Session</em>). Identify whether today's key walls represent persistent morning accumulation or rapid defensive re-hedging deployed in the last 15 minutes.</p>
-                </div>
-
-                <div class="sub-feature mt-m">
-                    <h4>PRACTICAL GREEKS INTUITION</h4>
-                    <p>No complex calculus required: <strong>GEX</strong> locates where market makers dampen or amplify price moves; <strong>VEX</strong> spots vulnerability to IV shocks; <strong>DEX</strong> measures underlying share-hedging needs; and <strong>CEX</strong> captures accelerated delta-bleed as 0DTE contracts expire toward the final hour.</p>
-                </div>
-            </div>
-            <div class="feature-visual">
-                <div class="screenshot-header">TAB 3 — Greek Profiles (Stacked Mode)</div>
-                <img loading="lazy" src="assets/img/gexpit-tab3-gex-vex-dex-cex.webp" alt="GEXPIT Tab 3: Five synchronized Greek profiles in Stacked Bar mode">
-            </div>
-        </div>
-
-        <!-- TAB 3 - ROW 2: Split Centered Mode -->
-        <div class="container feature-grid">
-            <div class="feature-text">
-                <span class="eyebrow" style="margin-bottom: 0.75rem;">DIRECTIONAL ASYMMETRY</span>
-                <h3 class="feature-title" style="font-size: 1.75rem;">SPLIT CENTERED BAR MODE</h3>
-                <p class="feature-desc" style="font-size: 1.1rem;">Zero-centered axis with Puts expanding left and Calls expanding right across all five Greek panels.</p>
-                <p class="feature-detail">Toggle display mode instantly with top toolbar buttons: switch to <strong>Split Centered Mode</strong> to instantly spot directional imbalance strike-by-strike. Rather than visually unstacking combined bars, the zero axis makes skew and Call vs. Put dominance immediately obvious across Volume, Gamma, Vanna, Delta, and Charm.</p>
-
-                <div class="sub-feature mt-m">
-                    <h4>INSTANT ORDER SKEW DETECTION</h4>
-                    <p>Split Centered Mode isolates whether an apparent gamma wall is balanced or heavily one-sided. When a single strike displays massive Call GEX expanding right with virtually zero Put GEX on the left, it acts as an asymmetric barrier with distinct hedging dynamics.</p>
-                </div>
-            </div>
-            <div class="feature-visual">
-                <div class="screenshot-header">TAB 3 — Greek Profiles (Split Centered Mode)</div>
-                <img loading="lazy" src="assets/img/gexpit-tab3-split-centered.webp" alt="GEXPIT Tab 3: Five synchronized Greek profiles in Split Centered Bar mode">
-            </div>
-        </div>
-    </section>
-
-    <!-- TAB 4 (Reverse) -->
-    <section class="feature-section feature-reverse">
-        <!-- TAB 4 - ROW 1: Net GEX Mode -->
-        <div class="container feature-grid">
-            <div class="feature-text">
-                <h3 class="feature-title">DYNAMIC GEX. REAL-TIME MARKET STRUCTURE.</h3>
-                <p class="feature-desc">Reprice the traded 0DTE book as Spot and time evolve.</p>
-                <p class="feature-detail">Switch seamlessly between three distinct exposure modes: <strong>Net GEX</strong> (intraday net balance from traded flows), <strong>Split Total GEX</strong> (side-by-side Call and Put bars), and <strong>Dynamic GEX</strong> (GEXBot Classic Style)—which reprices session-wide strike volume at the live Spot price and current minutes to close using Black-Scholes.</p>
-
-                <div class="sub-feature mt-m">
-                    <h4>NET GAMMA EXPOSURE PROFILE</h4>
-                    <p>Assess directional dealer exposure strike-by-strike: positive green bars denote dealer long gamma (volatility suppression and mean reversion), while negative red bars indicate short gamma pockets where dealer hedging accelerates market momentum.</p>
-                </div>
-            </div>
-            <div class="feature-visual text-center" style="background:#000;">
-                <div class="screenshot-header text-left">TAB 4 — Net GEX Exposure Profile</div>
-                <img loading="lazy" src="assets/img/gexpit-tab4-gexpit-cockpit.webp" alt="GEXPIT Tab 4: Net GEX exposure profile and key levels">
-            </div>
-        </div>
-
-        <!-- TAB 4 - ROW 2: Split Total GEX Mode -->
-        <div class="container feature-grid">
-            <div class="feature-text">
-                <span class="eyebrow" style="margin-bottom: 0.75rem;">GROSS GAMMA ARCHITECTURE</span>
-                <h3 class="feature-title" style="font-size: 1.75rem;">SPLIT TOTAL GEX PROFILE</h3>
-                <p class="feature-desc" style="font-size: 1.1rem;">Side-by-side Call and Put gamma profiles across all active SPX strikes.</p>
-                <p class="feature-detail">In <strong>Split Total GEX</strong> mode, Call gamma expands to the right (green) and Put gamma expands to the left (red) on a zero-centered baseline. This unmasks hidden friction zones where both Calls and Puts are heavily stacked on the same strike, which would otherwise algebraically cancel out in a simple net profile.</p>
-
-                <div class="sub-feature mt-m">
-                    <h4>MULTI-TIMEFRAME ROLLING EXPOSURE</h4>
-                    <p>Filter exposure dynamically across 7 rolling timeframes (<em>1m to 120m, or All Session</em>) to isolate whether gamma buildup represents opening institutional blocks or defensive late-day adjustments.</p>
-                </div>
-            </div>
-            <div class="feature-visual text-center" style="background:#000;">
-                <div class="screenshot-header text-left">TAB 4 — Split Total GEX Profile</div>
-                <img loading="lazy" src="assets/img/gexpit-tab4-split-total-gex.webp" alt="GEXPIT Tab 4: Split Total GEX profile with side-by-side calls and puts">
-            </div>
-        </div>
-
-        <!-- TAB 4 - ROW 3: Dynamic GEX & Lookback Balls -->
-        <div class="container feature-grid">
-            <div class="feature-text">
-                <span class="eyebrow" style="margin-bottom: 0.75rem;">LIVE REPRICING &amp; WALL MIGRATION</span>
-                <h3 class="feature-title" style="font-size: 1.75rem;">DYNAMIC GEX &amp; HISTORICAL LOOKBACK BALLS</h3>
-                <p class="feature-desc" style="font-size: 1.1rem;">Reprices cumulative traded volume at current Spot and time to close via live Black-Scholes.</p>
-
-                <div class="sub-feature mt-m">
-                    <h4>HISTORICAL LOOKBACK BALLS</h4>
-                    <p>Track wall migration at a glance: multi-colored markers overlaid directly on strike bars show where gamma stood <strong>1m (white), 5m (cyan), 15m (yellow), and 30m (orange)</strong> ago. Instantly see whether institutional walls are holding firm, migrating to new strikes, or eroding.</p>
-                </div>
-
-                <div class="sub-feature mt-m">
-                    <h4>DUAL ZERO GAMMA &amp; ACTIVE VOL TRIGGER SCAN</h4>
-                    <p>The left panel plots Spot alongside five core quantitative levels: <strong>Zero Gamma Flow</strong> (dashed yellow, local crossover), <strong>Zero Gamma Macro</strong> (solid orange, macro flip), <strong>Vol Trigger</strong> (dashed light blue, scanned across price space), plus <strong>Call Wall</strong> and <strong>Put Wall</strong>.</p>
-                </div>
-            </div>
-            <div class="feature-visual text-center" style="background:#000;">
-                <div class="screenshot-header text-left">TAB 4 — Dynamic GEX &amp; Lookback Balls</div>
-                <img loading="lazy" src="assets/img/gexpit-tab4-dynamic-gex.webp" alt="GEXPIT Tab 4: Dynamic GEX with historical lookback balls and quantitative levels">
-            </div>
-        </div>
-    </section>
-
-    <!-- MACRO 3: FOLLOW THE PRESSURE -->
-    <section class="section-dark" id="pressure" style="padding: 4rem 0; text-align: center; border-bottom: none;">
+    <section class="section-light" id="methodology">
         <div class="container">
-            <h2 class="section-heading mb-m" style="font-size: 2rem;">3. FOLLOW THE PRESSURE</h2>
-            <p class="section-desc max-w-center">How does that positioning evolve? Track monetary capital flows, volatility regimes, and straddle decay dynamically.</p>
+            <div class="section-intro text-center"><span class="eyebrow">BUILT BY A TRADER</span><h2 class="section-heading">A shared market context. Different ways to trade it.</h2><p class="section-desc">GEXPIT brings SPX options activity into view. How you express a trade depends on your instrument, strategy and risk controls.</p></div>
+            <div class="audience-grid"><article class="audience-card"><h3>Trading SPX 0DTE options?</h3><p>Compare flow, modeled exposure, implied volatility and straddle behavior as context for your options analysis and session review.</p></article><article class="audience-card"><h3>Trading ES futures?</h3><p>Use SPX options activity as an additional layer of context for your futures decisions. GEXPIT's SPX views do not replace an ES order book or ES execution feed.</p></article></div>
+            <div class="method-note"><h3>Know what you are looking at.</h3><p>Feed observations, classified flow and modeled exposure are different layers. Call/Put volume alone does not reveal a participant's full position, including multi-leg trades. GEXPIT supports analysis; trading results depend on the strategy, execution, costs and risk management.</p></div>
         </div>
     </section>
-
-    <!-- TAB 2 (Normal) -->
-    <section class="feature-section" style="border-top: none;">
-        <!-- TAB 2 - ROW 1: Monetary CVD & Rolling Peaks -->
-        <div class="container feature-grid">
-            <div class="feature-text">
-                <h3 class="feature-title">FOLLOW PREMIUM FLOW, NOT JUST CONTRACT COUNT.</h3>
-                <p class="feature-desc">Contracts alone do not capture true directional pressure. High gamma makes every contract a potential hedging event.</p>
-                <p class="feature-detail">GEXPIT tracks signed options flow using <strong>Monetary Notional Value ($)</strong> classified via the Lee-Ready algorithm on a 250ms midpoint window, splitting midpoint executions 50/50 to prevent artificial directional bias.</p>
-                
-                <div class="example-box">
-                    <div class="example-row"><span>2,000 contracts × $0.05</span> <span>≈ $10K premium</span></div>
-                    <div class="example-row"><span>2,000 contracts × $15.00</span> <span>≈ $3M premium</span></div>
-                </div>
-
-                <div class="sub-feature mt-m">
-                    <h4>ROLLING CALL &amp; PUT VOLUME PEAKS ON SPOT</h4>
-                    <p>Track where maximum volume is concentrating in real time: dynamic dashed lines on the Spot chart follow the exact strikes with the highest Call (green) and Put (red) volume across <strong>9 selectable timeframes</strong> (<em>1m, 3m, 5m, 10m, 15m, 30m, 60m, 120m, or Full Session</em>).</p>
-                </div>
-
-                <div class="sub-feature mt-m">
-                    <h4>MULTI-METRIC, MONEYNESS &amp; 4 CVD MODES</h4>
-                    <p>Tailor your terminal to your edge: switch calculation metrics between <strong>Notional Value ($)</strong>, <strong>Volume (contracts)</strong>, or <strong>Delta Flow</strong>; filter by <strong>Moneyness</strong> (ALL, OTM, ATM/NTM, ITM); and toggle CVD displays across 4 modes (<em>Call &amp; Put CVD, Call Only, Put Only, or Net CVD Total</em>).</p>
-                </div>
-            </div>
-            <div class="feature-visual">
-                <div class="screenshot-header">TAB 2 — Monetary CVD &amp; Volume Peaks</div>
-                <img loading="lazy" src="assets/img/gexpit-tab2-gamma-volumes.webp" alt="GEXPIT Tab 2: Monetary CVD and Rolling Volume Peaks on Spot">
-            </div>
-        </div>
-
-        <!-- TAB 2 - ROW 2: Sweep Alarms & Net CVD -->
-        <div class="container feature-grid">
-            <div class="feature-text">
-                <span class="eyebrow" style="margin-bottom: 0.75rem;">SWEEP DETECTION &amp; MOMENTUM</span>
-                <h3 class="feature-title" style="font-size: 1.75rem;">SWEEP ALARMS, DUAL PEAKS &amp; CVD OSCILLATOR</h3>
-                <p class="feature-desc" style="font-size: 1.1rem;">Visual alerts stamped directly onto the price chart at the moment aggressive volume hits the market.</p>
-                <p class="feature-detail">Set custom threshold filters (<code>&#x1F514; CALL</code> and <code>&#x1F514; PUT</code>) to trigger visual markers directly on the Spot trajectory: &#x1F7E2; Green for aggressive Call spikes, &#x1F534; Red for protective Put surges, and &#x1F7E1; <strong>Gold Dual Peaks</strong> when both explode simultaneously.</p>
-
-                <div class="sub-feature mt-m">
-                    <h4>CVD ACCELERATION OSCILLATOR</h4>
-                    <p>Gauge microstructural momentum tick-by-tick via the central <strong>CVD Acceleration Oscillator</strong>. The bottom panel displays cumulative <strong>Net CVD Total</strong>, confirming whether aggressive sweep bursts create lasting trend conviction or instant liquidity absorption.</p>
-                </div>
-            </div>
-            <div class="feature-visual">
-                <div class="screenshot-header">TAB 2 — Sweep Alarms &amp; Net CVD</div>
-                <img loading="lazy" src="assets/img/gexpit-tab2-sweep-alarms.webp" alt="GEXPIT Tab 2: Sweep alarms on spot, CVD acceleration oscillator, and Net CVD Total">
-            </div>
-        </div>
-    </section>
-
-    <!-- TAB 6 (Reverse) -->
-    <section class="feature-section feature-reverse">
-        <div class="container feature-grid">
-            <div class="feature-text">
-                <h3 class="feature-title">WATCH 0DTE STRADDLE DECAY EVOLVE.</h3>
-                <p class="feature-desc">Monitor the Expected Move corridor and ATM implied-volatility behavior in SPX points.</p>
-                <p class="feature-detail">Know your statistical boundaries: compare the certified 09:30 NY Open corridor (anti-spike certified ±1SD, ±2SD, ±3SD horizontal bands) with fluid 30-second rolling dynamic channels to identify statistical overextension.</p>
-
-                <div class="sub-feature mt-m">
-                    <h4>0DTE STRADDLE ATM DECAY CORRIDOR (SPX PTS)</h4>
-                    <p>The lower panel tracks the real-world erosion of options premium: compare the <strong>Amber Curve</strong> (theoretical mathematical decay decaying toward 0 at the close) against the <strong>Cyan Curve</strong> (live market ATM straddle price in SPX points).</p>
-                </div>
-
-                <div class="sub-feature mt-m">
-                    <h4>INSTANT VOLATILITY REGIME DETECTION</h4>
-                    <p>When the live cyan curve trades significantly above the theoretical amber path, options are pricing heavy event risk. When the live straddle drops below theoretical decay, premium is burning at hyper-speed—ideal for range compression strategies.</p>
-                </div>
-            </div>
-            <div class="feature-visual">
-                <div class="screenshot-header">TAB 6 — EM & Decay</div>
-                <img src="assets/img/gexpit-tab6-em-decay.webp" alt="Expected Move">
-            </div>
-        </div>
-    </section>
-
-    <!-- TAB 7 (Normal) -->
-    <section class="feature-section">
-        <div class="container feature-grid">
-            <div class="feature-text">
-                <h3 class="feature-title">CONNECT FLOW, MOMENTUM AND IMPLIED VOLATILITY.</h3>
-                <p class="feature-desc">Cross-analyze Spot, 1-minute order sweeps, and the ATM implied volatility Z-score to separate genuine institutional trend days from false break traps.</p>
-                
-                <div class="sub-feature mt-m">
-                    <h4>1-MINUTE MICROSTRUCTURE FLOW VALUES</h4>
-                    <p>Isolate institutional sweeps minute-by-minute. Track clean Call volume (green), Put volume (red), and aggregate volume bars right below the clean SPX Spot panel to spot aggressive accumulation before price breaks out.</p>
-                </div>
-
-                <div class="sub-feature mt-m">
-                    <h4>ATM IMPLIED VOLATILITY Z-SCORE (30-MIN ROLLING)</h4>
-                    <p>Detect exhaustion and panic pricing in real time: statistical deviation bands at ±1.5σ and ±2.0σ show whether price dips are accompanied by genuine options hedging panic or if they represent low-volatility traps ready to reverse.</p>
-                </div>
-
-                <div class="sub-feature mt-m">
-                    <h4>HIGH-PERFORMANCE ZERO-LAG ARCHITECTURE</h4>
-                    <p>Driven by an incremental Numba-accelerated engine with Peak-Preserving decimation, rendering 500,000+ ticks at 60 FPS while preserving every true market spike and extreme tick.</p>
-                </div>
-            </div>
-            <div class="feature-visual">
-                <div class="screenshot-header">TAB 7 — Flow & IV</div>
-                <img src="assets/img/gexpit-tab7-flows-iv.webp" alt="Flow and IV">
-            </div>
-        </div>
-    </section>
-
-    <!-- MACRO 4: REPLAY THE MARKET -->
-    <section class="section-dark" id="replay" style="padding-top: 8rem; padding-bottom: 8rem;">
-        <div class="container text-center">
-            <h2 class="section-heading mb-m" style="font-size: 3rem;">4. REPLAY THE MARKET</h2>
-            <p class="section-desc mx-auto mb-l" style="max-width: 850px;">GEXPIT logs every OPRA tick directly to your local PC in high-performance Apache Parquet format. Rewind, pause, and analyze any past session with the exact same visual interface and mathematical precision as the live market. From 1&times; real-time to 300&times; hyperspeed. Zero cloud vendor lock-in. 100% private data ownership.</p>
-            <p class="section-desc mx-auto mb-xl" style="max-width: 800px; font-size: 0.95rem; color: var(--text-muted-dark);">Includes <strong>Intraday Live Rewind</strong> (scrub backwards during live trading to re-examine morning breakouts or heavy block sweeps, then return to live streaming with a <strong>1-Click Live Snap</strong>) and an official <strong>09:30 NY Open Anchor</strong> to filter pre-market distortions.</p>
-            
-            <div class="app-frame terminal-frame mx-auto mb-l" style="max-width: 1000px; box-shadow: 0 0 80px rgba(0, 230, 118, 0.05);">
-                <div class="terminal-bar">
-                    <div class="terminal-dots">
-                        <span class="dot close"></span><span class="dot min"></span><span class="dot max"></span>
-                    </div>
-                    <div class="terminal-title">gexpit_replay_engine --ibkr-spx0dte-wal</div>
-                </div>
-                <video class="terminal-video" autoplay loop muted playsinline disablePictureInPicture preload="auto" style="width: 100%; display: block;">
-                    <source src="assets/video/registrazione-2x-web.mp4" type="video/mp4">
-                </video>
-            </div>
-            
-            <div class="mt-l">
-                <p class="mb-m" style="color: var(--text-secondary-dark); font-size: 1.1rem;">Watch full session replays on our YouTube channel:</p>
-                <a href="https://www.youtube.com/@gexpit" target="_blank" rel="noopener noreferrer" class="btn btn-youtube">
-                    <img src="assets/img/gexpit-logo-header.webp" alt="GEXPIT Profile" class="yt-profile-icon">
-                    WATCH REPLAYS ON YOUTUBE
-                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                        <path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
-                        <path fill="#FFFFFF" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 07 MARKET REGIME & WALLS -->
-    <section class="section-light" id="methodology" style="border-top: none;">
+    <section class="section-dark" id="how-it-works">
         <div class="container">
-            <div class="text-center mb-xl">
-                <h2 class="section-heading">READ THE MARKET REGIME.</h2>
-                <p class="section-desc">Understand the structural environment before placing a trade. Mechanical regime classification driven by the exact physical relationship between Spot, Zero Gamma, and the Vol Trigger.</p>
-            </div>
-            
-            <div class="walls-grid mb-xl">
-                <div class="wall-card">
-                    <h4 class="mono-title">ZERO GAMMA</h4>
-                    <p>The boundary between calm and acceleration. Above it, dealers act as shock absorbers; below it, dealers amplify volatility.</p>
-                </div>
-                <div class="wall-card">
-                    <h4 class="mono-title">VOL TRIGGER</h4>
-                    <p>The precise price level where total exposure flips to volatility expansion, pinpointed via continuous price-space scanning.</p>
-                </div>
-                <div class="wall-card">
-                    <h4 class="mono-title">CALL WALL</h4>
-                    <p>The structural ceiling: maximum positive modeled net-GEX strike acting as primary institutional resistance.</p>
-                </div>
-                <div class="wall-card">
-                    <h4 class="mono-title">PUT WALL</h4>
-                    <p>The structural floor: maximum negative modeled net-GEX strike acting as key dealer hedging support.</p>
-                </div>
-            </div>
-
-            <h3 class="text-center mt-xl mb-l">FOUR QUANTITATIVE VOLATILITY REGIMES</h3>
-            <div class="regime-grid">
-                <div class="regime-card regime-damping">
-                    <h4>🟢 VOLATILITY DAMPING</h4>
-                    <p><strong>Long Gamma Cushion.</strong> Dealers absorb price swings (buying dips, selling rips). Range compression, low realized volatility, and high mean-reversion probability. Ideal for fading extremes.</p>
-                </div>
-                <div class="regime-card regime-expansion">
-                    <h4>🟡 VOLATILITY EXPANSION</h4>
-                    <p><strong>Long Gamma Warning.</strong> Price approaches structural trigger levels. Swings widen, breakout attempts gain traction, and intraday range begins expanding.</p>
-                </div>
-                <div class="regime-card regime-squeeze">
-                    <h4>🟠 DELTA SQUEEZE</h4>
-                    <p><strong>Short Gamma High-Velocity.</strong> Extreme sensitivity to short-covering rallies. Dealers are forced to buy underlying aggressively as price ticks up, triggering violent V-shaped surges.</p>
-                </div>
-                <div class="regime-card regime-cascade">
-                    <h4>🔴 VOLATILITY CASCADE</h4>
-                    <p><strong>Short Gamma Panic.</strong> Price trades below both Zero Gamma and the Vol Trigger. Dealer hedging turns pro-cyclical: every point drop forces more selling, accelerating downside cascades through thin liquidity.</p>
-                </div>
-            </div>
+            <div class="section-intro text-center"><span class="eyebrow">FROM INVITATION TO YOUR FIRST SESSION</span><h2 class="section-heading">Start with a guided setup. Build your reading step by step.</h2><p class="section-desc">You do not need to learn every view at once. Begin with setup and a clear question, then explore the tools in more depth.</p></div>
+            <ol class="onboarding-grid"><li><span class="step-number">01</span><h3>Apply for access</h3><p>Leave your email. Selected participants receive an invitation and activation instructions.</p></li><li><span class="step-number">02</span><h3>Set up GEXPIT</h3><p>Install the desktop cockpit. For live analysis, configure the GEXPIT Extractor with IBKR and check your market data permissions. For replay, open a compatible recorded session.</p></li><li><span class="step-number">03</span><h3>Learn the views</h3><p>Use setup instructions and explanatory videos to understand the tools and how to read a 0DTE session through them.</p></li><li><span class="step-number">04</span><h3>Use it. Share feedback.</h3><p>Report what works, what is unclear and what could improve. Access lasts 21 days from license activation.</p></li></ol>
+            <p class="setup-note">You need a compatible Windows PC. Live analysis also requires the GEXPIT Extractor running with IBKR and the relevant market data permissions. Historical replay uses compatible local files without an active broker connection. Broker and market data charges are separate from GEXPIT access.</p>
         </div>
     </section>
-
-    <!-- 13 TECHNICAL ENGINE & 16 BENCHMARKS -->
-    <section class="section-dark">
-        <div class="container">
-            <h2 class="section-heading text-center mb-xl">BUILT FOR REAL-TIME QUANTITATIVE PROCESSING.</h2>
-            
-            <div class="tech-flow-pipeline mono-text">
-                <span class="tech-step">MARKET DATA</span>
-                <span class="tech-arrow">&rarr;</span>
-                <span class="tech-step">PYARROW / PARQUET</span>
-                <span class="tech-arrow">&rarr;</span>
-                <span class="tech-step">INCREMENTAL DATA ENGINE</span>
-                <span class="tech-arrow">&rarr;</span>
-                <span class="tech-step">NUMPY / NUMBA</span>
-                <span class="tech-arrow">&rarr;</span>
-                <span class="tech-step">GREEKS / FLOW / EXPOSURE</span>
-                <span class="tech-arrow">&rarr;</span>
-                <span class="tech-step">PYQT / PYQTGRAPH</span>
-                <span class="tech-arrow">&rarr;</span>
-                <span class="tech-step tech-step-accent">LIVE + REPLAY</span>
-            </div>
-            
-            <div class="benchmarks-grid mt-xl text-center">
-                <div class="benchmark-header mb-l">
-                    <h3>BUILT. MEASURED. TESTED.</h3>
-                    <p class="note-box mx-auto mt-s" style="display:inline-block; font-size:0.85rem; color:var(--text-muted-dark);">Measured on internal benchmark datasets / test environment.</p>
-                </div>
-                <div class="stats-row" style="display:flex; justify-content:center; gap:3rem; flex-wrap:wrap;">
-                    <div class="stat text-center">
-                        <div class="stat-val mono-title" style="font-size:2rem; color:var(--text-primary-dark);">~321 µs</div>
-                        <div class="stat-label" style="color:var(--text-secondary-dark); font-size:0.9rem;">Dynamic GEX snapshot</div>
-                    </div>
-                    <div class="stat text-center">
-                        <div class="stat-val mono-title" style="font-size:2rem; color:var(--text-primary-dark);">~1.20 ms</div>
-                        <div class="stat-label" style="color:var(--text-secondary-dark); font-size:0.9rem;">Historical curve per frame</div>
-                    </div>
-                    <div class="stat text-center">
-                        <div class="stat-val mono-title" style="font-size:2rem; color:var(--text-primary-dark);">~0.54 ms</div>
-                        <div class="stat-label" style="color:var(--text-secondary-dark); font-size:0.9rem;">Vol Trigger scan</div>
-                    </div>
-                    <div class="stat text-center">
-                        <div class="stat-val mono-title" style="font-size:2rem; color:var(--accent-green);">159 / 0</div>
-                        <div class="stat-label" style="color:var(--text-secondary-dark); font-size:0.9rem;">Tests passed / failed</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 18 THE ONBOARDING FUNNEL & PRICING -->
     <section class="section-light" id="pricing">
-        <div class="container">
-            <h2 class="section-heading text-center mb-xl">HOW IT WORKS</h2>
-            <div class="walls-grid mb-xl" style="text-align: center;">
-                <div class="wall-card">
-                    <h4 class="mono-title" style="color: var(--text-primary-light);">1. REQUEST ACCESS</h4>
-                    <p>Join the waitlist to receive your invitation and beta license key.</p>
-                </div>
-                <div class="wall-card">
-                    <h4 class="mono-title" style="color: var(--text-primary-light);">2. INSTALLATION</h4>
-                    <p>Download and install the GEXPIT desktop application locally on your PC.</p>
-                </div>
-                <div class="wall-card">
-                    <h4 class="mono-title" style="color: var(--text-primary-light);">3. IBKR CONNECTION</h4>
-                    <p>Connect GEXPIT directly to your existing Interactive Brokers TWS or Gateway.</p>
-                </div>
-                <div class="wall-card">
-                    <h4 class="mono-title" style="color: var(--text-primary-light);">4. USE & REPLAY</h4>
-                    <p>Analyze live markets, record tick data, and replay past sessions.</p>
-                </div>
-            </div>
-
-            <div class="pricing-box text-center mx-auto mb-xl" style="max-width: 500px; background: var(--bg-card-light); padding: 3rem; border-radius: 12px; border: 1px solid var(--border-light);">
-                <h2 class="mb-s">PRIVATE BETA</h2>
-                <p class="mono-text mb-m" style="color: var(--text-secondary-light);">Commercial pricing announced before public release.</p>
-                <ul class="clean-list text-left mb-l mx-auto" style="display: inline-block; color:var(--text-primary-light); font-size:0.95rem; line-height:1.8;">
-                    <li>✓ Local desktop application</li>
-                    <li>✓ GEXPIT quantitative engine</li>
-                    <li>✓ Real-Time Dynamic GEX</li>
-                    <li>✓ Replay Engine (1x to 300x)</li>
-                    <li>✓ Direct IBKR integration</li>
-                </ul>
-                <br>
-                <form id="bottom-form" class="access-form">
+        <div class="container access-grid">
+            <div class="access-explainer"><span class="eyebrow">GEXPIT EARLY ACCESS PROGRAM</span><h2 class="section-heading">Use GEXPIT. Help shape what comes next.</h2><p class="feature-desc">Selected participants receive 21 days of free access to use the platform and share practical feedback with its developer.</p><div id="access-terms"><h3>What participation means</h3><ul class="access-terms"><li><strong>21 days from activation.</strong> Applying does not start the clock or activate a license.</li><li><strong>Useful feedback.</strong> Report setup issues, unclear readings, bugs or improvements. Positive and critical feedback are equally welcome.</li><li><strong>Extensions are not automatic.</strong> The developer may extend free access based on your contribution and testing needs. Without feedback, free access ends after 21 days.</li><li><strong>Subscriptions follow the invitation phase.</strong> Pricing and purchase terms will be shared before you choose a paid subscription.</li></ul></div><p class="community-note">Discord access is reserved for invited participants. There is no public server signup.</p></div>
+            <div class="pricing-box"><span class="eyebrow">INVITE ONLY</span><p class="access-duration">21 <span>days free</span></p><h3>Apply for Early Access</h3><p class="mb-m">Leave your email to be considered for an invitation.</p><form id="bottom-form" class="access-form">
                     <div class="hp-trap" aria-hidden="true" style="position: absolute; left: -9999px;">
                         <input type="text" name="b_name" tabindex="-1" autocomplete="off">
                     </div>
                     <div class="form-group" style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%;">
-                        <input type="email" placeholder="Enter your email address" required class="form-input">
-                        <button type="submit" class="btn btn-primary form-submit">REQUEST ACCESS</button>
+                        <label class="form-label" for="bottom-form-email">Email address</label>
+                        <input id="bottom-form-email" name="email" autocomplete="email" aria-describedby="bottom-form-note" type="email" placeholder="Enter your email address" required class="form-input">
+                        <button aria-live="polite" type="submit" class="btn btn-primary form-submit">APPLY FOR EARLY ACCESS</button>
                     </div>
                     <!-- Cloudflare Turnstile Human Verification -->
                     <div class="cf-turnstile-wrapper">
@@ -659,116 +156,42 @@
                     </div>
                     <div class="form-privacy-micro">
                         <svg class="privacy-lock-icon" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                        <span>Strictly confidential. Zero third-party trackers. <a href="#privacy-modal" class="privacy-modal-trigger">Privacy Policy</a></span>
+                        <span>Your email is used for access updates. <a href="#privacy-modal" class="privacy-modal-trigger">Privacy Policy</a></span>
                     </div>
-                </form>
-                
-                <div class="mt-l">
-                    <a href="https://www.youtube.com/@gexpit" target="_blank" rel="noopener noreferrer" class="btn btn-youtube" style="width: 100%;">
-                        <img src="assets/img/gexpit-logo-header.webp" alt="GEXPIT Profile" class="yt-profile-icon">
-                        SUBSCRIBE TO GEXPIT ON YOUTUBE
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                            <path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
-                            <path fill="#FFFFFF" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-
-            <!-- FAQ Restored from the original V27 version -->
-            <div class="faq-section mx-auto mb-xl" id="faq" style="max-width: 800px;">
-                <h3 class="text-center mb-l">TECHNICAL SPECIFICATIONS &amp; FAQ</h3>
-                
-                <details class="faq-item">
-                    <summary class="faq-question">Which broker and market data feed does GEXPIT use?</summary>
-                    <div class="faq-answer">
-                        <p>GEXPIT is engineered specifically for <strong>Interactive Brokers (IB Gateway)</strong>. It directly captures the official <strong>OPRA SPX options tick stream</strong> through the IBKR API. You utilize the standard, low-cost market data subscription you already own with Interactive Brokers, with <strong>zero expensive third-party data subscriptions or vendor markups</strong>.</p>
-                    </div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-question">How does local data storage work and how do I build a personal historical database?</summary>
-                    <div class="faq-answer">
-                        <p>Every tick, trade execution, and computed Greeks surface is logged directly on your local machine in high-performance <strong>Columnar Apache Parquet</strong> format with Write-Ahead Log (WAL) architecture. Unlike cloud-locked web platforms, you hold 100% ownership of your raw and processed data. You build a valuable, private institutional tick archive day after day with <strong>zero recurring data archive fees</strong>.</p>
-                    </div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-question">What are the minimum system requirements to run the GEXPIT terminal smoothly?</summary>
-                    <div class="faq-answer">
-                        <p>Because GEXPIT renders real-time OLED heatmaps at 60 FPS and processes hundreds of thousands of ticks intraday via a Numba JIT-compiled engine, a standard modern PC is required. We recommend at least <strong>8 GB of RAM</strong> (to comfortably run GEXPIT alongside Interactive Brokers TWS without bottlenecking memory) and a <strong>dedicated GPU with at least 4 GB of VRAM</strong> to guarantee zero-latency hardware-accelerated rendering.</p>
-                    </div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-question">How does the Replay Engine and the Intraday Live Rewind function?</summary>
-                    <div class="faq-answer">
-                        <p>GEXPIT features a dual-mode high-throughput replay engine: you can perform <strong>Full-Session Replays</strong> on any previously recorded day at variable speeds (1x to 300x) with zero data loss. Furthermore, during live market sessions, you can <strong>rewind the timeline</strong> to re-examine morning Initial Balance breakouts, heavy block sweeps, or key turning points, and then instantly return to live streaming with a single click (<strong>1-Click Live Snap</strong>). An optional <strong>09:30 NY Open Anchor</strong> resets calculations to official regular trading hours.</p>
-                    </div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-question">How does the Flow Heatmap work and what are the display modes?</summary>
-                    <div class="faq-answer">
-                        <p>The heatmap renders Call and Put volume across the SPX strike chain in real time on a pure OLED black background, synchronized with the Rolling Volume Profile. It includes <strong>10 display modes</strong> grouped into two families: <strong>Gamma (GEX)</strong> (Linear, Logarithmic, 30m Rolling) and <strong>Order Flow &amp; Volumes</strong> (Volume Flow, Smooth Flow, Dominance, Delta Dominance, Call Only, Put Only, and Dual Panels). <em>Dual Panels</em> splits Call and Put activity into two synchronized vertical charts, while <em>Dominance</em> illuminates gross volume without dark spots at the ATM Straddle strike.</p>
-                    </div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-question">How do Multi-Timeframe Volume Profiles, Flow filters and Market Regime work?</summary>
-                    <div class="faq-answer">
-                        <p>In Tab 1 (Flows &amp; Heatmap), you can filter the <strong>Rolling Volume Profile</strong> across 7 timeframes (1m to 120m). Dedicated lower panels display separate <strong>Call Flow &amp; Put Flow</strong> curves with multi-metric toggles (Contracts, Dollar Notional $, Delta Flow) and Moneyness filters (ALL, OTM, NTM ±5pt, ITM). The HUD tracks the <strong>Initial Balance</strong> (09:30–10:00 NY) and continuously diagnoses the active <strong>Market Regime</strong> (Volatility Damping, Volatility Expansion, Delta Squeeze, Volatility Cascade).</p>
-                    </div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-question">What is Monetary CVD, what are Rolling Peaks, and how do Sweep Alarms work?</summary>
-                    <div class="faq-answer">
-                        <p>Each trade is classified with the <strong>Lee-Ready algorithm</strong> using a 250ms quote midpoint window, splitting midpoint executions 50/50 to preserve volume without directional bias. GEXPIT's <strong>Monetary CVD</strong> weights every execution by actual dollar notional.</p>
-                        <p style="margin-top: 0.75rem;">Tab 2 overlays <strong>Rolling Volume Peaks</strong> (dashed green Call and red Put curves) directly on the Spot chart across 9 timeframes (1m to Full Session). Configurable <strong>Sweep Alarms</strong> (`🔔 CALL` and `🔔 PUT`) plot visual markers directly on the Spot trajectory: 🟢 Green for aggressive Call spikes, 🔴 Red for Put surges, and 🟡 <strong>Gold Dual Peaks</strong> when both factions trade massive volume simultaneously.</p>
-                    </div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-question">How are Greeks (GEX, VEX, DEX, CEX) and multi-strike exposures calculated?</summary>
-                    <div class="faq-answer">
-                        <p>All five exposure panels (Total Volume, GEX, VEX, DEX, CEX) are computed in parallel by a <strong>Numba JIT Black-Scholes engine</strong>. The toolbar lets you toggle between <strong>Stacked Mode</strong> (stacked Call/Put bars from zero) and <strong>Split Centered Mode</strong> (zero-centered axis with Puts expanding left and Calls right), and filter the entire Greeks surface across 7 rolling timeframes (1m to All Session) with 3-level HVN/LVN liquidity grading.</p>
-                    </div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-question">How does GEX Dinamico differ from Net GEX, and what are Lookback Balls?</summary>
-                    <div class="faq-answer">
-                        <p>Tab 4 provides three selectable modes: <strong>Net GEX</strong> (historical accumulated flow), <strong>Split Total GEX</strong>, and <strong>Dynamic GEX</strong> (BSM repricing using today's total volume at live Spot and remaining expiry time). Overlaid on the bars are <strong>Historical Lookback Balls</strong> showing where gamma was 1m (white), 5m (cyan), 15m (yellow), and 30m (orange) ago. The engine plots Spot against <strong>Zero Gamma Flow</strong>, <strong>Zero Gamma Macro</strong>, Call Wall, Put Wall, and a dynamically scanned <strong>Vol Trigger</strong>.</p>
-                    </div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-question">How do the Expected Move Corridor and Straddle Decay work (Tabs 6 &amp; 7)?</summary>
-                    <div class="faq-answer">
-                        <p>Tab 6 maps the daily statistical playing field by plotting Spot against certified 09:30 NY Open bands (±1SD, ±2SD, ±3SD) and fluid 30-second intraday channels. The lower panel compares the <strong>Theoretical Straddle Decay Curve</strong> (decaying to zero at 16:00 NY) against the <strong>Live ATM Straddle Price in SPX points</strong> to identify whether options are overpricing event risk or experiencing accelerated premium collapse. Tab 7 pairs clean Spot price with <strong>1-Minute Flow Values</strong> and the <strong>ATM Implied Volatility Z-Score (30m rolling)</strong> to filter false breakouts.</p>
-                    </div>
-                </details>
-            </div>
+                <p class="form-note" id="bottom-form-note">Applying does not activate a license. If selected, you will receive an invitation by email. <a href="#access-terms">Read the access terms</a>.</p>
+                </form></div>
         </div>
     </section>
-
+    <section class="section-dark" id="faq">
+        <div class="container faq-container"><div class="section-intro text-center"><span class="eyebrow">BEFORE YOU APPLY</span><h2 class="section-heading">Practical questions. Clear answers.</h2></div>
+<details class="faq-item"><summary class="faq-question">What happens after I apply?</summary><div class="faq-answer"><p>Your application is received for consideration. If selected, you will receive an invitation with activation instructions by email. Applying does not grant immediate access. The 21-day period starts when your license is activated.</p></div></details>
+<details class="faq-item"><summary class="faq-question">What feedback is expected during the 21 days?</summary><div class="faq-answer"><p>Use the platform and share concrete observations: setup difficulties, unclear controls or readings, reproducible bugs, or suggestions tied to your workflow. You do not need to find a bug or invent a feature to contribute. Honest, specific feedback is what matters.</p></div></details>
+<details class="faq-item"><summary class="faq-question">What happens when the free period ends?</summary><div class="faq-answer"><p>Free access ends after 21 days unless the developer grants an extension based on your contribution and ongoing testing needs. Without feedback, the free period is not renewed. Contributing does not guarantee an extension. Paid subscriptions will follow the invitation phase; pricing and terms will be provided before purchase.</p></div></details>
+<details class="faq-item"><summary class="faq-question">Is GEXPIT for SPX options traders or ES futures traders?</summary><div class="faq-answer"><p>Both can use SPX options activity as market context. GEXPIT analyzes SPX options; it is not an ES order-book feed. An options structure and a futures position have different exposures and risks, even when informed by the same market reading.</p></div></details>
+<details class="faq-item"><summary class="faq-question">Which broker and data do I need?</summary><div class="faq-answer"><p>For live analysis, the GEXPIT Extractor connects to Interactive Brokers through TWS or IB Gateway with the relevant market data permissions. The cockpit reads the local files produced by the Extractor; it does not connect directly to the broker. Confirm your permissions and setup before starting live collection. IBKR and market data fees are separate from GEXPIT access.</p></div></details>
+<details class="faq-item"><summary class="faq-question">Does GEXPIT run in my browser or on my phone?</summary><div class="faq-answer"><p>GEXPIT is a local desktop application for a compatible Windows PC. This website works on desktop and mobile; the analytical platform runs on your PC. Check hardware suitability during onboarding, particularly if you run other trading applications alongside it.</p></div></details>
+<details class="faq-item"><summary class="faq-question">Do I need to know every indicator before starting?</summary><div class="faq-answer"><p>No. Start with installation and a guided reading of one view. Instructions and explanatory videos help you understand the interface and how to examine 0DTE market activity. The tools still require learning; no indicator removes trading uncertainty.</p></div></details>
+<details class="faq-item"><summary class="faq-question">Can I review past sessions?</summary><div class="faq-answer"><p>Yes. Open compatible session files recorded by the GEXPIT Extractor for historical replay without an active broker connection. During live analysis, you can rewind the available session history and return to LIVE. An existing historical data library is not promised as part of early access.</p></div></details>
+<details class="faq-item"><summary class="faq-question">How do I join Discord?</summary><div class="faq-answer"><p>Discord is reserved for invited participants. Access information is shared with invitees; there is no public invite link on the website.</p></div></details>
+<details class="faq-item"><summary class="faq-question">Does GEXPIT provide guaranteed trade signals?</summary><div class="faq-answer"><p>No. GEXPIT is an analytical platform. Flow classification and exposure models have assumptions and limitations. A chart observation is not proof of a profitable trade, and the platform does not guarantee outcomes.</p></div></details>
+<div class="final-cta text-center"><h3>Explore the platform. Bring your questions.</h3><p>Apply for the 21-day program and help improve GEXPIT through practical use.</p><a class="btn btn-primary" href="#pricing">Apply for Early Access</a></div></div></section>
+    </main>
     <footer class="site-footer" style="background:#05070a; border-top: 1px solid var(--border-dark); padding: 4rem 0 2rem;">
         <div class="container text-center">
             <div class="mb-m">
                 <img src="assets/img/gexpit-logo-header.webp" alt="GEXPIT" width="120" style="margin: 0 auto; display: block; filter: grayscale(100%) brightness(1.5); opacity: 0.8;">
-                <small style="color:#666; font-family:var(--font-mono); letter-spacing:1px; margin-top:1rem; display:block;">REAL-TIME SPX 0DTE MARKET STRUCTURE</small>
+                <small style="color:#fff; font-family:var(--font-mono); letter-spacing:1px; margin-top:1rem; display:block;">REAL-TIME SPX 0DTE MARKET STRUCTURE</small>
             </div>
             <div class="footer-links mt-l" style="font-size: 0.9rem; display:flex; justify-content:center; gap:2rem; flex-wrap:wrap;">
-                <a href="#flow" style="color: #888; text-decoration: none;">Flow &amp; Heatmap</a>
-                <a href="#positioning" style="color: #888; text-decoration: none;">Dealer Positioning</a>
-                <a href="#pressure" style="color: #888; text-decoration: none;">CVD &amp; Pressure</a>
-                <a href="#replay" style="color: #888; text-decoration: none;">Replay Engine</a>
-                <a href="#methodology" style="color: #888; text-decoration: none;">Methodology</a>
-                <a href="#faq" style="color: #888; text-decoration: none;">FAQ</a>
-                <a href="#pricing" style="color: #888; text-decoration: none;">Request Access</a>
-                <a href="#privacy-modal" class="privacy-modal-trigger" style="color: #888; text-decoration: none;">Privacy Policy</a>
-                <a href="https://www.youtube.com/@gexpit" target="_blank" rel="noopener noreferrer" style="color: #888; text-decoration: none;">YouTube Channel</a>
+                <a href="#platform" style="color: #fff; text-decoration: none;">Platform</a>
+                <a href="#positioning" style="color: #fff; text-decoration: none;">Dynamic GEX</a>
+                <a href="#rolling" style="color: #fff; text-decoration: none;">Rolling Volume</a>
+                <a href="#replay" style="color: #fff; text-decoration: none;">Replay Engine</a>
+                <a href="#methodology" style="color: #fff; text-decoration: none;">Methodology</a>
+                <a href="#faq" style="color: #fff; text-decoration: none;">FAQ</a>
+                <a href="#pricing" style="color: #fff; text-decoration: none;">Apply for Early Access</a>
+                <a href="#privacy-modal" class="privacy-modal-trigger" style="color: #fff; text-decoration: none;">Privacy Policy</a>
+                <a href="https://www.youtube.com/@gexpit" target="_blank" rel="noopener noreferrer" style="color: #fff; text-decoration: none;">YouTube Channel</a>
             </div>
 
             <!-- Institutional Privacy & Compliance Disclaimer -->
@@ -781,26 +204,26 @@
                     <span class="privacy-gdpr-tag">REGULATION (EU) 2016/679 (GDPR)</span>
                 </div>
                 <p class="footer-privacy-desc">
-                    GEXPIT collects and processes institutional email addresses and essential network telemetry strictly for the purpose of granting private beta access, authenticating edge gateway requests, and preventing automated infrastructure abuse. We enforce a zero-commercial-tracking policy: no marketing cookies, no behavioural profiling, and no third-party data broker transfers. All data is encrypted in transit and in storage vaults. In accordance with EU Regulation 2016/679 (GDPR), you maintain full rights to inspect, rectify, or request permanent erasure of your records at any time.
+                    GEXPIT collects and processes email addresses and essential network telemetry strictly for the purpose of processing early access applications, authenticating edge gateway requests, and preventing automated infrastructure abuse. We enforce a zero-commercial-tracking policy: no marketing cookies, no behavioural profiling, and no third-party data broker transfers. All data is encrypted in transit and in storage vaults. In accordance with EU Regulation 2016/679 (GDPR), you maintain full rights to inspect, rectify, or request permanent erasure of your records at any time.
                 </p>
                 <div class="footer-privacy-actions">
                     <button type="button" class="btn-privacy-link privacy-modal-trigger" aria-haspopup="dialog">Read Complete Privacy &amp; Data Rights Disclosure &rarr;</button>
                 </div>
             </div>
 
-            <div class="mt-l" style="color:#444; font-size:0.8rem;">&copy; 2026 GEXPIT. All rights reserved.</div>
+            <div class="mt-l" style="color:#fff; font-size:0.8rem;">&copy; 2026 GEXPIT. All rights reserved.</div>
         </div>
     </footer>
     
     <!-- Institutional Privacy Policy & Data Governance Modal -->
-    <div id="privacy-modal" class="gexpit-modal" role="dialog" aria-hidden="true" aria-labelledby="privacy-modal-title">
+    <div id="privacy-modal" class="gexpit-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="privacy-modal-title">
         <div class="gexpit-modal-backdrop" id="privacy-modal-backdrop"></div>
         <div class="gexpit-modal-content">
             <button class="gexpit-modal-close" id="privacy-modal-close" aria-label="Close Privacy Policy">&times;</button>
             <div class="gexpit-modal-header">
                 <span class="privacy-badge">
                     <svg class="privacy-lock-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
-                    INSTITUTIONAL GOVERNANCE
+                    DATA PRIVACY
                 </span>
                 <h3 id="privacy-modal-title" class="gexpit-modal-title">Privacy Policy &amp; Data Processing Disclosure</h3>
                 <div class="modal-subtitle">Regulation (EU) 2016/679 (General Data Protection Regulation &mdash; GDPR)</div>
@@ -808,12 +231,12 @@
             <div class="gexpit-modal-body">
                 <section class="privacy-section">
                     <h4>1. Data Controller &amp; Scope</h4>
-                    <p>This disclosure describes how <strong>GEXPIT</strong> (<code>gexpit.com</code>) collects, manages, and safeguards personal data submitted by institutional and professional users requesting access to the GEXPIT market structure platform and private beta evaluation program.</p>
+                    <p>This disclosure describes how <strong>GEXPIT</strong> (<code>gexpit.com</code>) collects, manages, and safeguards personal data submitted by users requesting access to the GEXPIT market structure platform and early access evaluation program.</p>
                 </section>
                 <section class="privacy-section">
                     <h4>2. Categories of Personal Data Processed</h4>
                     <ul>
-                        <li><strong>Voluntary Contact Information:</strong> Professional/institutional email address provided directly by the user via the access request forms.</li>
+                        <li><strong>Voluntary Contact Information:</strong> Email address provided directly by the user via the access request forms.</li>
                         <li><strong>Automated Edge Telemetry:</strong> Request timestamp, source form identifier, and client IP hash processed at the edge gateway strictly for rate-limiting enforcement, bot challenge verification, and abuse mitigation.</li>
                     </ul>
                 </section>
@@ -821,7 +244,7 @@
                     <h4>3. Purpose &amp; Legal Basis (Art. 6 GDPR)</h4>
                     <p>Data processing is conducted strictly under the following legal bases:</p>
                     <ul>
-                        <li><strong>Consent (Art. 6(1)(a) GDPR):</strong> Explicitly granted upon submitting your email to receive beta invitations and platform onboarding credentials.</li>
+                        <li><strong>Consent (Art. 6(1)(a) GDPR):</strong> Explicitly granted upon submitting your email to receive early access invitations and platform onboarding credentials.</li>
                         <li><strong>Legitimate Interest (Art. 6(1)(f) GDPR):</strong> Protecting edge infrastructure integrity, preventing volumetric denial-of-service (DoS) attacks, and maintaining database concurrency locks.</li>
                     </ul>
                 </section>
@@ -831,7 +254,7 @@
                 </section>
                 <section class="privacy-section">
                     <h4>5. Retention &amp; Permanent Erasure (Art. 17 GDPR)</h4>
-                    <p>Access request records are retained strictly for the duration of the private beta evaluation phase. Under GDPR, you have the right to request:</p>
+                    <p>Access request records are retained strictly for the duration of the early access evaluation phase. Under GDPR, you have the right to request:</p>
                     <ul>
                         <li>Confirmation and inspection of personal data held.</li>
                         <li>Immediate and permanent erasure of your email and telemetry from all storage vaults (Right to be Forgotten).</li>
@@ -851,7 +274,7 @@
     </div>
 
     <!-- Registration Confirmation Pop-up Modal -->
-    <div id="confirmation-modal" class="gexpit-modal" role="dialog" aria-hidden="true" aria-labelledby="confirmation-modal-title">
+    <div id="confirmation-modal" class="gexpit-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="confirmation-modal-title">
         <div class="gexpit-modal-backdrop" id="confirmation-modal-backdrop"></div>
         <div class="gexpit-modal-content confirmation-modal-content">
             <button class="gexpit-modal-close" id="confirmation-modal-close" aria-label="Close Confirmation">&times;</button>
@@ -862,18 +285,18 @@
                     </svg>
                 </div>
                 <span class="confirmation-status-pill">REGISTRATION CONFIRMED</span>
-                <h3 id="confirmation-modal-title" class="gexpit-modal-title">Access Request Recorded</h3>
-                <div class="modal-subtitle">Priority Queue Verification &mdash; GEXPIT Institutional Cockpit</div>
+                <h3 id="confirmation-modal-title" class="gexpit-modal-title">Application received</h3>
+                <div class="modal-subtitle">GEXPIT Early Access Program</div>
             </div>
             <div class="gexpit-modal-body confirmation-modal-body">
                 <div class="confirmation-email-card">
-                    <span class="confirmation-email-label">Registered Institutional Email:</span>
+                    <span class="confirmation-email-label">Your email:</span>
                     <span class="confirmation-email-value" id="confirmation-email-display">user@example.com</span>
                 </div>
                 <div class="confirmation-notice">
-                    <p>Thank you for requesting access to the <strong>GEXPIT 0DTE Quantitative Platform</strong>.</p>
-                    <p>Your institutional application has been verified at the edge and queued into our priority onboarding cohort. You will receive private beta invitations, direct documentation, and release announcements directly at your registered email address.</p>
-                    <p>While your access credentials are being processed, feel free to inspect the <strong>7 Analytical Lenses</strong> across this page or review our real-time market microstructure demonstrations on YouTube.</p>
+                    <p>Thank you for applying to the <strong>GEXPIT Early Access Program</strong>.</p>
+                    <p>Your application has been received for consideration. <strong>Your license is not active.</strong> If selected, you will receive an invitation and activation instructions at this email address.</p>
+                    <p>Your 21 free days start at license activation. In the meantime, explore platform demonstrations and market sessions on YouTube.</p>
                 </div>
             </div>
             <div class="gexpit-modal-footer confirmation-modal-footer">
@@ -881,13 +304,13 @@
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="color: #ff0000; margin-right: 6px;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                     WATCH DEMOS
                 </a>
-                <button type="button" class="btn btn-primary" id="confirmation-modal-confirm">CONTINUE TO PLATFORM</button>
+                <button type="button" class="btn btn-primary" id="confirmation-modal-confirm">BACK TO SITE</button>
             </div>
         </div>
     </div>
 
     <!-- 4K High-Resolution Chart Lightbox Modal -->
-    <div id="lightbox-modal" class="gexpit-lightbox" role="dialog" aria-hidden="true" aria-label="Chart Detail Fullscreen">
+    <div id="lightbox-modal" class="gexpit-lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Chart Detail Fullscreen">
         <button class="lightbox-close" id="lightbox-close" aria-label="Close Preview">&times;</button>
         <div class="lightbox-wrapper">
             <img id="lightbox-img" src="" alt="GEXPIT High-Resolution Chart Detail">
