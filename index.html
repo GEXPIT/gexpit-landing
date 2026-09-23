@@ -16,7 +16,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
     
@@ -46,11 +46,18 @@
         <div class="container hero-grid">
             <div class="hero-content">
                 <span class="eyebrow">SPX 0DTE · OPTIONS FLOW · DYNAMIC GEX · REPLAY</span>
-                <h1 class="hero-title">See price, SPX options flow and Gamma together.</h1>
-                <p class="hero-subtitle">Find where activity concentrates, compare the last few minutes with the full session, and revisit any recorded moment.</p>
-                <p class="hero-supporting">Live analysis and replay for SPX options and ES futures traders. Focused on SPX 0DTE options: contracts that expire the same day.</p>
+                <h1 class="hero-title">See beyond the SPX price.</h1>
+                <p class="hero-subtitle">Track SPX options flow, compare recent volume and follow <span class="hero-metric">Gamma exposure.</span> Live and in replay.</p>
+            </div>
+            <div class="hero-visual" id="demo">
+                <div class="app-frame terminal-frame">
+                    <div class="terminal-bar"><div class="terminal-dots" aria-hidden="true"><span class="dot close"></span><span class="dot min"></span><span class="dot max"></span></div><div class="terminal-title">GEXPIT IN ACTION</div></div>
+                    <video class="hero-showcase-video" autoplay loop muted playsinline webkit-playsinline controls preload="auto" aria-label="Recorded GEXPIT platform demonstration" poster="assets/img/gexpit-tab1-heatmap-flows.webp"><source src="assets/video/gexpit-montato-web.mp4" type="video/mp4">Your browser cannot play this video. <a href="assets/video/gexpit-montato-web.mp4">Open the demonstration</a>.</video>
+                </div>
+                <p class="media-caption">Recorded platform demonstration. Explore the tools below, then watch complete sessions on YouTube.</p>
             </div>
             <div class="hero-conversion">
+                <p class="hero-supporting">Live analysis and replay for SPX options and ES futures traders. Focused on SPX 0DTE options: contracts that expire the same day.</p>
                 <div class="access-badge">INVITE ONLY <span>21 days free from activation</span></div>
                 <form id="hero-form" class="access-form mt-m">
                     <!-- Anti-spam Honeypot -->
@@ -73,7 +80,7 @@
                 <p class="form-note" id="hero-form-note">Access is by invitation. Your trial starts at activation; practical feedback is part of the program. <a href="#access-terms">See terms</a>.</p>
                 </form>
                 <div class="hero-actions">
-                    <a class="link-action" href="#demo">Watch GEXPIT in action &darr;</a>
+                    <a class="link-action" href="#demo">Watch GEXPIT in action &uarr;</a>
                     <a href="https://www.youtube.com/@gexpit" target="_blank" rel="noopener noreferrer" class="yt-box-link" aria-label="Visit GEXPIT YouTube channel">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="yt-svg" aria-hidden="true">
                             <path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
@@ -82,13 +89,6 @@
                         <span>Live sessions &amp; videos on YouTube &nearr;</span>
                     </a>
                 </div>
-            </div>
-            <div class="hero-visual" id="demo">
-                <div class="app-frame terminal-frame">
-                    <div class="terminal-bar"><div class="terminal-dots" aria-hidden="true"><span class="dot close"></span><span class="dot min"></span><span class="dot max"></span></div><div class="terminal-title">GEXPIT IN ACTION</div></div>
-                    <video class="hero-showcase-video" autoplay loop muted playsinline webkit-playsinline controls preload="auto" aria-label="Recorded GEXPIT platform demonstration" poster="assets/img/gexpit-tab1-heatmap-flows.webp"><source src="assets/video/gexpit-montato-web.mp4" type="video/mp4">Your browser cannot play this video. <a href="assets/video/gexpit-montato-web.mp4">Open the demonstration</a>.</video>
-                </div>
-                <p class="media-caption">Recorded platform demonstration. Explore the tools below, then watch complete sessions on YouTube.</p>
             </div>
         </div>
     </section>
